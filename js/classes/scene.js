@@ -1,10 +1,11 @@
+"use strict";
 /*
  * SCENE MODULE
  * ============
  *
  * PUBLIC PROPERTIES --- (!) IMMUTABLE
  *------------------
- * 
+ *
  *   width   : INT
  *  height   : INT
  *  offset   : OBJ
@@ -12,21 +13,21 @@
  *      -> y : INT
  *
  *
- * 
+ *
  * PUBLIC SETTERS
  *---------------
  *
  *   setProp ( key, value )
  *
  *
- * 
- * PUBLIC METHODS 
+ *
+ * PUBLIC METHODS
  *---------------
  *
  *   getSceneObjectData( objectId, action )
- * 
+ *
  *   draw( timeLapsed )
- * 
+ *
  */
 define(
 
@@ -39,7 +40,7 @@ define(
   // CALLBACK
   function( canvasUtils ){
 
-    function Scene ( properties, CTX, ctxRatio, io_CONTROL ){
+    function Scene ( properties, CTX, ctxRatio, objectTypes, io_SCREEN, io_CONTROL ){
 
       var _P = {
 
@@ -54,29 +55,14 @@ define(
             sceneData :    {},
 
             gfx: {
-
-              background: {
-                image:    new Image(),
-                path:     '/img/bg/scene-2.png',
-                ready:    false,
-                canvas:   null,
-                ctx:      null
-              },
-
-              sprites: {
-                image:    new Image(),
-                path:     '',
-                ready:    false,
-                canvas:   null,
-                ctx:      null
-              }
+              backgrounds: []
             },
 
             objects: {
               hash: {},
               foreground: [],
               background: [],
-              animated:   [], 
+              animated:   [],
               actable:    []
             },
 
@@ -84,10 +70,10 @@ define(
 
           },
 
-          _canvas,
-          _ctx
+          self = this
 
           ;
+
 
 
       $.extend( true, _P, properties );
@@ -99,156 +85,222 @@ define(
 
       function _init () {
 
-        if ( _P.sceneDataURL != null ){
+        if ( _P.sceneDataURL !== null ){
 
           // fetch Scene Data
-          $.getJSON( _P.sceneDataURL, function( data ){ _P.sceneData = data; });
+          self.loadSceneData( _P.sceneDataURL );
         }
 
-        if ( _P.gfx.background.path != null ){
-          
-          _P.gfx.background.image.onload = function() {
+        // on selection
+        $.subscribe('/control/mouse/up/left', function () {
 
-            _P.width = _P.gfx.background.image.width * ctxRatio;
-            canvasUtils.proccesGfxToCanvas( _P.gfx.background, ctxRatio );
+          var objects = _P.objects.actable
+            , object
+            ;
+
+          for ( var i = 0, len = objects.length; i < len; i++ ) {
+            object = objects[ i ];
+            if ( object.isMouseOver() ) {
+              self.setSelection( object );
+              break;
+            }
           }
-          _P.gfx.background.image.src = _P.gfx.background.path;
-
-        }
+        });
       }
 
 
 
 // --- IMMUTABLE PUBLIC PROPERTIES --- //
 
-      Object.defineProperty( this, 'offset', {
+      Object.defineProperty( self, 'offset', {
         enumerable : true,
         get : function(){ return _P.offset; },
-        set : function(){ throw Error( 'Scene instance property "offset" can not be set directly. Use setter method.' ); }
+        set : function(){ throw new Error( 'Scene instance property "offset" can not be set directly. Use setter method.' ); }
       });
-      Object.defineProperty( this, 'width', {
+      Object.defineProperty( self, 'width', {
         enumerable : true,
         get : function(){ return _P.width; },
-        set : function(){ throw Error( 'Scene instance property "width" can not be set directly. Use setter method.' ); }
+        set : function(){ throw new Error( 'Scene instance property "width" can not be set directly. Use setter method.' ); }
       });
-      Object.defineProperty( this, 'height', {
+      Object.defineProperty( self, 'height', {
         enumerable : true,
         get : function(){ return _P.height; },
-        set : function(){ throw Error( 'Scene instance property "height" can not be set directly. Use setter method.' ); }
+        set : function(){ throw new Error( 'Scene instance property "height" can not be set directly. Use setter method.' ); }
       });
 
-
+      Object.defineProperty( self, 'io_SCREEN', {
+        enumerable : true,
+        get : function(){ return io_SCREEN; },
+        set : function(){ throw new Error( 'Scene instance property "height" can not be set directly. Use setter method.' ); }
+      });
+      Object.defineProperty( self, 'io_CONTROL', {
+        enumerable : true,
+        get : function(){ return io_CONTROL; },
+        set : function(){ throw new Error( 'Scene instance property "height" can not be set directly. Use setter method.' ); }
+      });
 
 // --- PUBLIC SETTERS --- //
 
-      this.setProp = function ( key, value ) {
-        
+      self.setProp = function ( key, value ) {
+
         if ( typeof value === typeof _P[ key ] ){
           _P[ key ] = value;
         }
-      }
+      };
 
 
 
 // --- PUBLIC METHODS --- //
 
-      this.update = function ( timeLapsed ) {
-        
-        var objects = _P.objects.animated,
+      self.update = function ( timeLapsed ) {
+
+        var objects,
             object;
 
-        for ( var i = 0, len = objects; i < len; i++ ) {
-            object = objects[ i ];
-            object.update();
-        }
-
-        if ( io_CONTROL.isLeftMousePressed() ) {
-
-          objects = _P.objects.actable;
-          for ( var i = 0, len = objects; i < len; i++ ) {
-          
-            object = _P.objects.actable[ i ];  
-            if ( io_CONTROL.getMousePosition.x > object.x - ( object.width / 2 )
-              && io_CONTROL.getMousePosition.x < object.x + ( object.width / 2 )
-              && io_CONTROL.getMousePosition.y > object.y - object.height
-              && io_CONTROL.getMousePosition.y < object.y ) {
-                _P.selection = object;
-            }
+        objects = _P.objects.actable;
+        for ( var i = 0, len = objects.length; i < len; i++ ) {
+          object = objects[ i ];
+          if ( object.isMouseOver() ) {
+            io_SCREEN.setCursor('pointer');
+            break;
           }
+          io_SCREEN.resetCursor();
+        };
+
+        objects = _.toArray( _P.objects.hash );
+        for ( var i = 0, len = objects.length; i < len; i++ ) {
+          object = objects[ i ];
+          object.update( timeLapsed );
         }
       };
 
-      this.addObject = function ( object, id, stack, isAnimated, isActable ) {
+      self.loadSceneData = function ( URL ) {
 
-        if ( ! object || typeof id != 'string' || _P.objects.hash[ id ] ) return;
+        _P.sceneDataURL = URL;
 
-        _P.objects.hash[ id ] = object;
+        $.getJSON( URL, function ( data ) {
 
-        if ( stack === 'foreground' ) {
+          _P.sceneData = data;
+
+          _P.width  = data.width * ctxRatio;
+          _P.height = data.height * ctxRatio;
+
+          // load backgrounds
+          $.each( data.backgrounds, function ( index, backgroundURL ) {
+
+            var background = {
+                  image:    new Image(),
+                  path:     backgroundURL,
+                  ready:    false,
+                  canvas:   null,
+                  ctx:      null
+                }
+                ;
+
+            background.image.onload = function () {
+              canvasUtils.proccesGfxToCanvas( background, ctxRatio );
+            };
+            background.image.src = backgroundURL;
+
+            _P.gfx.backgrounds.push( background );
+
+          });
+
+          // load objects
+          $.each( data.objects, function ( index, object ) {
+            self.addObject( object );
+          });
+
+        });
+      };
+
+      self.addObject = function ( def ) {
+
+        var object;
+
+        if ( ! def || typeof def.name !== 'string' ) return;
+        if ( _P.objects.hash[ name ] !== undefined ) console.log('Object ' + def,name + ' is being overidden.' );
+
+
+        object = new objectTypes[ def.type ]( def.name, def.cfg, CTX, ctxRatio, self );
+
+        _P.objects.hash[ def.name ] = object;
+
+        if ( def.cfg.stack > 0 ) {
           _P.objects.foreground.push( object );
         }
-
         else {
           _P.objects.background.push( object );
         }
 
-        if ( isAnimated === true ) {
+        if ( def.cfg.isAnimated === true ) {
           _P.objects.animated.push( object );
         }
 
-        if ( isActable === true ) {
+        if ( def.cfg.isActable === true ) {
           _P.objects.actable.push( object );
         }
       };
 
-      this.removeObject = function ( ) {
+      self.removeObject = function ( id ) {
 
       };
 
-      this.getSelection = function () {
+      self.setSelection = function ( selection ) {
+        _P.selection = selection;
+        io_SCREEN.setCursor('pointer');
+      };
+
+      self.getSelection = function () {
         return _P.selection;
       };
 
-      this.resetSelection = function () {
+      self.resetSelection = function () {
         _P.selection = null;
+        io_SCREEN.resetCursor();
       };
 
-      this.getObjectData = function ( objectId, action ){
+      self.getObjectScript = function ( name, action ){
 
-        var o = _P.sceneData[ objectId ];
+        var obj     = _P.objects.hash[ name ]
+          , script  = obj.getScript( action )
+          ;
 
-        if ( o === undefined || o.action[ action ] === undefined ) return null;
-        return o.action[ action ].slice(0);
+        if ( obj === undefined || script === undefined ) return null;
+        return script.slice(0);
       };
 
-      this.drawBackground = function ( timeLapsed ){
-        
+      self.drawBackground = function ( timeLapsed ){
+
         var objects = _P.objects.background,
             object;
 
-        if ( _P.gfx.background.ready ) {
-        
-          CTX.drawImage(
-            _P.gfx.background.canvas,
-            0,
-            0,
-            _P.gfx.background.canvas.width,
-            _P.gfx.background.canvas.height,
-            0,
-            0,
-            _P.gfx.background.canvas.width * ctxRatio,
-            _P.gfx.background.canvas.height * ctxRatio
-          );
+        // draw backgrounds
+        for ( var i = 0, len = _P.gfx.backgrounds.length; i < len; i ++ ) {
+          if ( _P.gfx.backgrounds[ i ].ready ) {
+            CTX.drawImage(
+              _P.gfx.backgrounds[ i ].canvas,
+              0,
+              0,
+              _P.gfx.backgrounds[ i ].canvas.width,
+              _P.gfx.backgrounds[ i ].canvas.height,
+              ( _P.offset.x * -1 ) + ( _P.offset.x * .1 / len * i ),
+              0,
+              _P.gfx.backgrounds[ i ].canvas.width * ctxRatio,
+              _P.gfx.backgrounds[ i ].canvas.height * ctxRatio
+            );
+          }
         }
 
+        // draw objects
         for ( var i = 0, len = objects.length; i < len; i++ ) {
           object = objects[ i ];
           object.draw();
         }
       };
 
-      this.drawForeground = function ( timeLapsed ){
-        
+      self.drawForeground = function ( timeLapsed ){
+
         var objects = _P.objects.foreground,
             object;
 

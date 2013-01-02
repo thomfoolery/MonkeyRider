@@ -4,19 +4,24 @@
  *
  * PUBLIC PROPERTIES --- (!) IMMUTABLE
  *------------------
- * 
+ *
  *   N/A
- * 
+ *
  * PUBLIC SETTERS
  *---------------
- * 
+ *
  *   N/A
- * 
- * PUBLIC METHODS 
+ *
+ * PUBLIC METHODS
  *---------------
  *
- *   processTranspancy( imageData, index  )
- * 
+    start()
+
+    stop()
+
+    draw()
+
+ *
  */
 define(
 
@@ -84,7 +89,7 @@ define(
                 ANIMATOR.draw( timeLapsed ); // function defined elsewhere which draws animated elements
                 lastTime = time;
             }
-            catch (e) { log( e.stack ); debugger; }
+            catch (e) { console.log( e.stack ); debugger; }
 
             requestAnimationFrame( LOOP );
             isAnimationRendering = false;

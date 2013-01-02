@@ -4,26 +4,26 @@
  *
  * PUBLIC PROPERTIES
  *------------------
- * 
+ *
  *   N/A
- * 
+ *
  * PUBLIC SETTERS
  *---------------
- * 
+ *
  *   N/A
- * 
- * PUBLIC METHODS 
+ *
+ * PUBLIC METHODS
  *---------------
  *
  *   getMousePosition ()          : OBJ
  *        x : INT
  *        y : INT
- * 
+ *
  *   isLeftMousePressed ()        : BOOLEAN
  *   isRightMousePressed ()       : BOOLEAN
  *
  *   isKeyPressed ( key )         : BOOLEAN
- * 
+ *
  */
 define(
 
@@ -71,7 +71,7 @@ define(
 
         var xRatio = ( $( window ).outerWidth()  - ( _P.border * 2 ) ) / _P.resolutions.source.x,
             yRatio = ( $( window ).outerHeight() - ( _P.border * 2 ) ) / _P.resolutions.source.y
-            
+
             ;
 
         _P.ctxRatio = Math.floor( Math.min( xRatio, yRatio ) * 10 ) / 10; // round down to 10th of a decimal
@@ -79,8 +79,8 @@ define(
         ctx.canvas.width    = _P.resolutions.destination.x   = Math.floor( _P.resolutions.source.x * _P.ctxRatio );
         ctx.canvas.height   = _P.resolutions.destination.y   = Math.floor( _P.resolutions.source.y * _P.ctxRatio );
 
-        $canvas.css('marginLeft', ( $( window ).outerWidth() - ctx.canvas.width )  / 2 );
-        $canvas.css('marginTop', ( $( window ).outerHeight() - ctx.canvas.height ) / 2 );
+        $canvas.css('marginLeft', ( $( window ).outerWidth() - $canvas.outerWidth() )  / 2 );
+        $canvas.css('marginTop', ( $( window ).outerHeight() - $canvas.outerHeight() ) / 2 );
       }
 
 
@@ -106,6 +106,14 @@ define(
 
       getMultiplier: function () {
         return _P.ctxRatio;
+      },
+
+      setCursor: function( type ){
+        $canvas.css('cursor', type );
+      },
+
+      resetCursor: function(){
+        $canvas.css('cursor', 'crosshair');
       }
     }
   }

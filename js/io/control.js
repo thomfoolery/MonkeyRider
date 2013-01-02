@@ -4,26 +4,26 @@
  *
  * PUBLIC PROPERTIES
  *------------------
- * 
+ *
  *   N/A
- * 
+ *
  * PUBLIC SETTERS
  *---------------
- * 
+ *
  *   N/A
- * 
- * PUBLIC METHODS 
+ *
+ * PUBLIC METHODS
  *---------------
  *
  *   getMousePosition ()          : OBJ
  *        x : INT
  *        y : INT
- * 
+ *
  *   isLeftMousePressed ()        : BOOLEAN
  *   isRightMousePressed ()       : BOOLEAN
  *
  *   isKeyPressed ( key )         : BOOLEAN
- * 
+ *
  */
 define(
 
@@ -36,8 +36,8 @@ define(
   // CALLBACK
   function () {
 
-    var MOUSE_X,
-        MOUSE_Y,
+    var MOUSE_X = 0,
+        MOUSE_Y = 0,
 
         MOUSE_LEFT  = false,
         MOUSE_RIGHT = false,
@@ -52,6 +52,7 @@ define(
         KEY_PRESSED  = false,
         KEYS_PRESSED = {},
 
+        io_SCREEN,
         $canvas,
 
         api
@@ -60,53 +61,56 @@ define(
 
     // on mouse move
     $( window ).mousemove( function ( e ) {
-      
+
       MOUSE_X = e.clientX;
       MOUSE_Y = e.clientY;
     });
 
     // mouse down
     $( window ).mousedown( function ( e ) {
-      
+
       if ( api.getMousePosition() === null ) return;
 
       if ( e.which === 1 ){
         MOUSE_LEFT  = true;
+        $.publish('/control/mouse/down/left');
       }
       else if ( e.which === 3 ){
         MOUSE_RIGHT = true;
+        $.publish('/control/mouse/down/right');
       }
     });
+
     // mouse up
     $( window ).mouseup( function ( e ) {
 
       if ( e.which === 1 ){
         MOUSE_LEFT  = false;
+        $.publish('/control/mouse/up/left');
       }
       else if ( e.which === 3 ){
         MOUSE_RIGHT = false;
+        $.publish('/control/mouse/up/right');
       }
     });
 
     // on key down
     $( window ).keydown( function( e ) {
 
-      e.preventDefault();
-
       KEY_PRESSED               = true;
       KEYS_PRESSED[ e.keyCode ] = true;
 
       if ( e.keyCode === KEY_CODES.UP           &&   KEYS_PRESSED[ KEY_CODES.DOWN ] ) { // UP while DOWN
-        delete KEYS_PRESSED[ KEY_CODES.DOWN ];
+        delete KEYS_PRESSED[ KEY_CODES.DOWN ];  e.preventDefault();
       }
       else if ( e.keyCode === KEY_CODES.RIGHT   &&   KEYS_PRESSED[ KEY_CODES.LEFT ] ) { // RIGHT while LEFT
-        delete KEYS_PRESSED[ KEY_CODES.LEFT ];
+        delete KEYS_PRESSED[ KEY_CODES.LEFT ];  e.preventDefault();
       }
       else if ( e.keyCode === KEY_CODES.DOWN    &&   KEYS_PRESSED[ KEY_CODES.UP ] ) { // DOWN while UP
-        delete KEYS_PRESSED[ KEY_CODES.UP ];
+        delete KEYS_PRESSED[ KEY_CODES.UP ];    e.preventDefault();
       }
       else if ( e.keyCode === KEY_CODES.LEFT    &&   KEYS_PRESSED[ KEY_CODES.RIGHT ] ) { // LEFT while RIGHT
-        delete KEYS_PRESSED[ KEY_CODES.RIGHT ];
+        delete KEYS_PRESSED[ KEY_CODES.RIGHT ]; e.preventDefault();
       }
     });
 
@@ -126,19 +130,18 @@ define(
 // --- PUBLIC METHODS --- //
     api = {
 
-      setup: function ( canvas ) {
-        $canvas = canvas;
+      setup: function ( _io_SCREEN ) {
+
+        io_SCREEN = _io_SCREEN;
+        $canvas = io_SCREEN.getCanvas();
       },
 
       getMousePosition: function () {
-        
+
         var x, y;
 
         x = MOUSE_X - $canvas.offset().left;
         y = MOUSE_Y - $canvas.offset().top;
-
-        if ( x < 0 || x > $canvas.width() )  return null;
-        if ( y < 0 || y > $canvas.height() ) return null;
 
         return {
           'x': x,

@@ -1,0 +1,295 @@
+{
+  "name": "scene.1",
+
+  "width": 1000,
+  "height": 225,
+
+  "backgrounds": [
+    "/img/scene.1/bg.a.png",
+    "/img/scene.1/bg.b.png",
+    "/img/scene.1/bg.c.png"
+  ],
+
+  "objects": [
+    {
+      "name": "lamp.1",
+      "type": "Static",
+      "cfg": {
+        "x": 25,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path": "/img/scene.1/lamp.post.png"
+        }
+      }
+    },
+
+    {
+      "name": "lamp.2",
+      "type": "Static",
+      "cfg": {
+        "x": 185,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path": "/img/scene.1/lamp.post.png"
+        }
+      }
+    },
+
+    {
+      "name": "lamp.3",
+      "type": "Static",
+      "cfg": {
+        "x": 725,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path": "/img/scene.1/lamp.post.png"
+        }
+      }
+    },
+
+    {
+      "name": "lamp.4",
+      "type": "Static",
+      "cfg": {
+        "x": 900,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path": "/img/scene.1/lamp.post.png"
+        }
+      }
+    },
+
+    {
+      "name": "dumpster",
+      "type": "Static",
+      "cfg": {
+        "x": 695,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  true,
+        "gfx":{
+          "path": "/img/scene.1/dumpster.png"
+        },
+
+        "scripts": {
+          "look": [
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "What a dump-ster"
+            }
+          ]
+        }
+      }
+    },
+
+    {
+      "name": "bike1",
+      "type": "Static",
+      "cfg": {
+        "x": 100,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path":     "/img/scene.1/bike.c.png",
+          "darkenBy": 0.25,
+          "scale":    0.9
+        }
+      }
+    },
+
+    {
+      "name": "bike2",
+      "type": "Static",
+      "cfg": {
+        "x": 125,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path":     "/img/scene.1/bike.b.png",
+          "darkenBy": 0.25,
+          "scale":    0.98
+        }
+      }
+    },
+
+    {
+      "name": "bike3",
+      "type": "Static",
+      "cfg": {
+        "x": 200,
+        "y": 0,
+        "stack": 1,
+        "isAnimated": false,
+        "isActable":  true,
+        "gfx":{
+          "path": "/img/scene.1/bike.a.png"
+        },
+        "scripts": {
+          "look": [
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "Get to tha Choppa!"
+            }
+          ]
+        }
+      }
+    },
+
+    {
+      "name": "bar",
+      "type": "Static",
+      "cfg": {
+        "x": 300,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  false,
+        "gfx":{
+          "path": "/img/scene.1/bar.png"
+        }
+      }
+    },
+
+    {
+      "name": "door",
+      "type": "Sprite",
+      "cfg": {
+        "x": 350,
+        "y": 0,
+        "stack": -1,
+        "isAnimated": false,
+        "isActable":  true,
+        "gfx":{
+          "path": "/img/scene.1/door.png",
+          "width":  42,
+          "height": 77
+        },
+
+        "state": "closed",
+        "states": {
+          "closed": {
+            "sprite": 0
+          },
+          "open": {
+            "sprite": 1
+          }
+        },
+
+        "action": {
+          "talk": {
+            "color": "green"
+          }
+        },
+
+        "scripts": {
+          "look": [
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value":  "- KNOCK KNOCK -"
+            },
+            {
+              "actor": "door",
+              "action": "setState",
+              "value": "open"
+            },
+            {
+              "actor": null,
+              "action": "pause",
+              "value": 500
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "Who's there?"
+            },
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "I'm Dudebrush, //Dudebrush Creepwood"
+            },
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "I'm a mighty pirate"
+            },
+            {
+              "actor": null,
+              "action": "pause",
+              "value": 500
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "Oh really!"
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "What's the password?"
+            },
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "Open Sesame ?"
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "See Mick, //I told you the //password was too easy"
+            },
+            {
+              "actor": null,
+              "action": "pause",
+              "value": 500
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "Where's your cut?"
+            },
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "My mother is washing it"
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "HA!           "
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "Nice try. Get lost!"
+            },
+            {
+              "actor": "door",
+              "action": "setState",
+              "value": "closed"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+"use strict";
 /* Author: Thomas Yuill
  *
  *  the curse of
@@ -12,7 +13,7 @@ require.config({
 });
 
 define(
-  
+
   // MODULE NAME
   'main',
 
@@ -22,6 +23,7 @@ define(
     "io/control",
 
     "utils/animator",
+    "utils/scriptor",
 
     "class/scene",
     "class/player",
@@ -31,8 +33,8 @@ define(
   ],
 
   // CALLBACK
-  function main ( io_SCREEN, io_CONTROL, ANIMATOR, Scene, Player, Static, Sprite, Character ) {
-    
+  function main ( io_SCREEN, io_CONTROL, ANIMATOR, SCRIPTOR, Scene, Player, Static, Sprite, Character ) {
+
     io_SCREEN.setup( {
       resolutions: {
         source: {
@@ -42,13 +44,19 @@ define(
       }
     });
 
-    io_CONTROL.setup( io_SCREEN.getCanvas() );
+    io_CONTROL.setup( io_SCREEN );
 
     var ctx        = io_SCREEN.getContext(),
         ctx_ratio  = io_SCREEN.getMultiplier(),
 
-        SCENE   = new Scene( {}, ctx, ctx_ratio, io_CONTROL ),
-        PLAYER  = new Player( {}, ctx, ctx_ratio, io_CONTROL, SCENE )
+        objectTypes  = {
+          'Static':     Static,
+          'Sprite':     Sprite,
+          'Character':  Character
+        },
+
+        SCENE   = new Scene( {}, ctx, ctx_ratio, objectTypes, io_SCREEN, io_CONTROL ),
+        PLAYER  = new Player( {}, ctx, ctx_ratio, io_CONTROL, SCENE, SCRIPTOR )
 
         ;
 
@@ -56,71 +64,7 @@ define(
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;
 
-    SCENE.addObject( 
-      new Static( {
-        x: 237,
-        y: SCENE.height,
-        gfx:{
-          path:     '/img/sprites/bike.png',
-          darkenBy: .25,
-          scale: .8
-        }
-      }, ctx, ctx_ratio ),
-
-      'bike2', 'background', false, true
-    );
-
-    SCENE.addObject( 
-      new Static( {
-        x: 252,
-        y: SCENE.height,
-        gfx:{
-          path: '/img/sprites/bike.png',
-          darkenBy: .2,
-          scale: .98
-        }
-      }, ctx, ctx_ratio ),
-
-      'bike3', 'background', false, true
-    );
-
-    SCENE.addObject( 
-      new Static( {
-        x: 300,
-        y: SCENE.height,
-        gfx:{
-          path:     '/img/sprites/bld-bar.png'
-        }
-      }, ctx, ctx_ratio ),
-
-      'bar', 'background', false, false
-    );
-
-    SCENE.addObject( 
-      new Static( {
-        x: 400,
-        y: SCENE.height,
-        gfx:{
-          path:     '/img/sprites/door.png'
-        }
-      }, ctx, ctx_ratio ),
-
-      'door', 'background', false, false
-    );
-
-    SCENE.addObject( 
-      new Static( {
-        x: 200,
-        y: SCENE.height,
-        gfx:{
-          path:     '/img/sprites/bike.png'
-        }
-      }, ctx, ctx_ratio ),
-
-      'bike1', 'foreground', false, true
-    );
-
-
+    SCENE.loadSceneData('/data/scene.1.json');
 
     ANIMATOR.draw = function( timeLapsed ){
 
@@ -137,7 +81,7 @@ define(
 
       ctx.save();
       /* -- */
-        if ( SCENE.offset.x != 0 ){
+        if ( SCENE.offset.x !== 0 ){
           ctx.translate( SCENE.offset.x, 0 );
         }
 
@@ -146,7 +90,7 @@ define(
         SCENE.drawForeground( timeLapsed );
       /* -- */
       ctx.restore();
-    }
+    };
 
     ANIMATOR.start();
   }

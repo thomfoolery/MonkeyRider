@@ -4,25 +4,25 @@
  *
  * PUBLIC PROPERTIES --- (!) IMMUTABLE
  *------------------
- * 
  *
  *
  *
- * 
+ *
+ *
  * PUBLIC SETTERS
  *---------------
  *
  *   setProp ( key, value )
  *
  *
- * 
- * PUBLIC METHODS 
+ *
+ * PUBLIC METHODS
  *---------------
  *
  *   getSceneObjectData( objectId, action )
- * 
+ *
  *   draw( timeLapsed )
- * 
+ *
  */
 define(
 
@@ -34,20 +34,22 @@ define(
 
   // CALLBACK
   function ( canvasUtils ) {
-    
-    function Player( properties, CTX, ctxRatio, io_CONTROL, SCENE ) {
+
+    function Player( properties, CTX, ctxRatio, io_CONTROL, SCENE, SCRIPTOR ) {
 
       var _P = {
 
-            x: 0,
-            y: CTX.canvas.height,
+            name: 'player',
+
+            x:      0,
+            y:      0,
             width:  0,
             height: 0,
             isDead: false,
 
             gfx: {
               image:        new Image(),
-              path:         '/img/sprites/guybrush-walk.png',
+              path:         '/img/sprites/guybrush-walk-3.png',
               width:  32,
               height: 48,
               ready:        false,
@@ -64,7 +66,7 @@ define(
                 destinationX: null,
                 offsetX:      0,
                 offsetY:      0,
-                
+
                 spriteCount:  6,
 
                 index:        0,
@@ -87,9 +89,13 @@ define(
               talk: {
                 speech: [],
                 duration: 0,
-                lapsed: 0
+                lapsed: 0,
+                color: 'pink'
               }
-            }
+            },
+
+            script: null,
+            scriptor: null
           },
 
           self = this
@@ -118,28 +124,42 @@ define(
         _P.gfx.image.src = _P.gfx.path;
 
         _P.action.walk.destinationX = _P.x;
+
+        // on selection
+        $.subscribe('/control/mouse/up/left', function () {
+
+          if ( io_CONTROL.getMousePosition() ) {
+
+            _P.action.walk.destinationX = io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 );
+          }
+        });
       }
 
 
 
 // --- IMMUTABLE PUBLIC PROPERTIES --- //
 
-      Object.defineProperty( this, 'x', {
+      Object.defineProperty( self, 'name', {
+        enumerable : true,
+        get : function(){ return _P.name; },
+        set : function(){ throw Error( 'Player instance property "name" can not be set directly. Use setter method.' ); }
+      });
+      Object.defineProperty( self, 'x', {
         enumerable : true,
         get : function(){ return _P.x; },
         set : function(){ throw Error( 'Player instance property "x" can not be set directly. Use setter method.' ) }
       });
-      Object.defineProperty( this, 'y', {
+      Object.defineProperty( self, 'y', {
         enumerable : true,
         get : function(){ return _P.y; },
         set : function(){ throw Error( 'Player instance property "y" can not be set directly. Use setter method.' ) }
       });
-      Object.defineProperty( this, 'width', {
+      Object.defineProperty( self, 'width', {
         enumerable : true,
         get : function(){ return _P.width; },
         set : function(){ throw Error( 'Player instance property "width" can not be set directly. Use setter method.' ) }
       });
-      Object.defineProperty( this, 'height', {
+      Object.defineProperty( self, 'height', {
         enumerable : true,
         get : function(){ return _P.height; },
         set : function(){ throw Error( 'Player instance property "height" can not be set directly. Use setter method.' ) }
@@ -151,21 +171,9 @@ define(
 
       this.update = function( timeLapsed ){
 
-
-
-          // MOUSE
-          if ( io_CONTROL.isLeftMousePressed() && io_CONTROL.getMousePosition() ) {
-
-            _P.action.walk.destinationX = io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 );
-          }
-
-
-
-          // KEYBOARD
+          /*/ KEYBOARD
           if ( io_CONTROL.isKeyPressed() ) {}
-          else {}
-
-
+          else {}*/
 
           // STAND: up & down
           if ( io_CONTROL.isKeyPressed('UP') ) {
@@ -179,12 +187,10 @@ define(
             _P.index = _P.action.stand.front;
           }
 
-
-
           // WALK: left & right
           else if ( io_CONTROL.isKeyPressed('LEFT') || io_CONTROL.isKeyPressed('RIGHT') ){
 
-            _P.action.walk.destinationX = null
+            _P.action.walk.destinationX = null;
 
             if ( _P.animation != 'walk' ) {
               _P.animation  = 'walk';
@@ -221,15 +227,15 @@ define(
 
             // WALK: to destination finished
             if ( Math.abs( _P.action.walk.destinationX - _P.x ) < distance ) {
-              
+
               _P.x                        = _P.action.walk.destinationX;
               _P.action.walk.destinationX = null;
               _P.animation                = 'stand';
               _P.index                    = _P.action.stand.idle;
-              
+
               if ( SCENE.getSelection() != null ){
 
-                if ( SCENE.getSelection().getStack() === 'foreground' ) {
+                if ( SCENE.getSelection().getStack() > 0 ) {
                   _P.animation  = 'stand';
                   _P.index = _P.action.stand.front;
                 }
@@ -238,9 +244,12 @@ define(
                   _P.index = _P.action.stand.back;
                 }
 
-                self.talk( SCENE.getObjectData( SCENE.getSelection(), 'look' ) );
-                
-                SCENE.resetSelection();
+                // SCRIPTING
+                if ( _P.scriptor === null || _P.scriptor.isComplete() ) {
+                  var selection = SCENE.getSelection();
+                  _P.script = SCENE.getObjectScript( selection.name, 'look' );
+                  new SCRIPTOR( [ self, selection ], _P.script, SCENE );
+                }
               }
             }
           }
@@ -251,28 +260,33 @@ define(
             _P.index     = _P.action.stand.idle;
           }
 
+          // TALK
+          if ( typeof _P.action.talk.speech === 'string' ) {
+            self.speak( timeLapsed );
+          }
+
           this.contain();
       };
 
       this.contain = function() {
-            
+
             // left wall
         if ( _P.x < _P.width / 2 ) {
-          
+
           _P.x = _P.width / 2;
           self.stopWalk();
-          
+
         }
             // right wall
         if ( _P.x > SCENE.width - ( self.width / 2 ) ) {
-            
+
           _P.x = SCENE.width - ( self.width / 2 );
           self.stopWalk();
         }
       };
 
       this.stopWalk = function() {
-        
+
         io_CONTROL.releaseAll();
 
         _P.animation = 'stand';
@@ -304,9 +318,9 @@ define(
 
         if ( ( _P.action.walk.direction === -1 && _P.x < min && SCENE.offset.x < 0 )
           || ( _P.action.walk.direction === 1 && _P.x > max && Math.abs( SCENE.offset.x ) < SCENE.width - CTX.canvas.width ) ) {
-            SCENE.setProp('offset', { 
+            SCENE.setProp('offset', {
               x: ( SCENE.offset.x - _P.action.walk.direction * distance ),
-              y: SCENE.offset.y 
+              y: SCENE.offset.y
             });
         }
       };
@@ -318,23 +332,22 @@ define(
         }
       };
 
-      this.talk = function( speech, duration ){
+      this.setSpeech = function ( speech, scriptor ) {
 
-        if ( ! speech ){
-          _P.action.talk.speech = [],
-          _P.action.talk.duration = 0;
-          _P.action.talk.lapsed = 0;
-        }
-
-        if ( $.isArray( speech ) ) {
-          _P.action.talk.speech = speech;
-        }
-        else {
-          _P.action.talk.speech = [ speech ];
-        }
-
-        _P.action.talk.duration = _P.action.talk.speech[0].length * 100;
+        _P.action.talk.duration = Math.max( 2000, 500 + ( speech.length * 150 ) );
+        _P.action.talk.speech = speech;
         _P.action.talk.lapsed = 0;
+        _P.scriptor = scriptor;
+      }
+
+      this.speak = function( timeLapsed ){
+
+        _P.action.talk.lapsed += timeLapsed;
+
+        if ( _P.action.talk.lapsed > _P.action.talk.duration ) {
+          _P.action.talk.speech = null;
+          _P.scriptor.next();
+        }
       };
 
       this.die = function(){
@@ -365,27 +378,28 @@ define(
             _P.gfx.width,
             _P.gfx.height,
             _P.x - ( self.width / 2 ),
-            self.y - self.height,
+            CTX.canvas.height - self.y - self.height,
             self.width,
             self.height
           );
         CTX.restore();
 
         // talk
-        if ( _P.action.talk.speech.length ){
+        if ( typeof _P.action.talk.speech === 'string' ){
 
-          if ( _P.action.talk.lapsed > _P.action.talk.duration ){
-            _P.action.talk.speech.shift();
-            _P.action.talk.lapsed = 0;
-            if ( _P.action.talk.speech.length === 0 ) return;
-          }
-          else{
-            _P.action.talk.lapsed += timeLapsed;
-          }
+          var fontSize = Math.round( 5 * ctxRatio )
+            , lines = _P.action.talk.speech.split('//')
+            , line
+            ;
 
-          CTX.font = 'bold 12px Helvetica';
-          CTX.fillStyle = 'white';
-          CTX.fillText( _P.action.talk.speech[0], _P.x + ( self.width / 2 ), self.y - self.height );
+          for ( var i = 0, len = lines.length; i < len; i++ ) {
+
+            line = lines[ i ];
+
+            CTX.font = fontSize + 'px monospace';
+            CTX.fillStyle = _P.action.talk.color;
+            CTX.fillText( line, _P.x + ( self.width / 4 ), CTX.canvas.height - self.y - self.height + ( fontSize * i ) + 2 );
+          }
         }
       };
 
@@ -403,5 +417,5 @@ define(
 
     return Player;
 
-  } 
+  }
 );
