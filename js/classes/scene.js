@@ -83,7 +83,7 @@ define(
 
 // --- PRIVATE FUNCTIONS --- //
 
-      function _init () {
+      function _init ( PLAYER ) {
 
         if ( _P.sceneDataURL !== null ){
 
@@ -99,10 +99,14 @@ define(
             ;
 
           for ( var i = 0, len = objects.length; i < len; i++ ) {
+
             object = objects[ i ];
             if ( object.isMouseOver() ) {
-              self.setSelection( object );
+              _P.PLAYER && _P.PLAYER.setSelection( object );
               break;
+            }
+            else if ( _P.PLAYER ) {
+              _P.PLAYER.resetSelection();
             }
           }
         });
@@ -174,9 +178,10 @@ define(
         }
       };
 
-      self.loadSceneData = function ( URL ) {
+      self.loadSceneData = function ( URL, PLAYER ) {
 
         _P.sceneDataURL = URL;
+        _P.PLAYER = PLAYER;
 
         $.getJSON( URL, function ( data ) {
 
@@ -244,20 +249,6 @@ define(
 
       self.removeObject = function ( id ) {
 
-      };
-
-      self.setSelection = function ( selection ) {
-        _P.selection = selection;
-        io_SCREEN.setCursor('pointer');
-      };
-
-      self.getSelection = function () {
-        return _P.selection;
-      };
-
-      self.resetSelection = function () {
-        _P.selection = null;
-        io_SCREEN.resetCursor();
       };
 
       self.getObjectScript = function ( name, action ){

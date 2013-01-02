@@ -39,6 +39,7 @@ define(
      function Scriptor ( actors, script, SCENE ) {
 
         var _P = {
+            player: _.where( actors, {"name": 'player' })[0],
             actors: actors,
             script: script,
             isComplete: false
@@ -50,7 +51,7 @@ define(
       this.next = function () {
 
         if ( _P.script.length < 1 ) {
-          SCENE.resetSelection();
+          _P.player.resetSelection();
           return; // EXIT
         }
 
@@ -76,8 +77,6 @@ define(
         if ( _P.script.length === 0 ) return true;
         return false;
       };
-
-      self.next();
     }
 
     return Scriptor;

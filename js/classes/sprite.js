@@ -179,6 +179,10 @@ define(
         return _P.scripts[ action ];
       }
 
+      self.getDestinationOffset = function () {
+        return _P.destinationOffset;
+      }
+
       self.setState = function ( state, scriptor ) {
 
         if ( typeof state !== 'string') throw new Error ('Static object\'s setState() method accepts a string');
@@ -191,7 +195,7 @@ define(
 
       this.setSpeech = function ( speech, scriptor ) {
 
-        _P.action.talk.duration = Math.max( 2000, 500 + ( speech.length * 150 ) );
+        _P.action.talk.duration = Math.max( 1000, ( speech.length * 150 ) );
         _P.action.talk.speech = speech;
         _P.action.talk.lapsed = 0;
         _P.scriptor = scriptor;
@@ -259,7 +263,7 @@ define(
 
             line = lines[ i ];
 
-            CTX.font = fontSize + 'px monospace';
+            CTX.font = 'bold ' + fontSize + 'px monospace';
             CTX.fillStyle = _P.action.talk.color;
             CTX.fillText( line, _P.x + self.width, self.y - self.height + ( fontSize * i ) + 2 );
           }

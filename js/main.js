@@ -64,7 +64,7 @@ define(
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;
 
-    SCENE.loadSceneData('/data/scene.1.json');
+    SCENE.loadSceneData('/data/scene.1.json', PLAYER );
 
     ANIMATOR.draw = function( timeLapsed ){
 

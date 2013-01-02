@@ -83,14 +83,15 @@ define(
 
                 idle:    0,
                 front:   1,
-                back:    2
+                back:    2,
+                knock:   3
               },
 
               talk: {
                 speech: [],
                 duration: 0,
                 lapsed: 0,
-                color: 'pink'
+                color: '#ff00fc'
               }
             },
 
@@ -128,9 +129,14 @@ define(
         // on selection
         $.subscribe('/control/mouse/up/left', function () {
 
-          if ( io_CONTROL.getMousePosition() ) {
+          if (     _P.selection === null &&
+               (
+                 ( ! _P.scriptor && io_CONTROL.getMousePosition() ) ||
+                 (   _P.scriptor && _P.scriptor.isComplete() )
+               )
+             ) {
 
-            _P.action.walk.destinationX = io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 );
+            self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );
           }
         });
       }
@@ -208,7 +214,7 @@ define(
             self.walk( ( timeLapsed / 1000 ) * _P.action.walk.speed );
           }
           // WALK: to destination
-          else if ( _P.action.walk.destinationX != null && _P.action.walk.destinationX != _P.x ) {
+          else if ( _P.action.walk.destinationX != null && _P.x != _P.action.walk.destinationX ) {
 
             if ( _P.animation != 'walk' ) {
               _P.animation = 'walk';
@@ -228,29 +234,9 @@ define(
             // WALK: to destination finished
             if ( Math.abs( _P.action.walk.destinationX - _P.x ) < distance ) {
 
-              _P.x                        = _P.action.walk.destinationX;
-              _P.action.walk.destinationX = null;
-              _P.animation                = 'stand';
-              _P.index                    = _P.action.stand.idle;
-
-              if ( SCENE.getSelection() != null ){
-
-                if ( SCENE.getSelection().getStack() > 0 ) {
-                  _P.animation  = 'stand';
-                  _P.index = _P.action.stand.front;
-                }
-                else {
-                  _P.animation  = 'stand';
-                  _P.index = _P.action.stand.back;
-                }
-
-                // SCRIPTING
-                if ( _P.scriptor === null || _P.scriptor.isComplete() ) {
-                  var selection = SCENE.getSelection();
-                  _P.script = SCENE.getObjectScript( selection.name, 'look' );
-                  new SCRIPTOR( [ self, selection ], _P.script, SCENE );
-                }
-              }
+              _P.x          = _P.action.walk.destinationX;
+              _P.animation  = 'stand';
+              _P.index      = _P.action.stand.idle;
             }
           }
 
@@ -258,6 +244,30 @@ define(
           else if ( _P.animation === 'walk' && ! io_CONTROL.isKeyPressed('LEFT') && ! io_CONTROL.isKeyPressed('RIGHT') ) {
             _P.animation = 'stand';
             _P.index     = _P.action.stand.idle;
+          }
+
+          // DESTINATION REACHED
+          if ( self.getSelection() && _P.x === _P.action.walk.destinationX &&
+                ( _P.scriptor === null || _P.scriptor.isComplete() )
+             ) {
+
+            _P.action.walk.destinationX = null;
+
+            if ( self.getSelection().getStack() > 0 ) {
+              _P.animation  = 'stand';
+              _P.index = _P.action.stand.front;
+            }
+            else {
+              _P.animation  = 'stand';
+              _P.index = _P.action.stand.back;
+            }
+
+            // SCRIPTING
+            if ( _P.scriptor === null || _P.scriptor.isComplete() ) {
+              _P.script = SCENE.getObjectScript( self.getSelection().name, 'look' );
+              _P.scriptor = new SCRIPTOR( [ self, self.getSelection() ], _P.script, SCENE );
+              _P.scriptor.next();
+            }
           }
 
           // TALK
@@ -284,6 +294,34 @@ define(
           self.stopWalk();
         }
       };
+
+      this.standIdle = function () {
+        _P.animation  = 'stand';
+        _P.index      = _P.action.stand.idle;
+        _P.scriptor && _P.scriptor.next();
+      }
+
+      this.standFront = function () {
+        _P.animation  = 'stand';
+        _P.index      = _P.action.stand.front;
+        _P.scriptor && _P.scriptor.next();
+      }
+      this.standBack = function () {
+        _P.animation  = 'stand';
+        _P.index      = _P.action.stand.back;
+        _P.scriptor && _P.scriptor.next();
+      }
+
+      this.standKnock = function () {
+        _P.animation  = 'stand';
+        _P.index      = _P.action.stand.knock;
+        _P.scriptor && _P.scriptor.next();
+      }
+
+      this.setDirection = function ( direction ) {
+        _P.action.walk.direction = direction;
+        _P.scriptor && _P.scriptor.next();
+      }
 
       this.stopWalk = function() {
 
@@ -334,7 +372,7 @@ define(
 
       this.setSpeech = function ( speech, scriptor ) {
 
-        _P.action.talk.duration = Math.max( 2000, 500 + ( speech.length * 150 ) );
+        _P.action.talk.duration = Math.max( 1000, ( speech.length * 150 ) );
         _P.action.talk.speech = speech;
         _P.action.talk.lapsed = 0;
         _P.scriptor = scriptor;
@@ -357,6 +395,26 @@ define(
       this.isDead = function(){
         return _P.isDead;
       };
+
+      this.getSelection = function ( object ) {
+        return _P.selection;
+      };
+
+      this.setSelection = function ( object ) {
+
+        _P.selection = object;
+
+        if ( object.getDestinationOffset() ) {
+          self.walkTo( object.x + ( object.getDestinationOffset().x * ctxRatio ) );
+        }
+        else {
+          self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );
+        }
+      };
+
+      this.resetSelection = function () {
+        _P.selection = null;
+      }
 
       this.draw = function( timeLapsed ){
 
@@ -396,7 +454,7 @@ define(
 
             line = lines[ i ];
 
-            CTX.font = fontSize + 'px monospace';
+            CTX.font = 'bold ' + fontSize + 'px monospace';
             CTX.fillStyle = _P.action.talk.color;
             CTX.fillText( line, _P.x + ( self.width / 4 ), CTX.canvas.height - self.y - self.height + ( fontSize * i ) + 2 );
           }

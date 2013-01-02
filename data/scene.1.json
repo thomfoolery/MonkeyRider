@@ -142,6 +142,10 @@
         "gfx":{
           "path": "/img/scene.1/bike.a.png"
         },
+        "destinationOffset": {
+          "x": 50,
+          "y": 0
+        },
         "scripts": {
           "look": [
             {
@@ -184,6 +188,11 @@
           "height": 77
         },
 
+        "destinationOffset": {
+          "x": 38,
+          "y": 0
+        },
+
         "state": "closed",
         "states": {
           "closed": {
@@ -196,7 +205,7 @@
 
         "action": {
           "talk": {
-            "color": "green"
+            "color": "#00ff30"
           }
         },
 
@@ -204,8 +213,23 @@
           "look": [
             {
               "actor": "player",
+              "action": "setDirection",
+              "value":  1
+            },
+            {
+              "actor": "player",
+              "action": "standKnock",
+              "value":  null
+            },
+            {
+              "actor": "player",
               "action": "setSpeech",
               "value":  "- KNOCK KNOCK -"
+            },
+            {
+              "actor": "player",
+              "action": "standBack",
+              "value":  null
             },
             {
               "actor": "door",
@@ -243,6 +267,11 @@
               "value": "Oh really!"
             },
             {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "Can I come in?"
+            },
+            {
               "actor": "door",
               "action": "setSpeech",
               "value": "What's the password?"
@@ -250,7 +279,7 @@
             {
               "actor": "player",
               "action": "setSpeech",
-              "value": "Open Sesame ?"
+              "value": "Open Sesame?"
             },
             {
               "actor": "door",
@@ -270,17 +299,17 @@
             {
               "actor": "player",
               "action": "setSpeech",
-              "value": "My mother is washing it"
+              "value": "My mother is //washing it"
             },
             {
               "actor": "door",
               "action": "setSpeech",
-              "value": "HA!           "
+              "value": "HA!"
             },
             {
               "actor": "door",
               "action": "setSpeech",
-              "value": "Nice try. Get lost!"
+              "value": "Nice try. //Get lost!"
             },
             {
               "actor": "door",
