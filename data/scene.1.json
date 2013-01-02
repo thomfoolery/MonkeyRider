@@ -213,6 +213,16 @@
           "look": [
             {
               "actor": "player",
+              "action": "standBack",
+              "value":  null
+            },
+            {
+              "actor": null,
+              "action": "pause",
+              "value": 100
+            },
+            {
+              "actor": "player",
               "action": "setDirection",
               "value":  1
             },
@@ -249,7 +259,22 @@
             {
               "actor": "player",
               "action": "setSpeech",
-              "value": "I'm Dudebrush, //Dudebrush Creepwood"
+              "value": "Dudebrush"
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "What?"
+            },
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value": "Dudebrush Creepwood, //at your service"
+            },
+            {
+              "actor": "door",
+              "action": "setSpeech",
+              "value": "What kind of silly //name is that?"
             },
             {
               "actor": "player",
@@ -315,6 +340,31 @@
               "actor": "door",
               "action": "setState",
               "value": "closed"
+            },
+            {
+              "actor": null,
+              "action": "pause",
+              "value": 200
+            },
+            {
+              "actor": "player",
+              "action": "standFront",
+              "value":  null
+            },
+            {
+              "actor": null,
+              "action": "pause",
+              "value": 200
+            },
+            {
+              "actor": "player",
+              "action": "setSpeech",
+              "value":  "How rude   "
+            },
+            {
+              "actor": "player",
+              "action": "standIdle",
+              "value":  null
             }
           ]
         }
