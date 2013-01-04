@@ -74,7 +74,7 @@ define(
 
             ;
 
-        _P.ctxRatio = Math.floor( Math.min( xRatio, yRatio ) * 10 ) / 10; // round down to 10th of a decimal
+        _P.ctxRatio = ctx.ratio = Math.floor( Math.min( xRatio, yRatio ) * 10 ) / 10; // round down to 10th of a decimal
 
         ctx.canvas.width    = _P.resolutions.destination.x   = Math.floor( _P.resolutions.source.x * _P.ctxRatio );
         ctx.canvas.height   = _P.resolutions.destination.y   = Math.floor( _P.resolutions.source.y * _P.ctxRatio );

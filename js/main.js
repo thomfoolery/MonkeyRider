@@ -8,7 +8,8 @@
 require.config({
   baseUrl: "js",
   paths: {
-    'class': 'classes'
+    'class': 'classes',
+    'extension': 'extensions'
   }
 });
 

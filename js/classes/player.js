@@ -129,7 +129,7 @@ define(
         // on selection
         $.subscribe('/control/mouse/up/left', function () {
 
-          if (     _P.selection === null &&
+          if ( ! _P.selection &&
                (
                  ( ! _P.scriptor && io_CONTROL.getMousePosition() ) ||
                  (   _P.scriptor && _P.scriptor.isComplete() )
@@ -253,7 +253,7 @@ define(
 
             _P.action.walk.destinationX = null;
 
-            if ( self.getSelection().getStack() > 0 ) {
+            if ( self.getSelection().getProperty('stack') > 0 ) {
               _P.animation  = 'stand';
               _P.index = _P.action.stand.front;
             }
@@ -264,7 +264,7 @@ define(
 
             // SCRIPTING
             if ( _P.scriptor === null || _P.scriptor.isComplete() ) {
-              _P.script = SCENE.getObjectScript( self.getSelection().name, 'look' );
+              _P.script = SCENE.getObjectScript( self.getSelection().getProperty('id'), 'look' );
               _P.scriptor = new SCRIPTOR( [ self, self.getSelection() ], _P.script, SCENE );
               _P.scriptor.next();
             }
@@ -404,8 +404,8 @@ define(
 
         _P.selection = object;
 
-        if ( object.getDestinationOffset() ) {
-          self.walkTo( object.x + ( object.getDestinationOffset().x * ctxRatio ) );
+        if ( object.getProperty('destinationOffset') ) {
+          self.walkTo( object.x + ( object.getProperty('destinationOffset').x * ctxRatio ) );
         }
         else {
           self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );

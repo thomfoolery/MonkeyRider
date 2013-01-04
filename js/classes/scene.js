@@ -221,15 +221,16 @@ define(
 
       self.addObject = function ( def ) {
 
-        var object;
+        var object
+          , id = def.cfg.id;
 
-        if ( ! def || typeof def.name !== 'string' ) return;
-        if ( _P.objects.hash[ name ] !== undefined ) console.log('Object ' + def,name + ' is being overidden.' );
+        if ( ! def || typeof id !== 'string' ) return;
+        if ( _P.objects.hash[ id ] !== undefined ) console.log('Object ' + id + ' is being overidden.' );
 
 
-        object = new objectTypes[ def.type ]( def.name, def.cfg, CTX, ctxRatio, self );
+        object = new objectTypes[ def.type ]( def.cfg, CTX, self );
 
-        _P.objects.hash[ def.name ] = object;
+        _P.objects.hash[ id ] = object;
 
         if ( def.cfg.stack > 0 ) {
           _P.objects.foreground.push( object );
@@ -251,10 +252,10 @@ define(
 
       };
 
-      self.getObjectScript = function ( name, action ){
+      self.getObjectScript = function ( id, action ){
 
-        var obj     = _P.objects.hash[ name ]
-          , script  = obj.getScript( action )
+        var obj     = _P.objects.hash[ id ]
+          , script  = obj.getProperty('scripts.' + action )
           ;
 
         if ( obj === undefined || script === undefined ) return null;

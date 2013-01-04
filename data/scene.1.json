@@ -1,5 +1,5 @@
 {
-  "name": "scene.1",
+  "id": "scene.1",
 
   "width": 1000,
   "height": 225,
@@ -12,76 +12,86 @@
 
   "objects": [
     {
-      "name": "lamp.1",
       "type": "Static",
       "cfg": {
+        "id": "lamp.1",
         "x": 25,
         "y": 0,
         "stack": -1,
         "isAnimated": false,
         "isActable":  false,
         "gfx":{
-          "path": "/img/scene.1/lamp.post.png"
+          "path": "/img/scene.1/lamp.post.png",
+          "width": 100,
+          "height": 124
         }
       }
     },
 
     {
-      "name": "lamp.2",
       "type": "Static",
       "cfg": {
+        "id": "lamp.2",
         "x": 185,
         "y": 0,
         "stack": -1,
         "isAnimated": false,
         "isActable":  false,
         "gfx":{
-          "path": "/img/scene.1/lamp.post.png"
+          "path": "/img/scene.1/lamp.post.png",
+          "width": 100,
+          "height": 124
         }
       }
     },
 
     {
-      "name": "lamp.3",
       "type": "Static",
       "cfg": {
+        "id": "lamp.3",
         "x": 725,
         "y": 0,
         "stack": -1,
         "isAnimated": false,
         "isActable":  false,
         "gfx":{
-          "path": "/img/scene.1/lamp.post.png"
+          "path": "/img/scene.1/lamp.post.png",
+          "width": 100,
+          "height": 124
         }
       }
     },
 
     {
-      "name": "lamp.4",
       "type": "Static",
       "cfg": {
+        "id": "lamp.4",
         "x": 900,
         "y": 0,
         "stack": -1,
         "isAnimated": false,
         "isActable":  false,
         "gfx":{
-          "path": "/img/scene.1/lamp.post.png"
+          "path": "/img/scene.1/lamp.post.png",
+          "width": 100,
+          "height": 124
         }
       }
     },
 
     {
-      "name": "dumpster",
       "type": "Static",
       "cfg": {
+        "id": "dumpster",
         "x": 695,
         "y": 0,
         "stack": -1,
         "isAnimated": false,
         "isActable":  true,
         "gfx":{
-          "path": "/img/scene.1/dumpster.png"
+          "path": "/img/scene.1/dumpster.png",
+          "width": 37,
+          "height": 55
         },
 
         "scripts": {
@@ -97,9 +107,9 @@
     },
 
     {
-      "name": "bike1",
       "type": "Static",
       "cfg": {
+        "id": "bike1",
         "x": 100,
         "y": 0,
         "stack": -1,
@@ -107,6 +117,8 @@
         "isActable":  false,
         "gfx":{
           "path":     "/img/scene.1/bike.c.png",
+          "width": 72,
+          "height": 48,
           "darkenBy": 0.25,
           "scale":    0.9
         }
@@ -114,9 +126,9 @@
     },
 
     {
-      "name": "bike2",
       "type": "Static",
       "cfg": {
+        "id": "bike2",
         "x": 125,
         "y": 0,
         "stack": -1,
@@ -124,6 +136,8 @@
         "isActable":  false,
         "gfx":{
           "path":     "/img/scene.1/bike.b.png",
+          "width": 72,
+          "height": 48,
           "darkenBy": 0.25,
           "scale":    0.98
         }
@@ -131,16 +145,18 @@
     },
 
     {
-      "name": "bike3",
       "type": "Static",
       "cfg": {
+        "id": "bike3",
         "x": 200,
         "y": 0,
         "stack": 1,
         "isAnimated": false,
         "isActable":  true,
         "gfx":{
-          "path": "/img/scene.1/bike.a.png"
+          "path": "/img/scene.1/bike.a.png",
+          "width": 72,
+          "height": 48
         },
         "destinationOffset": {
           "x": 50,
@@ -159,24 +175,26 @@
     },
 
     {
-      "name": "bar",
       "type": "Static",
       "cfg": {
+        "id": "bar",
         "x": 300,
         "y": 0,
         "stack": -1,
         "isAnimated": false,
         "isActable":  false,
         "gfx":{
-          "path": "/img/scene.1/bar.png"
+          "path": "/img/scene.1/bar.png",
+          "width": 394,
+          "height": 160
         }
       }
     },
 
     {
-      "name": "door",
       "type": "Sprite",
       "cfg": {
+        "id": "door",
         "x": 350,
         "y": 0,
         "stack": -1,
