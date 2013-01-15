@@ -181,7 +181,7 @@ define(
           if ( ! _P.selection
               && (
                  ( ! _P.scriptor && io_CONTROL.getMousePosition() ) ||
-                 (   _P.scriptor && _P.scriptor.isComplete() && _P.scriptor.isPaused != true; )
+                 (   _P.scriptor && _P.scriptor.isComplete() && _P.scriptor.isPaused != true )
                )
              ) {
 
