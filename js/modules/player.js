@@ -259,7 +259,7 @@ define(
 
           // DESTINATION REACHED
           if ( self.getSelection() && _P.x === _P.action.walk.destinationX &&
-                ( _P.scriptor === null || _P.scriptor.isComplete() )
+                ( _P.scriptor === null || ( _P.scriptor.isComplete() && _P.scriptor.isPaused != true ) )
              ) {
 
             _P.action.walk.destinationX = null;
@@ -372,6 +372,8 @@ define(
       };
 
       this.walkTo = function ( x ){
+
+        if ( _P.scriptor && ( _P.scriptor.isComplete() || _P.scriptor.isPaused ) ) return;
 
         if ( ! isNaN( parseInt( x ) ) ) {
           _P.action.walk.destinationX = x;
