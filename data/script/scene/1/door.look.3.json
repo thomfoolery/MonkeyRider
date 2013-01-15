@@ -1,0 +1,37 @@
+[
+  {
+    "actor": "door",
+    "action": "setSpeech",
+    "value": "Pirate? Pffft"
+  },
+  {
+    "actor": "door",
+    "action": "setState",
+    "value": "closed"
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 200
+  },
+  {
+    "actor": "player",
+    "action": "standFront",
+    "value":  null
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 200
+  },
+  {
+    "actor": "player",
+    "action": "setSpeech",
+    "value":  "Jack ass"
+  },
+  {
+    "actor": "player",
+    "action": "standIdle",
+    "value":  null
+  }
+]

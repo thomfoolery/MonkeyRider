@@ -15,28 +15,56 @@
     <!-- Mobile viewport optimized: h5bp.com/viewport -->
     <meta name="viewport" content="width=device-width">
 
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
     <link rel="stylesheet" href="styles/css/main.css">
-
-    <script src="js/vendor/modernizr-2.5.3.min.js"></script>
-
     <style type="text/css">
         body {
+            position: relative;
             background-color: black;
         }
         canvas {
-
             border: 5px solid purple;
             border-radius: 10px;
             margin: -5px;
-
             image-rendering: optimizeSpeed;             // Older versions of FF
             image-rendering: -moz-crisp-edges;          // FF 6.0+
             image-rendering: -webkit-optimize-contrast; // Webkit (Safari now, Chrome soon)
             image-rendering: optimize-contrast;         // Possible future browsers.
             -ms-interpolation-mode: nearest-neighbor;   // IE
         }
+        .choice-bubble {
+            position: absolute;
+            list-style: none;
+            background-color: rgba(0,0,0,.75);
+            color: #ff00fc;
+            width: 250px;
+            padding: 0;
+            margin: 0 0 0 -125px;
+            border: 1px solid #ff00fc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px black;
+        }
+        .choice-bubble:after {
+            display: block;
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            margin: 0 -10px;
+            border-top-color: black;
+        }
+        .choice-bubble li {
+            padding: .25em .5em;
+            margin: 0;
+            cursor: pointer;
+        }
+        .choice-bubble li:hover {
+            background-color: rgba(255,0,245,.2);
+        }
     </style>
+
+    <script src="js/vendor/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
     <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.

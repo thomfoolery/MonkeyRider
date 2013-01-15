@@ -1,0 +1,32 @@
+[
+  {
+    "actor": "door",
+    "action": "setSpeech",
+    "value": "Fuck off!"
+  },
+  {
+    "actor": "door",
+    "action": "setState",
+    "value": "closed"
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 200
+  },
+  {
+    "actor": "player",
+    "action": "standFront",
+    "value":  null
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 300
+  },
+  {
+    "actor": "player",
+    "action": "setSpeech",
+    "value": "Wanker"
+  }
+]

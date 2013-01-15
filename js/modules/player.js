@@ -1,11 +1,9 @@
 /*
- * self MODULE
+ * PLAYER MODULE
  * =============
  *
  * PUBLIC PROPERTIES --- (!) IMMUTABLE
  *------------------
- *
- *
  *
  *
  *
@@ -14,32 +12,33 @@
  *
  *   setProp ( key, value )
  *
- *
- *
  * PUBLIC METHODS
  *---------------
  *
- *   getSceneObjectData( objectId, action )
+ *   update( timeLapsed )
  *
- *   draw( timeLapsed )
+ *   draw()
  *
  */
 define(
 
   // MODULE NAME
-  'class/player',
+  'module/player',
 
   // DEPENDANCIES
-  ['utils/canvas'],
+  [
+    'utils/canvas',
+    'utils/scriptor'
+  ],
 
   // CALLBACK
-  function ( canvasUtils ) {
+  function ( canvasUtils, SCRIPTOR ) {
 
-    function Player( properties, CTX, ctxRatio, io_CONTROL, SCENE, SCRIPTOR ) {
+    function Player( io_SCREEN, io_CONTROL ) {
 
       var _P = {
 
-            name: 'player',
+            id: 'player',
 
             x:      0,
             y:      0,
@@ -48,13 +47,13 @@ define(
             isDead: false,
 
             gfx: {
-              image:        new Image(),
-              path:         '/img/sprites/guybrush-walk-3.png',
-              width:  32,
-              height: 48,
-              ready:        false,
-              canvas:       null,
-              ctx:          null
+              image:    new Image(),
+              path:     '/img/sprites/guybrush-walk-3.png',
+              width:    32,
+              height:   48,
+              ready:    false,
+              canvas:   null,
+              ctx:      null
             },
 
             animation:    'stand',
@@ -71,15 +70,15 @@ define(
 
                 index:        0,
                 phase:        0,
-                phaseLength:  14 * ctxRatio,
+                phaseLength:  14,
 
                 direction:    1, // -1: left | 1: right
-                speed:        90 * ctxRatio // px/sec
+                speed:        90 // px/sec
               },
 
               stand: {
-                offsetX:      192,
-                offsetY:      0,
+                offsetX: 192,
+                offsetY: 0,
 
                 idle:    0,
                 front:   1,
@@ -88,41 +87,91 @@ define(
               },
 
               talk: {
-                speech: [],
+                speech:   [],
                 duration: 0,
-                lapsed: 0,
-                color: '#ff00fc'
+                lapsed:   0,
+                color:    '#ff00fc'
               }
             },
 
-            script: null,
             scriptor: null
+
           },
+
+          CTX,
+          SCENE,
 
           self = this
 
           ;
 
 
-
-      $.extend( true, _P, properties );
-
       _init();
-
 
 
 // --- PRIVATE FUNCTIONS --- //
 
       function _init () {
 
-        _P.width  = Math.round( _P.gfx.width  * ctxRatio );
-        _P.height = Math.round( _P.gfx.height * ctxRatio );
+        CTX = io_SCREEN.getContext();
+
+        _P.width  = Math.round( _P.gfx.width  * CTX.ratio );
+        _P.height = Math.round( _P.gfx.height * CTX.ratio );
+
+        _P.action.walk.speed       = _P.action.walk.speed * CTX.ratio;
+        _P.action.walk.phaseLength = _P.action.walk.phaseLength * CTX.ratio;
 
         _P.gfx.image.onload = function() {
 
-            canvasUtils.proccesGfxToCanvas( _P.gfx, ctxRatio );
+            canvasUtils.proccesGfxToCanvas( _P.gfx, CTX.ratio );
           }
         _P.gfx.image.src = _P.gfx.path;
+
+      }
+
+
+// --- IMMUTABLE PUBLIC PROPERTIES --- //
+
+      Object.defineProperties( self,
+        {
+          'id': {
+            enumerable : true,
+            get : function(){ return _P.id; },
+            set : function(){ throw Error( 'Player property "id" is immutable' ); }
+          },
+          'x': {
+            enumerable : true,
+            get : function(){ return _P.x; },
+            set : function(){ throw Error( 'Player property "x" is immutable' ) }
+          },
+          'y': {
+            enumerable : true,
+            get : function(){ return _P.y; },
+            set : function(){ throw Error( 'Player property "y" is immutable' ) }
+          },
+          'width': {
+            enumerable : true,
+            get : function(){ return _P.width; },
+            set : function(){ throw Error( 'Player property "width" is immutable' ) }
+          },
+          'height': {
+            enumerable : true,
+            get : function(){ return _P.height; },
+            set : function(){ throw Error( 'Player property "height" is immutable' ) }
+          }
+        }
+      );
+
+
+// --- PUBLIC METHODS --- //
+
+      this.setProperty = function ( cfg ) {
+        $.extend( true, _P, cfg );
+      };
+
+      this.setup = function () {
+
+        SCENE = io_SCREEN.getContext().scene;
 
         _P.action.walk.destinationX = _P.x;
 
@@ -139,47 +188,9 @@ define(
             self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );
           }
         });
-      }
-
-
-
-// --- IMMUTABLE PUBLIC PROPERTIES --- //
-
-      Object.defineProperty( self, 'name', {
-        enumerable : true,
-        get : function(){ return _P.name; },
-        set : function(){ throw Error( 'Player instance property "name" can not be set directly. Use setter method.' ); }
-      });
-      Object.defineProperty( self, 'x', {
-        enumerable : true,
-        get : function(){ return _P.x; },
-        set : function(){ throw Error( 'Player instance property "x" can not be set directly. Use setter method.' ) }
-      });
-      Object.defineProperty( self, 'y', {
-        enumerable : true,
-        get : function(){ return _P.y; },
-        set : function(){ throw Error( 'Player instance property "y" can not be set directly. Use setter method.' ) }
-      });
-      Object.defineProperty( self, 'width', {
-        enumerable : true,
-        get : function(){ return _P.width; },
-        set : function(){ throw Error( 'Player instance property "width" can not be set directly. Use setter method.' ) }
-      });
-      Object.defineProperty( self, 'height', {
-        enumerable : true,
-        get : function(){ return _P.height; },
-        set : function(){ throw Error( 'Player instance property "height" can not be set directly. Use setter method.' ) }
-      });
-
-
-
-// --- PUBLIC METHODS --- //
+      };
 
       this.update = function( timeLapsed ){
-
-          /*/ KEYBOARD
-          if ( io_CONTROL.isKeyPressed() ) {}
-          else {}*/
 
           // STAND: up & down
           if ( io_CONTROL.isKeyPressed('UP') ) {
@@ -264,9 +275,7 @@ define(
 
             // SCRIPTING
             if ( _P.scriptor === null || _P.scriptor.isComplete() ) {
-              _P.script = SCENE.getObjectScript( self.getSelection().getProperty('id'), 'look' );
-              _P.scriptor = new SCRIPTOR( [ self, self.getSelection() ], _P.script, SCENE );
-              _P.scriptor.next();
+              new SCRIPTOR( [ self, _P.selection ], _P.selection.getScriptURL('look') );
             }
           }
 
@@ -353,10 +362,9 @@ define(
           _P.index = _P.action.walk.index;
         }
 
-
         if ( ( _P.action.walk.direction === -1 && _P.x < min && SCENE.offset.x < 0 )
           || ( _P.action.walk.direction === 1 && _P.x > max && Math.abs( SCENE.offset.x ) < SCENE.width - CTX.canvas.width ) ) {
-            SCENE.setProp('offset', {
+            SCENE.setOffset({
               x: ( SCENE.offset.x - _P.action.walk.direction * distance ),
               y: SCENE.offset.y
             });
@@ -373,10 +381,20 @@ define(
       this.setSpeech = function ( speech, scriptor ) {
 
         _P.action.talk.duration = Math.max( 1000, ( speech.length * 150 ) );
-        _P.action.talk.speech = speech;
+        _P.action.talk.speech = speech || _P.action.talk.speech;
         _P.action.talk.lapsed = 0;
         _P.scriptor = scriptor;
-      }
+      };
+
+      this.chooseSpeech = function ( choices, scriptor ) {
+
+        position = {
+          "x": _P.x + ( this.width / 2 ) + SCENE.offset.x,
+          "y": self.height
+        };
+
+        io_SCREEN.createChoiceBubble( choices, scriptor, position );
+      };
 
       this.speak = function( timeLapsed ){
 
@@ -405,7 +423,7 @@ define(
         _P.selection = object;
 
         if ( object.getProperty('destinationOffset') ) {
-          self.walkTo( object.x + ( object.getProperty('destinationOffset').x * ctxRatio ) );
+          self.walkTo( object.x + ( object.getProperty('destinationOffset').x * CTX.ratio ) );
         }
         else {
           self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );
@@ -445,7 +463,7 @@ define(
         // talk
         if ( typeof _P.action.talk.speech === 'string' ){
 
-          var fontSize = Math.round( 5 * ctxRatio )
+          var fontSize = Math.round( 5 * CTX.ratio )
             , lines = _P.action.talk.speech.split('//')
             , line
             ;

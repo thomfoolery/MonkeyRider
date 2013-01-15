@@ -12,7 +12,7 @@
 
   "objects": [
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
         "id": "lamp.1",
         "x": 25,
@@ -29,7 +29,7 @@
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
         "id": "lamp.2",
         "x": 185,
@@ -46,7 +46,7 @@
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
         "id": "lamp.3",
         "x": 725,
@@ -63,7 +63,7 @@
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
         "id": "lamp.4",
         "x": 900,
@@ -80,7 +80,7 @@
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
         "id": "dumpster",
         "x": 695,
@@ -93,23 +93,19 @@
           "width": 37,
           "height": 55
         },
-
+        "extensions": {
+          "scriptable": {}
+        },
         "scripts": {
-          "look": [
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "What a dump-ster"
-            }
-          ]
+          "look": "scene/1/dumpster.look.json"
         }
       }
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
-        "id": "bike1",
+        "id": "bike.1",
         "x": 100,
         "y": 0,
         "stack": -1,
@@ -126,9 +122,9 @@
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
-        "id": "bike2",
+        "id": "bike.2",
         "x": 125,
         "y": 0,
         "stack": -1,
@@ -145,9 +141,9 @@
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
-        "id": "bike3",
+        "id": "bike.3",
         "x": 200,
         "y": 0,
         "stack": 1,
@@ -158,24 +154,21 @@
           "width": 72,
           "height": 48
         },
+        "extensions": {
+          "scriptable": {}
+        },
         "destinationOffset": {
           "x": 50,
           "y": 0
         },
         "scripts": {
-          "look": [
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "Get to tha Choppa!"
-            }
-          ]
+          "look": "scene/1/bike.3.look.json"
         }
       }
     },
 
     {
-      "type": "Static",
+      "type": "Entity",
       "cfg": {
         "id": "bar",
         "x": 300,
@@ -221,170 +214,15 @@
           }
         },
 
-        "action": {
-          "talk": {
+        "extensions": {
+          "speaks": {
             "color": "#00ff30"
-          }
+          },
+          "scriptable": {}
         },
 
         "scripts": {
-          "look": [
-            {
-              "actor": "player",
-              "action": "standBack",
-              "value":  null
-            },
-            {
-              "actor": null,
-              "action": "pause",
-              "value": 100
-            },
-            {
-              "actor": "player",
-              "action": "setDirection",
-              "value":  1
-            },
-            {
-              "actor": "player",
-              "action": "standKnock",
-              "value":  null
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value":  "- KNOCK KNOCK -"
-            },
-            {
-              "actor": "player",
-              "action": "standBack",
-              "value":  null
-            },
-            {
-              "actor": "door",
-              "action": "setState",
-              "value": "open"
-            },
-            {
-              "actor": null,
-              "action": "pause",
-              "value": 500
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "Who's there?"
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "Dudebrush"
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "What?"
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "Dudebrush Creepwood, //at your service"
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "What kind of silly //name is that?"
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "I'm a mighty pirate"
-            },
-            {
-              "actor": null,
-              "action": "pause",
-              "value": 500
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "Oh really!"
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "Can I come in?"
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "What's the password?"
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "Open Sesame?"
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "See Mick, //I told you the //password was too easy"
-            },
-            {
-              "actor": null,
-              "action": "pause",
-              "value": 500
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "Where's your cut?"
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value": "My mother is //washing it"
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "HA!"
-            },
-            {
-              "actor": "door",
-              "action": "setSpeech",
-              "value": "Nice try. //Get lost!"
-            },
-            {
-              "actor": "door",
-              "action": "setState",
-              "value": "closed"
-            },
-            {
-              "actor": null,
-              "action": "pause",
-              "value": 200
-            },
-            {
-              "actor": "player",
-              "action": "standFront",
-              "value":  null
-            },
-            {
-              "actor": null,
-              "action": "pause",
-              "value": 200
-            },
-            {
-              "actor": "player",
-              "action": "setSpeech",
-              "value":  "How rude   "
-            },
-            {
-              "actor": "player",
-              "action": "standIdle",
-              "value":  null
-            }
-          ]
+          "look": "scene/1/door.look.1.json"
         }
       }
     }

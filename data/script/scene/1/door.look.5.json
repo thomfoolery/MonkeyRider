@@ -1,0 +1,56 @@
+[
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 100
+  },
+  {
+    "actor": "player",
+    "action": "setDirection",
+    "value":  1
+  },
+  {
+    "actor": "player",
+    "action": "standKnock",
+    "value":  null
+  },
+  {
+    "actor": "player",
+    "action": "setSpeech",
+    "value":  "- KNOCK KNOCK -"
+  },
+  {
+    "actor": "player",
+    "action": "standBack",
+    "value":  null
+  },
+  {
+    "actor": "door",
+    "action": "setState",
+    "value": "open"
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 500
+  },
+  {
+    "actor": "door",
+    "action": "setSpeech",
+    "value": "You again!"
+  },
+  {
+    "actor": "door",
+    "action": "setSpeech",
+    "value": "What do you want?"
+  },
+  {
+    "actor": "player",
+    "action": "chooseSpeech",
+    "value": {
+      "Can I come in?": "scene/1/door.look.6.json",
+      "Are you my mother?": "scene/1/door.look.7.json",
+      "Can I use the //bathroom?": "scene/1/door.look.8.json"
+    }
+  }
+]
