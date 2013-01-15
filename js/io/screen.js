@@ -93,6 +93,7 @@ define(
           scriptor.getActor('player')[0].setSpeech( choice, scriptor );
           scriptor.loadScript( script );
           $bubble.remove();
+          scriptor.isPaused = false;
         });
         $bubble.append( $li );
       });

@@ -41,6 +41,7 @@ define(
       var self = this;
 
       this.actors = actors;
+      this.isPaused = false;
 
       for ( var i = 0, len = actors.length; i < len; i ++ ) {
         actors[ i ].setProperty({"scriptor": this });

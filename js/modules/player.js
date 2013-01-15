@@ -181,9 +181,8 @@ define(
           if ( ! _P.selection
               && (
                  ( ! _P.scriptor && io_CONTROL.getMousePosition() ) ||
-                 (   _P.scriptor && _P.scriptor.isComplete() )
+                 (   _P.scriptor && _P.scriptor.isComplete() && _P.scriptor.isPaused != true; )
                )
-              && ! _P.scriptor
              ) {
 
             self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );
@@ -393,6 +392,8 @@ define(
           "x": _P.x + ( this.width / 2 ) + SCENE.offset.x,
           "y": self.height
         };
+
+        scriptor.isPaused = true;
 
         io_SCREEN.createChoiceBubble( choices, scriptor, position );
       };
