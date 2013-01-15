@@ -119,7 +119,7 @@ define(
         ctx.player = {};
         ctx.scene = {};
 
-        $( window ).resize( resize );
+        //$( window ).resize( resize );
 
         resize();
       },

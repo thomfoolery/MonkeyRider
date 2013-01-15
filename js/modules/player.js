@@ -178,11 +178,12 @@ define(
         // on selection
         $.subscribe('/control/mouse/up/left', function () {
 
-          if ( ! _P.selection &&
-               (
+          if ( ! _P.selection
+              && (
                  ( ! _P.scriptor && io_CONTROL.getMousePosition() ) ||
                  (   _P.scriptor && _P.scriptor.isComplete() )
                )
+              && ! _P.scriptor
              ) {
 
             self.walkTo( io_CONTROL.getMousePosition().x + ( SCENE.offset.x * -1 ) );
