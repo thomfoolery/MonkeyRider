@@ -373,7 +373,7 @@ define(
 
       this.walkTo = function ( x ){
 
-        if ( _P.scriptor && ( _P.scriptor.isComplete() || _P.scriptor.isPaused ) ) return;
+        if ( _P.scriptor && ( _P.scriptor.isComplete() === false || _P.scriptor.isPaused === true ) ) return;
 
         if ( ! isNaN( parseInt( x ) ) ) {
           _P.action.walk.destinationX = x;
