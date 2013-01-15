@@ -1,0 +1,42 @@
+[
+  {
+    "actor": "door",
+    "action": "setSpeech",
+    "value": "HA!"
+  },
+  {
+    "actor": "door",
+    "action": "setSpeech",
+    "value": "Beat it!"
+  },
+  {
+    "actor": "door",
+    "action": "setState",
+    "value": "closed"
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 200
+  },
+  {
+    "actor": "player",
+    "action": "standFront",
+    "value":  null
+  },
+  {
+    "actor": null,
+    "action": "pause",
+    "value": 200
+  },
+  {
+    "actor": "player",
+    "action": "setSpeech",
+    "value":  "Prick"
+  },
+  {
+    "actor": "player",
+    "action": "standIdle",
+    "value":  null
+  }
+]

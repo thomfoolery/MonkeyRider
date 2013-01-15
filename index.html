@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en">        <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en">               <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <!-- Use the .htaccess and remove these lines to avoid edge case issues. More info: h5bp.com/i/378 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Monkey Rider</title>
+    <meta name="description" content="">
+
+    <!-- Mobile viewport optimized: h5bp.com/viewport -->
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="styles/css/main.css">
+    <style type="text/css">
+        body {
+            position: relative;
+            background-color: black;
+        }
+        canvas {
+            border: 5px solid purple;
+            border-radius: 10px;
+            margin: -5px;
+            image-rendering: optimizeSpeed;             // Older versions of FF
+            image-rendering: -moz-crisp-edges;          // FF 6.0+
+            image-rendering: -webkit-optimize-contrast; // Webkit (Safari now, Chrome soon)
+            image-rendering: optimize-contrast;         // Possible future browsers.
+            -ms-interpolation-mode: nearest-neighbor;   // IE
+        }
+        .choice-bubble {
+            position: absolute;
+            list-style: none;
+            background-color: rgba(0,0,0,.75);
+            color: #ff00fc;
+            width: 250px;
+            padding: 0;
+            margin: 0 0 0 -125px;
+            border: 1px solid #ff00fc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px black;
+        }
+        .choice-bubble:after {
+            display: block;
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            margin: 0 -10px;
+            border-top-color: black;
+        }
+        .choice-bubble li {
+            padding: .25em .5em;
+            margin: 0;
+            cursor: pointer;
+        }
+        .choice-bubble li:hover {
+            background-color: rgba(255,0,245,.2);
+        }
+    </style>
+
+    <script src="js/vendor/modernizr-2.5.3.min.js"></script>
+</head>
+<body>
+    <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+    <!--[if lt IE 7]><p class="chromeframe">Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
+
+    <!-- scripts concatenated and minified via build script -->
+    <script src="js/plugins.js"></script>
+    <script data-main="js/main" src="js/require.js"></script>
+    <!-- end scripts -->
+
+</body>
+</html>
