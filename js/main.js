@@ -59,7 +59,7 @@ define(
     ctx.webkitImageSmoothingEnabled = false;
 
     PLAYER.setup();
-    SCENE.setup('/data/scene.1.json');
+    SCENE.setup('data/scene.1.json');
 
     ANIMATOR.draw = function( timeLapsed ){
 
