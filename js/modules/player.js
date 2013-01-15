@@ -48,7 +48,7 @@ define(
 
             gfx: {
               image:    new Image(),
-              path:     '/img/sprites/guybrush-walk-3.png',
+              path:     'img/sprites/guybrush-walk-3.png',
               width:    32,
               height:   48,
               ready:    false,

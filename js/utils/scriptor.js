@@ -60,7 +60,7 @@ define(
 
         var self = this;
 
-        $.get('/data/script/' + scriptURL, function ( script ) {
+        $.get('data/script/' + scriptURL, function ( script ) {
 
           self.script = script;
           if ( typeof callback === 'function' ) callback();
