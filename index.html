@@ -4,15 +4,86 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Monkey Rider</title>
-  <link rel="stylesheet" href="">
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      font-family: Arial, 'sans-serif';
+      cursor: crosshair;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+    .menu {
+      float: left;
+      width: 300px;
+      margin: 5px 10px;
+      overflow: hidden;
+    }
+    .menu li {
+      list-style: none;
+      float: left;
+      width: 100px;
+      line-height: 1.5em;
+    }
+    .menu li a {
+      color: lightgreen;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .menu li a:hover {
+      color: white;
+    }
+    .invertory {
+      float: right;
+      padding-left: 0;
+      margin: 5px 10px;
+    }
+    .invertory li {
+      list-style: none;
+      float: left;
+      margin: 0 5px;
+    }
+    .invertory li a {
+      display: block;
+      width: 50px;
+      height: 45px;
+      line-height: 45px;
+      border: 2px solid purple;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: purple;
+    }
+    .invertory li a:hover {
+      border: 2px solid white;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-   <script src="app/pixi.2.2.5.js"></script>
-   <script src="jspm_packages/system.js"></script>
-   <script src="config.js"></script>
-   <script>
-     System.baseURL = '/';
-     System.import('app/main');
-   </script>
+  <ul class="menu">
+    <li><a href="#">Walk to</a></li>
+    <li><a href="#">Look at</a></li>
+    <li><a href="#">Use</a></li>
+
+    <li><a href="#">Talk to</a></li>
+    <li><a href="#">Pick up</a></li>
+    <li><a href="#">Give</a></li>
+  </ul>
+  <ul class="invertory">
+    <li><a href="#">Item</a></li>
+    <li><a href="#">Item</a></li>
+    <li><a href="#">Item</a></li>
+  </ul>
+  <script src="app/pixi.2.2.5.js"></script>
+  <script src="jspm_packages/system.js"></script>
+  <script src="config.js"></script>
+  <script>
+    System.baseURL = '/';
+    System.import('app/main');
+  </script>
 </body>
 </html>

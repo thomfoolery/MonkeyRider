@@ -1,26 +1,33 @@
 'use strict';
 
-// import Utils from 'app/Utils';
-// Utils.processTransparency('app/scene/1/bike.c.png');
-
 import _ from 'lodash';
 import Scene from 'app/Scene';
 import KeyInput from 'app/KeyInput';
 
 PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 
-var GAME = { cfg: { scenes: [] } };
-var jsonLoader = new PIXI.JsonLoader('app/scene/1/config.json');
+var GAME = {
+  view: {
+    x: 0,
+    y: 0,
+    width: 400,
+    height: 200,
+    resolution: 3
+  },
+  scenes: []
+};
+
+var jsonLoader = new PIXI.JsonLoader('app/scene/1/_config.json');
 jsonLoader.on('loaded', function( e ) {
 
-  GAME.cfg.scenes[0] = { cfg: e.content.content.json };
+  GAME.scenes[0] = { cfg: e.content.content.json };
 
   var key;
   var assets = [
-    GAME.cfg.scenes[0].cfg.player.imageURL
+    GAME.scenes[0].cfg.player.imageURL
   ];
 
-  _.each( GAME.cfg.scenes[0].cfg, function ( cfg ) {
+  _.each( GAME.scenes[0].cfg, function ( cfg ) {
     _.each( cfg, function ( obj ) {
       if ( obj.imageURL )
         assets.push( obj.imageURL );
@@ -36,7 +43,7 @@ jsonLoader.on('loaded', function( e ) {
 jsonLoader.load();
 
 var stage = new PIXI.Stage();
-var renderer = new PIXI.autoDetectRecommendedRenderer( 400, 200, { resolution: 3 });
+var renderer = new PIXI.autoDetectRecommendedRenderer( GAME.view.width, GAME.view.height, { resolution: GAME.view.resolution });
 document.body.appendChild( renderer.view );
 
 function assetsLoadProgress ( e ) {
@@ -45,8 +52,7 @@ function assetsLoadProgress ( e ) {
 
 function assetsLoadComplete ( e ) {
 
-  var scene = GAME.scene = new Scene( GAME.cfg.scenes[0].cfg, stage, KeyInput );
-
+  var scene = GAME.scene = new Scene( GAME.view, GAME.scenes[0].cfg, stage, KeyInput );
   requestAnimationFrame( animate );
 }
 

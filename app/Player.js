@@ -14,13 +14,69 @@ class Player extends Entity {
 
     this.currFrame = this.states[ this.state ].start;
 
+    this.destination = {
+      x: null,
+      y: null
+    };
+
     this._sprite.interactive = false;
     this._sprite.buttonMode  = false;
 
   }
 
+  setDestination ( dest ) {
+
+    if ( ( isNaN( dest.x ) && dest.x != null )
+      || ( isNaN( dest.y ) && dest.y != null ) ) return;
+
+    this.destination = dest;
+
+  }
+
   update ( timelapse ) {
 
+    if ( this.destination.x != null && this._sprite.position.x != this.destination.x ) {
+
+      let distance;
+
+      if ( this.state != 'walking' ) {
+        this.currFrame = this.states['walking'].start;
+        this.state = 'walking';
+        this.phase = 0;
+      }
+
+      this.phase += timelapse;
+
+      if ( this._sprite.position.x < this.destination.x )
+        this.dir = 1;
+      else
+        this.dir = -1;
+
+      this._sprite.scale.x = this.scale * this.dir;
+
+      if ( this.phase > this.states['walking'].phaseLength ) {
+        this.currFrame++;
+        this.phase = 0;
+      }
+
+      if ( this.currFrame > this.states['walking'].frameCount ) {
+        this.currFrame = this.states['walking'].start;
+      }
+
+      distance = this.dir * ( timelapse / 1000 ) * this.states[ this.state ].speed;
+      this._sprite.position.x += distance;
+
+      if ( Math.abs( this._sprite.position.x - this.destination.x ) < 2 ) {
+        this._sprite.position.x = this.destination.x;
+        this.destination.x = null;
+        this.state = 'standing';
+        this.phase = 0;
+
+        this.currFrame = this.states[ this.state ].start;
+      }
+
+    }
+/*
     // NO KEY
     if ( this._keyInput.keyCode === null ) {
       // WALKING
@@ -78,6 +134,7 @@ class Player extends Entity {
         this._sprite.position.x += this.dir * ( timelapse / 1000 ) * this.states[ this.state ].speed;
       }
     }
+*/
 
     this._texture.setFrame({
       x: this.currFrame * this.width,
