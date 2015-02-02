@@ -18,15 +18,6 @@
     },{
       "x": 30,
       "imageURL": "app/scene/1/lamp.post.png"
-    },{
-      "x": 10,
-      "imageURL": "app/scene/1/bike.c.png"
-    },{
-      "x": 40,
-      "imageURL": "app/scene/1/bike.b.png"
-    },{
-      "x": 80,
-      "imageURL": "app/scene/1/bike.a.png"
     }
   ],
 
@@ -37,6 +28,29 @@
       "width": 42,
       "height": 77,
       "imageURL": "app/scene/1/door.png"
+    },{
+      "x": 30,
+      "y": 200,
+      "width": 72,
+      "height": 48,
+      "tint": "333333",
+      "interactive": false,
+      "imageURL": "app/scene/1/bike.c.png"
+    },{
+      "x": 50,
+      "y": 200,
+      "width": 72,
+      "height": 48,
+      "tint": "666666",
+      "interactive": false,
+      "imageURL": "app/scene/1/bike.b.png"
+    },{
+      "x": 90,
+      "y": 200,
+      "width": 72,
+      "height": 48,
+      "imageURL": "app/scene/1/bike.a.png",
+      "sceneGround": "fore"
     }
   ],
 
@@ -45,6 +59,27 @@
     "y": 200,
     "width": 32,
     "height": 48,
+    "states": {
+      "walking": {
+        "speed": 70,
+        "start": 0,
+        "frameCount": 5,
+        "phaseLength": 170,
+        "isAnimated": true
+      },
+      "standing": {
+        "start": 6
+      },
+      "standFacing": {
+        "start": 7
+      },
+      "standBacking": {
+        "start": 8
+      },
+      "knocking": {
+        "start": 9
+      }
+    },
     "imageURL": "app/character/guybrush/spriteSheet.png"
   }
 
