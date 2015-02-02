@@ -1,0 +1,21 @@
+{
+  width: 32,
+  height: 48,
+
+  isAnimated: true,
+
+  animations: {
+    walk: {
+
+    },
+    standFront: {
+
+    },
+    standBack: {
+
+    },
+    knock: {
+
+    }
+  }
+}

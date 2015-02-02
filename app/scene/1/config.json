@@ -1,0 +1,51 @@
+{
+
+  "backgrounds": [
+    {
+      "x": 0,
+      "imageURL": "app/scene/1/bg.sky.png"
+    },{
+      "x": 0,
+      "y": 220,
+      "imageURL": "app/scene/1/bg.skyline.1.png"
+    },{
+      "x": 0,
+      "y": 220,
+      "imageURL": "app/scene/1/bg.skyline.2.png"
+    },{
+      "x": 150,
+      "imageURL": "app/scene/1/bar.png"
+    },{
+      "x": 30,
+      "imageURL": "app/scene/1/lamp.post.png"
+    },{
+      "x": 10,
+      "imageURL": "app/scene/1/bike.c.png"
+    },{
+      "x": 40,
+      "imageURL": "app/scene/1/bike.b.png"
+    },{
+      "x": 80,
+      "imageURL": "app/scene/1/bike.a.png"
+    }
+  ],
+
+  "entities": [
+    {
+      "x": 200,
+      "y": 200,
+      "width": 42,
+      "height": 77,
+      "imageURL": "app/scene/1/door.png"
+    }
+  ],
+
+  "player": {
+    "x": 200,
+    "y": 200,
+    "width": 32,
+    "height": 48,
+    "imageURL": "app/character/guybrush/spriteSheet.png"
+  }
+
+}
