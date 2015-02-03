@@ -1,0 +1,127 @@
+{
+
+  "bike": {
+    "look at": [
+      {
+        "actor": "player",
+        "action": "setState",
+        "value": "face",
+        "duration": 200
+      },{
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "Get to tha",
+          "Choppa!"
+        ]
+      }
+    ],
+    "use": [
+      {
+        "actor": "player",
+        "action": "setState",
+        "value": "face",
+        "duration": 200
+      },{
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "Never touch",
+          "another mans",
+          "Chopper"
+        ]
+      }
+    ]
+  },
+
+  "door": {
+    "look at": [
+      {
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "Looks like you",
+          "need a secret",
+          "password"
+        ]
+      }
+    ],
+    "use": [
+      {
+        "actor": "player",
+        "action": "setState",
+        "value": "knocking",
+        "duration": 100
+      },{
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "KNOCK knock"
+        ]
+      },{
+        "actor": "player",
+        "action": "setState",
+        "value": "back",
+        "duration": 200
+      },{
+        "actor": "entity",
+        "action": "setState",
+        "value": "open",
+        "duration": 200
+      },{
+        "actor": "entity",
+        "action": "speak",
+        "value": [
+          "What do you want?"
+        ]
+      },{
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "May I come in?"
+        ]
+      },{
+        "actor": "entity",
+        "action": "setState",
+        "value": "open",
+        "duration": 1000
+      },{
+        "actor": "entity",
+        "action": "speak",
+        "value": [
+          "HA!"
+        ]
+      },{
+        "actor": "entity",
+        "action": "setState",
+        "value": "default",
+        "duration": 500
+      },{
+        "actor": "player",
+        "action": "setState",
+        "value": "face",
+        "duration": 500
+      },{
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "Jerk"
+        ]
+      }
+    ]
+  },
+
+  "dumpster": {
+    "look at": [
+      {
+        "actor": "player",
+        "action": "speak",
+        "value": [
+          "Looks like",
+          "a dumpster"
+        ]
+      }
+    ]
+  }
+
+}

@@ -2,17 +2,11 @@ import Entity from 'app/Entity';
 
 class Player extends Entity {
 
-  constructor ( cfg, stage, keyInput ) {
+  constructor ( cfg, scriptor, keyInput ) {
 
-    super.constructor( cfg, stage );
+    cfg.id = 'player';
 
-    this._keyInput = keyInput;
-
-    this.states = cfg.states;
-    this.state  = cfg.state  || 'standFacing';
-    this.dir    = cfg.dir    || 1;
-
-    this.currFrame = this.states[ this.state ].start;
+    super.constructor( cfg, scriptor );
 
     this.destination = {
       x: null,
@@ -21,6 +15,14 @@ class Player extends Entity {
 
     this._sprite.interactive = false;
     this._sprite.buttonMode  = false;
+
+    this._keyInput = keyInput;
+
+  }
+
+  addScriptor ( scriptor ) {
+
+    this.scriptor = scriptor;
 
   }
 
@@ -35,32 +37,33 @@ class Player extends Entity {
 
   update ( timelapse ) {
 
-    if ( this.destination.x != null && this._sprite.position.x != this.destination.x ) {
+    if ( this.destination.x != null
+      && this._sprite.position.x != this.destination.x ) {
 
       let distance;
 
       if ( this.state != 'walking' ) {
-        this.currFrame = this.states['walking'].start;
+        this.frameIndex = this.states['walking'].start;
         this.state = 'walking';
         this.phase = 0;
       }
 
       this.phase += timelapse;
 
-      if ( this._sprite.position.x < this.destination.x )
-        this.dir = 1;
-      else
+      if ( this._sprite.position.x > this.destination.x )
         this.dir = -1;
+      else
+        this.dir = 1;
 
       this._sprite.scale.x = this.scale * this.dir;
 
       if ( this.phase > this.states['walking'].phaseLength ) {
-        this.currFrame++;
+        this.frameIndex++;
         this.phase = 0;
       }
 
-      if ( this.currFrame > this.states['walking'].frameCount ) {
-        this.currFrame = this.states['walking'].start;
+      if ( this.frameIndex > this.states['walking'].frameCount ) {
+        this.frameIndex = this.states['walking'].start;
       }
 
       distance = this.dir * ( timelapse / 1000 ) * this.states[ this.state ].speed;
@@ -69,11 +72,15 @@ class Player extends Entity {
       if ( Math.abs( this._sprite.position.x - this.destination.x ) < 2 ) {
         this._sprite.position.x = this.destination.x;
         this.destination.x = null;
-        this.state = 'standing';
+        this.state = 'default';
         this.phase = 0;
 
-        this.currFrame = this.states[ this.state ].start;
+        this.frameIndex = this.states[ this.state ].start;
+        this.scriptor.startAct();
       }
+
+      this._frame.x = this.frameIndex * this.width;
+      this._texture.setFrame( this._frame );
 
     }
 /*
@@ -81,8 +88,8 @@ class Player extends Entity {
     if ( this._keyInput.keyCode === null ) {
       // WALKING
       if ( this.state == 'walking' ) {
-        this.state = 'standing';
-        this.currFrame = this.states[ this.state ].start;
+        this.state = 'default';
+        this.frameIndex = this.states[ this.state ].start;
       }
     }
     // KEY
@@ -90,23 +97,23 @@ class Player extends Entity {
       // SPACE
       if ( this._keyInput.keyCode === 32 ) {
         this.state = 'knocking';
-        this.currFrame = this.states[ this.state ].start;
+        this.frameIndex = this.states[ this.state ].start;
       }
       // UP
       else if ( this._keyInput.keyCode === 38 ) {
         this.state = 'standBacking';
-        this.currFrame = this.states[ this.state ].start;
+        this.frameIndex = this.states[ this.state ].start;
       }
       // DOWN
       else if ( this._keyInput.keyCode === 40 ) {
         this.state = 'standFacing';
-        this.currFrame = this.states[ this.state ].start;
+        this.frameIndex = this.states[ this.state ].start;
       }
 
       // LEFT or RIGHT
       if ( this._keyInput.keyCode === 37 || this._keyInput.keyCode === 39) {
         if ( this.state != 'walking' ) {
-          this.currFrame = this.states['walking'].start;
+          this.frameIndex = this.states['walking'].start;
           this.phase = 0;
         }
 
@@ -123,25 +130,18 @@ class Player extends Entity {
         this._sprite.scale.x = this.scale * this.dir;
 
         if ( this.phase > this.states['walking'].phaseLength ) {
-          this.currFrame++;
+          this.frameIndex++;
           this.phase = 0;
         }
 
-        if ( this.currFrame > this.states['walking'].frameCount ) {
-          this.currFrame = this.states['walking'].start;
+        if ( this.frameIndex > this.states['walking'].frameCount ) {
+          this.frameIndex = this.states['walking'].start;
         }
 
         this._sprite.position.x += this.dir * ( timelapse / 1000 ) * this.states[ this.state ].speed;
       }
     }
 */
-
-    this._texture.setFrame({
-      x: this.currFrame * this.width,
-      y: 0,
-      width: this.width,
-      height: this.height
-    });
 
     super.update( timelapse );
 

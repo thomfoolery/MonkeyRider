@@ -2,15 +2,16 @@
 
 import _ from 'lodash';
 import Entity from 'app/Entity';
-import Player from 'app/Player';
 
 class Scene {
 
-  constructor ( viewCFG, sceneCFG, stage, keyInput ) {
+  constructor ( viewCFG, sceneConfig, sceneScript, stage, player, scriptor ) {
 
-    this._stage = stage;
-    this._viewport = viewCFG;
-    this._keyInput = keyInput;
+    this._viewport = new PIXI.DisplayObjectContainer();
+    this._viewport.cfg = viewCFG;
+
+    this._stage    = stage;
+    this._scriptor = scriptor;
 
     this._parallaxLayers = [];
 
@@ -20,24 +21,23 @@ class Scene {
       fore: new PIXI.DisplayObjectContainer(),
     };
 
-    stage.mouseup = this.onMouseUp.bind( this );
-
+    this._ground.fore.addChild( player._sprite );
     this._ground.back.interactive = true;
-    this._ground.back.click = this.onClick;
 
-    this._stage.addChild( this._ground.back );
-    this._stage.addChild( this._ground.mid );
-    this._stage.addChild( this._ground.fore );
+    this._stage.addChild( this._viewport );
+    this._stage.mouseup = this.onMouseUp.bind( this );
 
-    this._player = this.addPlayer( sceneCFG.player );
+    this._viewport.addChild( this._ground.back );
+    this._viewport.addChild( this._ground.mid );
+    this._viewport.addChild( this._ground.fore );
 
     this._backgrounds = [];
-    sceneCFG.backgrounds.forEach( function ( cfg ) {
+    sceneConfig.backgrounds.forEach( function ( cfg ) {
       this.addBackground( cfg );
     }.bind( this ));
 
     this._entities = [];
-    sceneCFG.entities.forEach( function ( cfg ) {
+    sceneConfig.entities.forEach( function ( cfg ) {
       this.addEntity( cfg );
     }.bind( this ));
 
@@ -75,7 +75,7 @@ class Scene {
 
   addEntity ( cfg ) {
 
-    var entity = new Entity( cfg, this._stage );
+    var entity = new Entity( cfg, this._scriptor );
 
     if ( cfg.sceneGround == 'fore' )
       this._ground.fore.addChild( entity._sprite );
@@ -87,16 +87,6 @@ class Scene {
 
   }
 
-  addPlayer ( cfg, Keyboard ) {
-
-    var player = new Player( cfg, this._stage, this._keyInput );
-
-    this._ground.fore.addChild( player._sprite );
-    this._player = player;
-    return player;
-
-  }
-
   onMouseUp ( interactionData ) {
 
     var pos = interactionData.getLocalPosition( this._stage );
@@ -104,37 +94,23 @@ class Scene {
     pos.x -= Math.round( this._viewport.x );
     pos.y -= Math.round( this._viewport.y );
 
-    this._player.setDestination( pos );
+    this._scriptor._player.setDestination( pos );
 
   }
 
   update ( timelapse ) {
 
-    var p_x = this._player._sprite.position.x;
-    var p_d = this._player.dir;
+    var player = this._scriptor._player;
 
-    var v_w = this._viewport.width;
+    var p_x = player._sprite.position.x;
+    var p_d = player.dir;
+
+    var v_w = this._viewport.cfg.width;
     var v_x = this._viewport.x;
 
     var delta = 0;
 
-    if ( this._player.state === 'walking' ) {
-      // RIGHT
-      if ( p_d === 1 ) {
-        if ( p_x > Math.abs( v_x ) + v_w - 50 ) {
-          this._viewport.x = -1 * ( p_x - ( v_w - 50 ) );
-        }
-      }
-      // LEFT
-      else if ( p_d === -1 ) {
-        if ( p_x < Math.abs( v_x ) + 50 ) {
-          this._viewport.x = 50 - p_x;
-        }
-      }
-
-      v_x = Math.min( Math.max( ( this._maxWidth - v_w ) * -1, this._viewport.x ), 0 );
-    }
-    else {
+    if ( player.state != 'walking' ) {
 
       let delta = v_x + p_x - ( v_w / 2 );
 
@@ -144,22 +120,30 @@ class Scene {
 
       else if ( Math.abs( delta ) > 0 ) {
         let dir = delta / Math.abs( delta );
-        v_x -= ( timelapse / 1000 ) * dir * this._player.states['walking'].speed;
+        v_x -= ( timelapse / 1000 ) * dir * player.states['walking'].speed;
+      }
+    }
+    else {
+      // RIGHT
+      if ( p_d === 1 ) {
+        if ( p_x > Math.abs( v_x ) + v_w - 50 )
+          v_x = -1 * ( p_x - ( v_w - 50 ) );
+      }
+      // LEFT
+      else if ( p_d === -1 ) {
+        if ( p_x < Math.abs( v_x ) + 50 )
+          v_x = 50 - p_x;
       }
     }
 
     this._viewport.x = Math.min( Math.max( ( this._maxWidth - v_w ) * -1, v_x ), 0 );
-
-    _.each( this._ground, function ( ground ) {
-      ground.x = this._viewport.x;
-    }.bind( this ));
 
     this._parallaxLayers.forEach( function (layer ) {
       layer.x = this._viewport.x * layer._parallax;
     }.bind( this ));
 
     // PLAYER
-    this._player.update( timelapse );
+    player.update( timelapse );
 
   }
 
