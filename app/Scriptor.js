@@ -84,6 +84,9 @@ class Scriptor {
     var i = 0;
     var act = this._script[ entity.id ][ action ];
     var actor = ( act[ i ].actor === 'entity' ) ? entity : this._player;
+    var actPhase = act[ i ];
+
+    this.timelapsed = 0;
 
     this.state.set('act', act );
     this.state.set('actor', actor );
@@ -102,17 +105,18 @@ class Scriptor {
     var actIndex = this.state.get('actIndex');
     var actPhase = act[ actIndex ];
 
-    if ( ! actPhase.duration && actPhase.duration != 0 )
+    if ( actPhase.complete == true )
       return;
 
     var actor = this.state.get('actor');
 
-    if ( actPhase.duration <= 0 ) {
-      delete actPhase.duration;
+    if ( actPhase.duration - this.timelapsed <= 0 ) {
+      this.timelapsed = 0;
+      actPhase.complete = true;
       this.next( act, actor, actPhase, actIndex );
     }
     else {
-      actPhase.duration -= timelapse;
+      this.timelapsed += timelapse;
     }
   }
 
@@ -139,16 +143,6 @@ class Scriptor {
     this.state.set('actor', actor );
     this.state.set('actIndex', actIndex );
     this.act( actor, actPhase );
-
-  }
-
-  pause ( duration ) {
-
-    var act = this.state.get('act');
-
-    if ( ! act ) return;
-
-    act[ this.state.get('actIndex') ].duration = duration;
 
   }
 

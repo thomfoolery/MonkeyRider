@@ -126,12 +126,6 @@ class Entity {
 
   }
 
-  pause ( duration ) {
-
-    this._scriptor( duration );
-
-  }
-
   update ( timelapse ) {
 
   }
