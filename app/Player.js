@@ -1,12 +1,13 @@
 import Entity from 'app/Entity';
+import keyInput from 'app/KeyInput';
 
 class Player extends Entity {
 
-  constructor ( cfg, scriptor, keyInput ) {
+  constructor ( cfg, controls ) {
 
     cfg.id = 'player';
 
-    super.constructor( cfg, scriptor );
+    super.constructor( cfg, null, controls );
 
     this.destination = {
       x: null,
@@ -16,13 +17,11 @@ class Player extends Entity {
     this._sprite.interactive = false;
     this._sprite.buttonMode  = false;
 
-    this._keyInput = keyInput;
-
   }
 
-  addScriptor ( scriptor ) {
+  addDirector( director ) {
 
-    this.scriptor = scriptor;
+    this.director = director;
 
   }
 
@@ -69,14 +68,17 @@ class Player extends Entity {
       distance = this.dir * ( timelapse / 1000 ) * this.states[ this.state ].speed;
       this._sprite.position.x += distance;
 
-      if ( Math.abs( this._sprite.position.x - this.destination.x ) < 2 ) {
+      if ( Math.abs( this._sprite.position.x - this.destination.x ) <= 2 ) {
         this._sprite.position.x = this.destination.x;
         this.destination.x = null;
         this.state = 'default';
         this.phase = 0;
 
         this.frameIndex = this.states[ this.state ].start;
-        this.scriptor.startAct();
+        this.director.startAct(
+          this.director._state.get('entity'),
+          this.controls._state.get('action')
+        );
       }
 
       this._frame.x = this.frameIndex * this.width;
@@ -85,7 +87,7 @@ class Player extends Entity {
     }
 /*
     // NO KEY
-    if ( this._keyInput.keyCode === null ) {
+    if ( this.keyInput.keyCode === null ) {
       // WALKING
       if ( this.state == 'walking' ) {
         this.state = 'default';
@@ -95,23 +97,23 @@ class Player extends Entity {
     // KEY
     else {
       // SPACE
-      if ( this._keyInput.keyCode === 32 ) {
+      if ( this.keyInput.keyCode === 32 ) {
         this.state = 'knocking';
         this.frameIndex = this.states[ this.state ].start;
       }
       // UP
-      else if ( this._keyInput.keyCode === 38 ) {
+      else if ( this.keyInput.keyCode === 38 ) {
         this.state = 'standBacking';
         this.frameIndex = this.states[ this.state ].start;
       }
       // DOWN
-      else if ( this._keyInput.keyCode === 40 ) {
+      else if ( this.keyInput.keyCode === 40 ) {
         this.state = 'standFacing';
         this.frameIndex = this.states[ this.state ].start;
       }
 
       // LEFT or RIGHT
-      if ( this._keyInput.keyCode === 37 || this._keyInput.keyCode === 39) {
+      if ( this.keyInput.keyCode === 37 || this.keyInput.keyCode === 39) {
         if ( this.state != 'walking' ) {
           this.frameIndex = this.states['walking'].start;
           this.phase = 0;
@@ -121,7 +123,7 @@ class Player extends Entity {
         this.state = 'walking';
 
         // LEFT
-        if ( this._keyInput.keyCode === 37 )
+        if ( this.keyInput.keyCode === 37 )
           this.dir = -1;
         // RIGHT
         else

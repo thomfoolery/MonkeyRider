@@ -2,24 +2,22 @@
 
 class Entity {
 
-  constructor( cfg, scriptor ) {
+  constructor( cfg, director, controls ) {
 
-    this.id     = cfg.id || 'entity' + Date.now();
+    this.id          = cfg.id     || 'entity' + Date.now();
 
-    this.width  = cfg.width  || 0;
-    this.height = cfg.height || 0;
-    this.scale  = cfg.scale  || 1;
-
-    this.speechColor = cfg.speechColor || 'white';
-    this.scriptor    = null;
-
-    this.states      = cfg.states || { "default": { start: 0 } };
-    this.state       = cfg.state  || 'default';
     this.dir         = cfg.dir    || 1;
+    this.scale       = cfg.scale  || 1;
+    this.width       = cfg.width  || 0;
+    this.height      = cfg.height || 0;
 
-    this.frameIndex   = this.states[ this.state ].start;
+    this.state       = cfg.state  || 'default';
+    this.states      = cfg.states || { "default": { start: 0 } };
+    this.frameIndex  = this.states[ this.state ].start;
+    this.speechColor = cfg.speechColor || 'white';
 
-    this._scriptor = scriptor;
+    this.director    = director;
+    this.controls    = controls;
 
     this._texture = new PIXI.Texture.fromImage( cfg.imageURL );
     this._sprite = new PIXI.Sprite( this._texture );
@@ -55,19 +53,24 @@ class Entity {
 
   onMouseOver ( e ) {
 
-    this._scriptor.mouseOver( this );
+    this.controls._state.set('entityID', this.id );
+    this.director._state.set('entity', this );
 
   }
 
   onMouseOut ( e ) {
 
-    this._scriptor.mouseOut( this );
+    this.controls._state.set('entityID', null );
+
+    if ( ! this.controls._state.get('isActive') )
+      this.director._state.set('entity', null );
 
   }
 
   onClick ( e ) {
 
-    this._scriptor.actOn( this );
+    this.controls._state.set('isActive', true );
+    this.controls._state.set('entityID', this.id );
 
   }
 
@@ -126,9 +129,7 @@ class Entity {
 
   }
 
-  update ( timelapse ) {
-
-  }
+  update ( timelapse ) {}
 
 }
 

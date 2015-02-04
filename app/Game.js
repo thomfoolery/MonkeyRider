@@ -2,42 +2,42 @@ import _ from 'lodash';
 
 import Scene    from 'app/Scene';
 import Player   from 'app/Player';
-import Scriptor from 'app/Scriptor';
-import KeyInput from 'app/KeyInput';
+import Director from 'app/Director';
+import Controls from 'app/Controls';
 
 class Game {
 
   constructor ( viewConfig ) {
 
-    this.viewConfig = viewConfig;
+    this.sceneIndex = 0;
+    this.viewConfig = {
+      x: 0,
+      y: 0,
+      width: 400,
+      height: 200,
+      resolution: 3
+    };
 
-    this.scenes = [];
-    this.currScene = null;
-    this.currSceneIndex = 0;
-
-    // begin
-    this.load ( this.currSceneIndex );
+    this.loadScene ();
 
   }
 
-  load ( sceneIndex ) {
+  loadScene () {
 
-    this.currSceneIndex = sceneIndex;
-    this.scenes[ sceneIndex ] = this.currScene = {};
-
-    var game = this;
+    var game         = this;
+    var sceneIndex   = this.sceneIndex;
     var configLoader = new PIXI.JsonLoader('app/scene/' + sceneIndex + '/_config.json');
     var scriptLoader = new PIXI.JsonLoader('app/scene/' + sceneIndex + '/_script.json');
     var playerLoader = new PIXI.JsonLoader('app/character/guybrush/_config.json');
 
     configLoader.on('loaded', function( e ) {
-      this.currScene.config = e.content.content.json;
+      this.sceneConfig = e.content.content.json;
       onComplete();
     }.bind( this ));
     configLoader.load();
 
     scriptLoader.on('loaded', function( e ) {
-      this.currScene.script = e.content.content.json;
+      this.sceneScript = e.content.content.json;
       onComplete();
     }.bind( this ));
     scriptLoader.load();
@@ -51,15 +51,15 @@ class Game {
     function onComplete () {
 
       if ( ! game.playerCFG
-        || ! game.scenes[ sceneIndex ].config
-        || ! game.scenes[ sceneIndex ].script )
+        || ! game.sceneConfig
+        || ! game.sceneScript )
         return;
 
       var assets = [
         game.playerCFG.imageURL
       ];
 
-      _.each( game.currScene.config, function ( cfg ) {
+      _.each( game.sceneConfig, function ( cfg ) {
         _.each( cfg, function ( obj ) {
           if ( obj.imageURL ) {
             obj.imageURL = 'app/scene/' + sceneIndex + '/' + obj.imageURL;
@@ -87,31 +87,31 @@ class Game {
 
   onAssetsLoadComplete () {
 
-    var stage    = this.stage    = new PIXI.Stage();
-    var renderer = this.renderer = new PIXI.autoDetectRecommendedRenderer( this.viewConfig.width, this.viewConfig.height, { resolution: this.viewConfig.resolution });
-    document.body.insertBefore( renderer.view, document.body.firstChild );
+    this.stage    = new PIXI.Stage();
+    this.renderer = new PIXI.autoDetectRecommendedRenderer( this.viewConfig.width, this.viewConfig.height, { resolution: this.viewConfig.resolution });
+    document.body.insertBefore( this.renderer.view, document.body.firstChild );
 
-    var player = this.player = new Player( this.playerCFG, KeyInput );
-
-    var scriptor = this.scriptor = new Scriptor(
-      player,
-      this.currScene.script,
+    this.controls = new Controls(
+      this,
       document.querySelector('#action-panel'),
       document.querySelector('#action-descriptor'),
       document.querySelector('#inventory-panel')
     );
 
-    var scene = this.scene = new Scene(
-      this.viewConfig,
-      this.currScene.config,
-      this.currScene.script,
-      stage,
-      player,
-      scriptor,
-      KeyInput
-    );
+    this.player   = new Player( this.playerCFG, this.controls );
+    this.director = new Director( this.player, this.sceneScript, this.controls );
 
-    player.addScriptor( scriptor );
+    this.player.addDirector( this.director );
+
+    this.scene = new Scene(
+      this.viewConfig,
+      this.sceneConfig,
+      this.sceneScript,
+      this.stage,
+      this.player,
+      this.director,
+      this.controls
+    );
 
     this.animate.currDate = new Date();
     this.animate.prevDate = new Date();
@@ -131,7 +131,8 @@ class Game {
     if ( timelapse > 500 ) return; // exit;
 
     this.scene.update( timelapse );
-    this.scriptor.update( timelapse );
+    this.director.update( timelapse );
+
     this.renderer.render( this.stage );
 
   }

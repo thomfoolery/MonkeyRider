@@ -2,6 +2,10 @@
 
 export default {
 
+  capitalize: function ( text ) {
+    return text.charAt( 0 ).toUpperCase() + text.substr( 1 );
+  },
+
   processTransparency: function ( url ) {
 
     var img = new Image ();
