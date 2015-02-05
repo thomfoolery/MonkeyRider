@@ -15,9 +15,13 @@
 
     canvas {
       display: block;
-      border: 10px solid black;
       margin: 0 auto;
       cursor: crosshair;
+    }
+
+    #container {
+      width: 1200px;
+      margin: 0 auto;
     }
 
     #control-panel {
@@ -27,7 +31,7 @@
 
     #action-panel {
       float: left;
-      width: 375px;
+      width: 500px;
       padding-left: 0;
       margin: 5px 0;
       overflow: hidden;
@@ -61,8 +65,10 @@
 
     #inventory-panel {
       float: right;
+      width: 500px;
       padding-left: 0;
       margin: 5px 10px;
+      text-align: right;
     }
     #inventory-panel li {
       list-style: none;
@@ -88,29 +94,29 @@
   </style>
 </head>
 <body>
-  <header id="control-panel">
+  <div id="container">
+    <header id="control-panel">
 
-    <ul id="action-panel">
-      <li><a href="#">walk to</a></li>
-      <li><a href="#">look at</a></li>
-      <li><a href="#">use</a></li>
+      <ul id="action-panel">
+        <li><a href="#">walk to</a></li>
+        <li><a href="#">look at</a></li>
+        <li><a href="#">open</a></li>
+        <li><a href="#">use</a></li>
 
-      <li><a href="#">talk to</a></li>
-      <li><a href="#">pick up</a></li>
-      <li><a href="#">give</a></li>
-    </ul>
+        <li><a href="#">talk to</a></li>
+        <li><a href="#">pick up</a></li>
+        <li><a href="#">close</a></li>
+        <li><a href="#">give</a></li>
+      </ul>
 
-    <div id="action-descriptor">
-      Loading...
-    </div>
+      <div id="action-descriptor">
+        Loading...
+      </div>
 
-    <ul id="inventory-panel">
-      <li><a href="#">Item</a></li>
-      <li><a href="#">Item</a></li>
-      <li><a href="#">Item</a></li>
-    </ul>
+      <ul id="inventory-panel"></ul>
 
-  </header>
+    </header>
+  </div>
   <script src="pixi.2.2.5.js"></script>
   <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>

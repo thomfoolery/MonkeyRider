@@ -9,7 +9,7 @@
       "speed": 150,
       "start": 0,
       "frameCount": 5,
-      "phaseLength": 100
+      "phaseLength": 150
     },
     "default": {
       "start": 6
@@ -25,6 +25,8 @@
     }
   },
 
-  "speechColor": "lightgreen",
+  "interactive": false,
+  "speechColor": "#00FF30",
+
   "imageURL": "app/character/guybrush/spriteSheet.png"
 }

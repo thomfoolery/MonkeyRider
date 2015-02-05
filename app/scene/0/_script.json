@@ -3,32 +3,42 @@
   "bike": {
     "look at": [
       {
-        "actor": "player",
-        "action": "setState",
-        "value": "face",
-        "duration": 200
-      },{
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "Get to tha",
-          "Choppa!"
+        "id": "bike/look at/1",
+        "act": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "face",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Get to tha",
+              "Choppa!"
+            ]
+          }
         ]
       }
     ],
     "use": [
       {
-        "actor": "player",
-        "action": "setState",
-        "value": "face",
-        "duration": 200
-      },{
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "Never touch",
-          "another mans",
-          "Chopper"
+        "id": "bike/use/1",
+        "act": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "face",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Never touch",
+              "another mans",
+              "Chopper"
+            ]
+          }
         ]
       }
     ]
@@ -37,75 +47,194 @@
   "door": {
     "look at": [
       {
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "Looks like you",
-          "need a secret",
-          "password"
+        "id": "door/look at/1",
+        "act": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Looks like a",
+              "sturdy door"
+            ]
+          }
         ]
       }
     ],
-    "use": [
+    "open": [
       {
-        "actor": "player",
-        "action": "setState",
-        "value": "knocking",
-        "duration": 100
-      },{
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "KNOCK knock"
+        "id": "door/use/1",
+        "act": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "knocking",
+            "duration": 100
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "KNOCK knock"
+            ]
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "back",
+            "duration": 200
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "open",
+            "duration": 200
+          },{
+            "actor": "entity",
+            "action": "speak",
+            "value": [
+              "What do you want?"
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Let me in"
+            ]
+          },{
+            "actor": "entity",
+            "action": "speak",
+            "value": [
+              "Why should I?"
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Because I'm a",
+              "mighty Pirate..."
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "er ..."
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Biker!"
+            ]
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "open",
+            "duration": 1000
+          },{
+            "actor": "entity",
+            "action": "speak",
+            "value": [
+              "Ha!"
+            ]
+          },{
+            "actor": "entity",
+            "action": "speak",
+            "value": [
+              "Nope"
+            ]
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "default",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "face",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Jerk"
+            ]
+          }
         ]
-      },{
-        "actor": "player",
-        "action": "setState",
-        "value": "back",
-        "duration": 200
-      },{
-        "actor": "entity",
-        "action": "setState",
-        "value": "open",
-        "duration": 200
-      },{
-        "actor": "entity",
-        "action": "speak",
-        "value": [
-          "What do you want?"
-        ]
-      },{
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "May I come in?"
-        ]
-      },{
-        "actor": "entity",
-        "action": "setState",
-        "value": "open",
-        "duration": 1000
-      },{
-        "actor": "entity",
-        "action": "speak",
-        "value": [
-          "HA!"
-        ]
-      },{
-        "actor": "entity",
-        "action": "setState",
-        "value": "default",
-        "duration": 500
-      },{
-        "actor": "player",
-        "action": "setState",
-        "value": "face",
-        "duration": 500
-      },{
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "Jerk"
+      },
+      {
+        "id": "door/use/2",
+        "act": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "knocking",
+            "duration": 100
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "KNOCK knock"
+            ]
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "back",
+            "duration": 200
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "open",
+            "duration": 200
+          },{
+            "actor": "entity",
+            "action": "speak",
+            "value": [
+              "You again?"
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Let me in!"
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "duration": 1000,
+            "value": [
+              "..."
+            ]
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Please"
+            ]
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "open",
+            "duration": 1000
+          },{
+            "actor": "entity",
+            "action": "speak",
+            "value": [
+              "No."
+            ]
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "default",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "face",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Jerk"
+            ]
+          }
         ]
       }
     ]
@@ -114,11 +243,88 @@
   "dumpster": {
     "look at": [
       {
-        "actor": "player",
-        "action": "speak",
-        "value": [
-          "Looks like",
-          "a dumpster"
+        "id": "dumpster/look at/1",
+        "act": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Looks like",
+              "a dumpster"
+            ]
+          }
+        ]
+      }
+    ],
+    "open": [
+      {
+        "id": "dumpster/open/1",
+        "act": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "knocking",
+            "duration": 1
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "open",
+            "duration": 1000
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "face",
+            "duration": 1
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "default",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "I found a",
+              "leather vest"
+            ]
+          },{
+            "actor": "player",
+            "action": "receiveItem",
+            "value": "vest"
+          }
+        ]
+      },
+      {
+        "id": "dumpster/open/2",
+        "act":[
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "knocking",
+            "duration": 1
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "open",
+            "duration": 1000
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "face",
+            "duration": 1
+          },{
+            "actor": "entity",
+            "action": "set:state",
+            "value": "default",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              "Just a bunch",
+              "of garbage"
+            ]
+          }
         ]
       }
     ]

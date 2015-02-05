@@ -35,7 +35,7 @@
       "width": 42,
       "height": 77,
       "interactive": true,
-      "speechColor": "#00FF30",
+      "speechColor": "#9B30FF",
       "imageURL": "door.png",
       "states": {
         "default": {
@@ -79,7 +79,22 @@
       "width": 37,
       "height": 55,
       "interactive": true,
-      "imageURL": "dumpster.png"
+      "imageURL": "dumpster.png",
+      "states": {
+        "default": {
+          "start": 0
+        },
+        "open": {
+          "start": 1
+        }
+      }
+    }
+  ],
+
+  "items": [
+    {
+      "id": "vest",
+      "imageURL": "vest.png"
     }
   ]
 

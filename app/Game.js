@@ -1,5 +1,6 @@
-import _ from 'lodash';
+'use strict';
 
+import _        from 'lodash';
 import Scene    from 'app/Scene';
 import Player   from 'app/Player';
 import Director from 'app/Director';
@@ -98,24 +99,16 @@ class Game {
       document.querySelector('#inventory-panel')
     );
 
-    this.player   = new Player( this.playerCFG, this.controls );
-    this.director = new Director( this.player, this.sceneScript, this.controls );
+    this.director = new Director( this );
+    this.player   = new Player( this.playerCFG, this );
+    this.scene    = new Scene( this );
 
     this.player.addDirector( this.director );
-
-    this.scene = new Scene(
-      this.viewConfig,
-      this.sceneConfig,
-      this.sceneScript,
-      this.stage,
-      this.player,
-      this.director,
-      this.controls
-    );
 
     this.animate.currDate = new Date();
     this.animate.prevDate = new Date();
     requestAnimationFrame( this.animate.bind( this ) );
+
   }
 
   animate () {
