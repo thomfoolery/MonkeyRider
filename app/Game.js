@@ -90,7 +90,7 @@ class Game {
 
     this.stage    = new PIXI.Stage();
     this.renderer = new PIXI.autoDetectRecommendedRenderer( this.viewConfig.width, this.viewConfig.height, { resolution: this.viewConfig.resolution });
-    document.body.insertBefore( this.renderer.view, document.body.firstChild );
+    document.querySelector('#container').insertBefore( this.renderer.view, document.querySelector('#control-panel') );
 
     this.controls = new Controls(
       this,
