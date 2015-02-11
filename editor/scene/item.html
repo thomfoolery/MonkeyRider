@@ -1,0 +1,14 @@
+<template>
+  <form class="well" submit.delegate="onSubmit($event)" if.bind="title">
+    <fieldset>
+      <legend>${title}</legend>
+      <div class="form-group" repeat.for="key of itemKeys">
+        <label for="item-field-${key}">${key}:</label>
+        <input type="text" id="item-field-${key}" value.bind="$parent.itemData[key]" class="form-control">
+      </div>
+    </fieldset>
+    <div class="text-right">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</template>

@@ -94,7 +94,10 @@
 </head>
 <body>
   <div id="container">
-    <header id="control-panel">
+
+    <div id="game-container"></div>
+
+    <div id="control-panel">
 
       <ul id="action-panel">
         <li><a href="#">walk to</a></li>
@@ -114,14 +117,14 @@
 
       <ul id="inventory-panel"></ul>
 
-    </header>
+    </div>
   </div>
-  <script src="pixi.2.2.5.js"></script>
+  <script src="game/pixi.2.2.5.js"></script>
   <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>
   <script>
     System.baseURL = '/';
-    System.import('main');
+    System.import('game/app');
   </script>
 </body>
 </html>
