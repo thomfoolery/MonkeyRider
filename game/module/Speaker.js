@@ -37,8 +37,8 @@ export class Speaker {
 
       }.bind( this ));
 
-      this._textContainer.position.x = actor._sprite.position.x;
-      this._textContainer.position.y = actor._sprite.position.y - actor._sprite.height - offset - 2;
+      this._textContainer.position.x = actor.x;
+      this._textContainer.position.y = actor.y - actor.height - offset - 2;
 
       actor._sprite.parent.addChild( this._textContainer );
     }

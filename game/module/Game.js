@@ -12,11 +12,11 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 
 export class Game {
 
-  constructor ( DOMcontainer, viewConfig, sceneConfig, editMode ) {
+  constructor ( DOMcontainer, viewport, sceneConfig, editMode ) {
 
     this.DOMcontainer = DOMcontainer || document.querySelector('#game-container');
 
-    this.viewConfig = viewConfig || {
+    this.viewport = viewport || {
       x: 0,
       y: 0,
       width: 400,
@@ -110,7 +110,7 @@ export class Game {
   onAssetsLoadComplete () {
 
     this.stage    = new PIXI.Stage();
-    this.renderer = new PIXI.autoDetectRecommendedRenderer( this.viewConfig.width, this.viewConfig.height, { resolution: this.viewConfig.resolution });
+    this.renderer = new PIXI.autoDetectRecommendedRenderer( this.viewport.width, this.viewport.height, { resolution: this.viewport.resolution });
     this.DOMcontainer.appendChild( this.renderer.view );
 
     if ( ! this.editMode ) {

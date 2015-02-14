@@ -2,22 +2,71 @@
 
 import Backbone from 'backbone';
 
-var PUBLIC_PROPS = [
-  'id',
-  'dir',
-  'imageUrl',
-  'speechColor',
-  'x',
-  'y',
-  'tint',
-  'width',
-  'height',
-  'scaleX',
-  'scaleY',
-  'anchorX',
-  'anchorY',
-  'interactive'
-];
+var PUBLIC_PROPS = {
+
+  "id": {
+    type: 'text'
+  },
+
+  "x": {
+    type: 'number',
+    step: 10
+  },
+
+  "y": {
+    type: 'number',
+    step: 10
+  },
+
+  "z": {
+    type: 'number'
+  },
+
+  "dir": {
+    type: 'number'
+  },
+
+  "tint": {
+    type: 'text'
+  },
+
+  "width": {
+    type: 'number'
+  },
+
+  "height": {
+    type: 'number'
+  },
+
+  "scaleX": {
+    type: 'number'
+  },
+
+  "scaleY": {
+    type: 'number'
+  },
+
+  "anchorX": {
+    type: 'number'
+  },
+
+  "anchorY": {
+    type: 'number'
+  },
+
+  "imageUrl": {
+    type: 'url'
+  },
+
+  "interactive": {
+    type: 'boolean'
+  },
+
+  "speechColor": {
+    type: 'text'
+  }
+
+};
 
 var AnimationModel = Backbone.Model.extend({
   defaults: {
@@ -31,7 +80,7 @@ export class Entity {
 
     this.game = game;
 
-    if ( ! cfg.id )          cfg.id          = 'entity' + Date.now();
+    if ( ! cfg.id )          cfg.id          = 'entity.' + Date.now();
     if ( ! cfg.tint )        cfg.tint        = 'FFFFFF';
     if ( ! cfg.imageUrl )    cfg.imageUrl    = '';
     if ( ! cfg.speechColor ) cfg.speechColor = 'white';
@@ -77,17 +126,17 @@ export class Entity {
       this._texture.setFrame( this._frame );
     }
 
-    PUBLIC_PROPS.forEach( prop => {
-      if ( cfg.hasOwnProperty( prop ) )
-        this[ prop ] = cfg[ prop ];
-    });
-
     if ( this.game.editMode || cfg.interactive != false ) {
       this._sprite.interactive =  this._sprite.buttonMode = true;
       this._sprite.mouseover = this.onMouseOver.bind( this );
       this._sprite.mouseout = this.onMouseOut.bind( this );
       this._sprite.click = this.onClick.bind( this );
     }
+
+    this.editablePropertyKeys().forEach( prop => {
+      if ( cfg.hasOwnProperty( prop ) )
+        this[ prop ] = cfg[ prop ];
+    });
 
   }
 
@@ -189,14 +238,14 @@ export class Entity {
       this.game.mover.update ( this, timelapse );
 
     if ( ! this.visible ) {
-      if ( this.x + ( this.width * this.anchorX ) > this.game.scene.viewport.x
-        && this.x - ( this.width * this.anchorX ) < this.game.scene.viewport.x + this.game.scene.viewport.width ) {
+      if ( this.x + ( this.width * this.anchorX ) > this.game.viewport.x
+        && this.x - ( this.width * this.anchorX ) < this.game.viewport.x + this.game.viewport.width ) {
           this.visible = true;
       }
     }
     else {
-      if ( this.x + ( this.width * this.anchorX ) < this.game.scene.viewport.x
-        || this.x - ( this.width * this.anchorX ) > this.game.scene.viewport.x + this.game.scene.viewport.width ) {
+      if ( this.x + ( this.width * this.anchorX ) < this.game.viewport.x
+        || this.x - ( this.width * this.anchorX ) > this.game.viewport.x + this.game.viewport.width ) {
           this.visible = false;
       }
     }
@@ -205,7 +254,13 @@ export class Entity {
 
   editablePropertyKeys () {
 
-    return PUBLIC_PROPS.slice(0);
+    return Object.keys( PUBLIC_PROPS );
+
+  }
+
+  editablePropertyConfig ( key ) {
+
+    return PUBLIC_PROPS[ key ];
 
   }
 
@@ -213,12 +268,9 @@ export class Entity {
 
     var obj = {};
 
-    PUBLIC_PROPS.forEach( prop => {
+    this.editablePropertyKeys().forEach( prop => {
       obj[ prop ] = this[ prop ];
     });
-
-    // if ( this.states )
-    //   obj.states = this.states.slice(0);
 
     return obj;
 

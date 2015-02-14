@@ -12,10 +12,10 @@ export class Mover {
       || ( isNaN( destination.x ) && destination.x != null )
       || ( isNaN( destination.y ) && destination.y != null ) ) return;
 
-    var dir = ( entity._sprite.position.x > destination.x ) ? -1 : 1 ;
+    var dir = ( entity.x > destination.x ) ? -1 : 1 ;
 
     if ( entity.dir != dir )
-      entity._sprite.scale.x = Math.abs( entity._sprite.scale.x ) * dir;
+      entity.scaleX = Math.abs( entity.scaleX ) * dir;
 
     entity.destination = destination;
 
@@ -44,15 +44,15 @@ export class Mover {
         entity._frameIndex = entity.states['walking'].start;
       }
 
-      distance = entity._sprite.scale.x * ( timelapse / 1000 ) * entity.states[ entity._anim.get('state') ].speed;
-      entity._sprite.position.x += distance;
+      distance = entity.scaleX * ( timelapse / 1000 ) * entity.states[ entity._anim.get('state') ].speed;
+      entity.x += distance;
 
       // destination reached
-      if ( Math.abs( entity._sprite.position.x - entity.destination.x ) <= distance
-        || ( entity._sprite.scale.x == 1 && entity._sprite.position.x > entity.destination.x )
-        || ( entity._sprite.scale.x == -1 && entity._sprite.position.x < entity.destination.x ) ) {
+      if ( Math.abs( entity.x - entity.destination.x ) <= distance
+        || ( entity.scaleX == 1 && entity.x > entity.destination.x )
+        || ( entity.scaleX == -1 && entity.x < entity.destination.x ) ) {
 
-        entity._sprite.position.x = entity.destination.x;
+        entity.x = entity.destination.x;
         entity._anim.set( entity._anim.defaults );
         entity.destination.x = null;
         entity.phase = 0;
@@ -62,7 +62,7 @@ export class Mover {
 
       }
 
-      entity._frame.x = entity._frameIndex * Math.abs( entity._sprite.width );
+      entity._frame.x = entity._frameIndex * Math.abs( entity.width );
       entity._texture.setFrame( entity._frame );
 
     }

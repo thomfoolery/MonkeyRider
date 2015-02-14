@@ -1,20 +1,38 @@
+'use strict';
+
+var PUBLIC_PROPS = {
+
+  "id": {
+    type: 'text'
+  },
+
+  "tint": {
+    type: 'text'
+  },
+
+  "parallax": {
+    type: 'number',
+    step: 0.01
+  },
+
+  "imageUrl": {
+    type: 'url'
+  }
+
+};
+
 export class Background {
 
-  constructor ( cfg, viewConfig ) {
+  constructor ( cfg, game ) {
 
-    if ( ! cfg.anchor ) {
-      cfg.anchor = {};
-      cfg.anchor.x = 0;
-      cfg.anchor.y = 1;
-    }
+    this.game = game;
 
-    cfg.frameWidth  = cfg.frameWidth  || viewConfig.width;
-    cfg.frameHeight = cfg.frameHeight || viewConfig.height;
-
-    if ( ! cfg.position )
-      cfg.position = {};
-
-    cfg.position.y = cfg.position.y || viewConfig.height;
+    if ( ! cfg.id )          cfg.id          = 'background.' + Date.now();
+    if ( ! cfg.tint )        cfg.tint        = 'FFFFFF';
+    if ( ! cfg.imageUrl )    cfg.imageUrl    = '';
+    if ( ! cfg.parallax )    cfg.parallax    = 1;
+    if ( ! cfg.frameWidth )  cfg.frameWidth  = this.game.viewport.width;
+    if ( ! cfg.frameHeight ) cfg.frameHeight = this.game.viewport.height;
 
     this.configure ( cfg );
 
@@ -22,45 +40,55 @@ export class Background {
 
   configure ( cfg ) {
 
-    this.imageUrl   = cfg.imageUrl || this.imageUrl || 'bg.' +  Date.now();
-
-    this._texture   = new PIXI.Texture.fromImage( cfg.imageUrl );
-    this._sprite    = new PIXI.Sprite( this._texture );
-
-    // sprite axis properties
-    ['scale','anchor','position'].forEach( prop => {
-      if ( cfg.hasOwnProperty( prop ) ) {
-        // axis
-        ['x','y'].forEach( axis => {
-          if ( cfg[ prop ][ axis ] )
-            this._sprite[ prop ][ axis ] = cfg[ prop ][ axis ];
-        });
-      }
-    });
-
-    this.parallax = cfg.parallax || 1;
-
-    if ( cfg.tint )
-      this._sprite.tint = parseInt( cfg.tint, 16 );
+    if ( ! this._texture || cfg.imageUrl != this._texture.baseTexture.imageUrl ) {
+      this._texture = new PIXI.Texture.fromImage( cfg.imageUrl );
+      this._sprite  = new PIXI.Sprite( this._texture );
+    }
 
     this._frame = {
       x: 0,
       y: 0,
-      width:  cfg.frameWidth,
-      height: cfg.frameHeight
+      width:  cfg.frameWidth  || this._sprite.width,
+      height: cfg.frameHeight || this._sprite.height
     };
 
     this._texture.setFrame( this._frame );
+
+    this.editablePropertyKeys().forEach( prop => {
+      if ( cfg.hasOwnProperty( prop ) )
+        this[ prop ] = cfg[ prop ];
+    });
+
+  }
+
+  get x () { return this._frame.x; }
+  set x ( value ) { this._frame.x = value * this.parallax; this._texture.setFrame( this._frame ); }
+
+  get visible () { return this._sprite.visible; }
+  set visible ( value ) { this._sprite.visible = !! value }
+
+  get tint () { return this._sprite.tint.toString(16).toUpperCase(); }
+  set tint ( value ) { this._sprite.tint = parseInt( value, 16 ); }
+
+  editablePropertyKeys () {
+
+    return Object.keys( PUBLIC_PROPS );
+
+  }
+
+  editablePropertyConfig ( key ) {
+
+    return PUBLIC_PROPS[ key ];
 
   }
 
   toJSON () {
 
     var obj = {
-      x:          this._sprite.position.x,
-      y:          this._sprite.position.y,
-      tint:       this._sprite.tint.toString(16).toUpperCase(),
-      scale:      this._sprite.scale.x,
+      x:          this.x,
+      y:          this.y,
+      tint:       this.tint,
+      scale:      this.scaleX,
       imageUrl:   this.imageUrl,
       parallax:   this.parallax
     };

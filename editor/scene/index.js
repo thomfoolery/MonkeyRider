@@ -48,6 +48,12 @@ export class EditScene_Index {
 
   }
 
+  submitBackground ( e ) {
+
+    e.preventDefault();
+
+  }
+
 }
 
 export class CapitalizeValueConverter {
