@@ -7,14 +7,13 @@ export class App {
   constructor( router ) {
 
     this.router = router;
-
     this.router.configure( config => {
 
       config.title = 'Monkey Rider';
 
       config.map([
         {
-          route: ['','Home'],
+          route: ['','home'],
           moduleId: 'home',
           nav: true,
           title:'Home'
@@ -23,11 +22,6 @@ export class App {
           route: ['scene'],
           moduleId: 'scene/index',
           nav: true,
-          title:'Scene Editor'
-        },
-        {
-          route: ['scene/:id'],
-          moduleId: 'scene/details',
           title:'Scene Editor'
         }
       ]);

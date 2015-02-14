@@ -10,11 +10,14 @@ export class Scene {
   constructor ( game ) {
 
     this.game      = game;
-    this._maxWidth = this.game.sceneConfig.meta.width;
-
-    var player    = this.game.player ? this.game.player._sprite : null
-    this.items    = new Backbone.Collection( this.game.sceneConfig.gameObjects.items );
-    this.viewport = { x: 0 };
+    this.items     = new Backbone.Collection( this.game.sceneConfig.gameObjects.items );
+    this.width     = this.game.sceneConfig.meta.width;
+    this.viewport  = {
+      x: 0,
+      y: 0,
+      width:  this.game.viewConfig.width,
+      height: this.game.viewConfig.height
+    };
 
     this.backgrounds = [];
     this.game.sceneConfig.gameObjects.backgrounds.forEach( function ( cfg ) {
@@ -33,11 +36,13 @@ export class Scene {
       this.addEntity( cfg );
     }.bind( this ));
 
-    this.layers[0].addChild( player );
+    if ( this.game.player )
+      this.layers[0].addChild( this.game.player._sprite );
 
     this.mousePosition = {};
     this.game.stage.mousemove = this.onMouseMove.bind( this );
-    this.game.stage.mouseup = this.onMouseUp.bind( this );
+    this.game.stage.mouseout  = this.onMouseOut.bind( this );
+    this.game.stage.mouseup   = this.onMouseUp.bind( this );
 
   }
 
@@ -63,7 +68,7 @@ export class Scene {
   onMouseUp ( interactionData ) {
 
     var position = interactionData.getLocalPosition( this.game.stage );
-    position.x -= Math.round( this.viewport.x );
+    position.x += Math.round( this.viewport.x );
 
     this.game.messenger.publish('scene/mouseup', position );
 
@@ -76,25 +81,36 @@ export class Scene {
 
   }
 
+
+  onMouseOut ( interactionData ) {
+
+    this.mousePosition.x = this.viewport.width / 2;
+
+  }
+
   update ( timelapse ) {
 
-    var vW = this.game.viewConfig.width;
+    var vW = this.viewport.width;
     var vX = this.viewport.x;
 
     let dir = 0;
-    if ( this.mousePosition.x > vW - vW / 8 ) dir = -1;
-    else if ( this.mousePosition.x < vW / 8 ) dir = 1;
+    if ( this.mousePosition.x > vW - vW / 8 ) dir = 1;
+    else if ( this.mousePosition.x < vW / 8 ) dir = -1;
     vX += ( timelapse / 1000 ) * dir * 150;
 
-    this.viewport.x = Math.min( Math.max( ( this._maxWidth - vW ) * -1, vX ), 0 );
+    this.viewport.x = Math.max( Math.min( vX, this.width - vW ), 0 );
 
     this.backgrounds.forEach( function ( bg ) {
-      bg._frame.x = this.viewport.x * bg.parallax;
+      bg._frame.x = this.viewport.x * bg.parallax * -1;
       bg._texture.setFrame( bg._frame );
     }.bind( this ));
 
     this.layers.forEach( function ( layer ) {
-      layer.x = this.viewport.x;
+      layer.x = this.viewport.x * -1;
+    }.bind( this ));
+
+    this.entities.forEach( function ( entity ) {
+      entity.update();
     }.bind( this ));
 
   }
@@ -131,6 +147,28 @@ export class Scene {
   toString () {
 
     return JSON.stringify( this.toJSON() );
+
+  }
+
+  destroy () {
+
+
+     this.backgrounds.forEach( function ( background ) {
+       background.destroy();
+     }.bind( this ));
+
+     this.entities.forEach( function ( entity ) {
+       entity.destroy();
+     }.bind( this ));
+
+     this.layers.forEach( function ( layer ) {
+       layer.removeStageReference();
+     }.bind( this ));
+
+     delete this.backgrounds;
+     delete this.entities;
+     delete this.layers;
+     delete this.items;
 
   }
 

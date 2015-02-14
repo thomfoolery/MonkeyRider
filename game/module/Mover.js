@@ -8,13 +8,14 @@ export class Mover {
 
   moveTo ( entity, destination ) {
 
-    if ( ( isNaN( destination.x ) && destination.x != null )
+    if ( this.game.director._state.get('act')
+      || ( isNaN( destination.x ) && destination.x != null )
       || ( isNaN( destination.y ) && destination.y != null ) ) return;
 
     var dir = ( entity._sprite.position.x > destination.x ) ? -1 : 1 ;
 
-    entity._anim.set('dir', dir );
-    entity._sprite.scale.x = entity.scale * dir;
+    if ( entity.dir != dir )
+      entity._sprite.scale.x = Math.abs( entity._sprite.scale.x ) * dir;
 
     entity.destination = destination;
 
@@ -43,13 +44,13 @@ export class Mover {
         entity._frameIndex = entity.states['walking'].start;
       }
 
-      distance = entity._anim.get('dir') * ( timelapse / 1000 ) * entity.states[ entity._anim.get('state') ].speed;
+      distance = entity._sprite.scale.x * ( timelapse / 1000 ) * entity.states[ entity._anim.get('state') ].speed;
       entity._sprite.position.x += distance;
 
       // destination reached
       if ( Math.abs( entity._sprite.position.x - entity.destination.x ) <= distance
-        || ( entity._anim.get('dir') == 1 && entity._sprite.position.x > entity.destination.x )
-        || ( entity._anim.get('dir') == -1 && entity._sprite.position.x < entity.destination.x ) ) {
+        || ( entity._sprite.scale.x == 1 && entity._sprite.position.x > entity.destination.x )
+        || ( entity._sprite.scale.x == -1 && entity._sprite.position.x < entity.destination.x ) ) {
 
         entity._sprite.position.x = entity.destination.x;
         entity._anim.set( entity._anim.defaults );
@@ -61,7 +62,7 @@ export class Mover {
 
       }
 
-      entity._frame.x = entity._frameIndex * entity.width;
+      entity._frame.x = entity._frameIndex * Math.abs( entity._sprite.width );
       entity._texture.setFrame( entity._frame );
 
     }

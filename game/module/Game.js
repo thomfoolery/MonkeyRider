@@ -10,13 +10,9 @@ import {Controls} from 'game/module/Controls';
 
 import {EventAggregator} from 'aurelia-event-aggregator';
 
-var resolveReady;
-
 export class Game {
 
   constructor ( DOMcontainer, viewConfig, sceneConfig, editMode ) {
-
-    this.ready = new Promise( resolve => { resolveReady = resolve; });
 
     this.DOMcontainer = DOMcontainer || document.querySelector('#game-container');
 
@@ -28,8 +24,9 @@ export class Game {
       resolution: 3
     };
 
-    this.sceneIndex = sceneConfig ? sceneConfig.meta.sceneIndex : 0;
     this.editMode   = editMode || false;
+    this.sceneIndex = sceneConfig ? sceneConfig.meta.sceneIndex : 0;
+    this.messenger  = new EventAggregator();
 
     this.loadSceneData( sceneConfig );
 
@@ -62,7 +59,7 @@ export class Game {
     });
     scriptLoader.load();
 
-    var playerLoader = new PIXI.JsonLoader('game_data/character/guybrush/_config.json');
+    var playerLoader = new PIXI.JsonLoader('game_data/characters/guybrush.json');
     this.assetLoaders.push( playerLoader );
     playerLoader.on('loaded', ( e ) => {
       this.playerCFG = e.content.content.json;
@@ -91,13 +88,12 @@ export class Game {
     var game = this;
 
     if ( ! this.editMode )
-      assets.push( this.playerCFG.imageURL );
+      assets.push( this.playerCFG.imageUrl );
 
-    _.each( this.sceneConfig.gameObjects, ( cfg ) => {
-      _.each( cfg, ( obj ) => {
-        if ( obj.imageURL ) {
-          obj.imageURL = 'game_data/scene/' + game.sceneIndex + '/' + obj.imageURL;
-          assets.push( obj.imageURL );
+    _.each( this.sceneConfig.gameObjects, ( categories, category ) => {
+      _.each( categories, ( obj ) => {
+        if ( obj.imageUrl ) {
+          assets.push( obj.imageUrl );
         }
       });
     });
@@ -116,8 +112,6 @@ export class Game {
     this.stage    = new PIXI.Stage();
     this.renderer = new PIXI.autoDetectRecommendedRenderer( this.viewConfig.width, this.viewConfig.height, { resolution: this.viewConfig.resolution });
     this.DOMcontainer.appendChild( this.renderer.view );
-
-    this.messenger = new EventAggregator();
 
     if ( ! this.editMode ) {
 
@@ -139,8 +133,6 @@ export class Game {
 
     this.scene = new Scene( this );
 
-    resolveReady( this );
-
     this.animate.currDate = new Date();
     this.animate.prevDate = new Date();
     requestAnimationFrame( this.animate.bind( this ) );
@@ -157,7 +149,7 @@ export class Game {
     timelapse = this.animate.currDate - this.animate.prevDate;
     this.animate.prevDate = this.animate.currDate;
 
-    if ( timelapse > 500 ) return; // exit;
+    if ( timelapse > 800 ) return; // exit;
 
     this.scene.update( timelapse );
 
@@ -165,6 +157,23 @@ export class Game {
       this.director.update( timelapse );
 
     this.renderer.render( this.stage );
+
+  }
+
+  destroy () {
+
+    this.stage.removeStageReference();
+
+    this.messenger.
+    this.renderer.destroy();
+    this.controls.destroy();
+    this.director.destroy();
+    this.speaker.destroy();
+    this.player.destroy();
+    this.mover.destroy();
+    this.scene.destroy();
+
+    delete this;
 
   }
 

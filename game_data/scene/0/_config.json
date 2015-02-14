@@ -2,29 +2,31 @@
 
   "meta": {
     "sceneIndex": 0,
-    "width": 800
+    "width": 1200
   },
 
   "gameObjects": {
 
     "backgrounds": [
       {
-        "id": "sky",
+        "id": "bg.1",
         "x": 0,
-        "parallax": -0.2,
-        "imageURL": "bg.sky.png"
-      },{
-        "id": "skyline.1",
-        "x": 0,
-        "y": 220,
-        "parallax": -0.1,
-        "imageURL": "bg.skyline.1.png"
-      },{
-        "id": "skyline.2",
-        "x": 0,
-        "y": 220,
+        "y": 200,
         "parallax": -0.05,
-        "imageURL": "bg.skyline.2.png"
+        "imageUrl": "game_data/backgrounds/night.stars.2.png"
+      },{
+        "id": "bg.2",
+        "x": 0,
+        "y": 200,
+        "parallax": -0.1,
+        "imageUrl": "game_data/backgrounds/arizona.1.png"
+      },{
+        "id": "bg.3",
+        "x": 0,
+        "y": 200,
+        "parallax": -0.2,
+        "tint": "DDDDDD",
+        "imageUrl": "game_data/backgrounds/arizona.2.png"
       }
     ],
 
@@ -34,55 +36,103 @@
         "x": 380,
         "y": 200,
         "interactive": false,
-        "imageURL": "bar.png"
+        "imageUrl": "game_data/entities/bar.2.png"
       },{
-        "id": "lamp.post.1",
-        "x": 50,
+        "id": "bar.sign",
+        "x": 290,
+        "y": 80,
+        "interactive": true,
+        "imageUrl": "game_data/entities/bar.sign.png"
+      },{
+        "id": "poster.1",
+        "x": 320,
+        "y": 190,
+        "interactive": true,
+        "imageUrl": "game_data/entities/poster.1.png"
+      },{
+        "id": "poster.2",
+        "x": 365,
+        "y": 190,
+        "interactive": true,
+        "imageUrl": "game_data/entities/poster.2.png"
+      },{
+        "id": "poster.3",
+        "x": 410,
+        "y": 190,
+        "interactive": true,
+        "imageUrl": "game_data/entities/poster.3.png"
+      },{
+        "id": "poster.4",
+        "x": 455,
+        "y": 190,
+        "interactive": true,
+        "imageUrl": "game_data/entities/poster.4.png"
+      },{
+        "id": "poster.5",
+        "x": 500,
+        "y": 190,
+        "interactive": true,
+        "imageUrl": "game_data/entities/poster.5.png"
+      },{
+        "id": "wall.light.on",
+        "x": 365,
         "y": 200,
         "interactive": false,
-        "imageURL": "lamp.post.png"
+        "imageUrl": "game_data/entities/wall.light.on.png"
+      },{
+        "id": "wall.light.off",
+        "x": 500,
+        "y": 200,
+        "interactive": false,
+        "imageUrl": "game_data/entities/wall.light.off.png"
+      },{
+        "id": "lamp.post.1",
+        "x": 90,
+        "y": 200,
+        "interactive": false,
+        "imageUrl": "game_data/entities/lamp.post.png"
       },{
         "id": "lamp.post.2",
         "x": 675,
         "y": 200,
         "interactive": false,
-        "imageURL": "lamp.post.png"
+        "imageUrl": "game_data/entities/lamp.post.png"
       },{
         "id": "bike.3",
         "x": 42,
         "y": 203,
         "tint": "444444",
         "interactive": false,
-        "imageURL": "bike.c.png"
+        "imageUrl": "game_data/entities/bike.c.png"
       },{
         "id": "bike.2",
         "x": 62,
         "y": 202,
         "tint": "666666",
         "interactive": false,
-        "imageURL": "bike.b.png"
+        "imageUrl": "game_data/entities/bike.b.png"
       },{
         "id": "bike",
         "x": 90,
         "y": 200,
         "z": 1,
         "interactive": true,
-        "imageURL": "bike.a.png"
+        "imageUrl": "game_data/entities/bike.a.png"
       },{
         "id": "bike.4",
-        "x": 670,
+        "x": 650,
         "y": 202,
         "dir": -1,
         "tint": "999999",
         "interactive": false,
-        "imageURL": "bike.b.png"
+        "imageUrl": "game_data/entities/bike.b.png"
       },{
         "id": "bike.5",
-        "x": 700,
+        "x": 670,
         "y": 204,
         "dir": -1,
         "interactive": false,
-        "imageURL": "bike.c.png"
+        "imageUrl": "game_data/entities/bike.c.png"
       },{
         "id": "door",
         "x": 230,
@@ -91,7 +141,7 @@
         "height": 77,
         "interactive": true,
         "speechColor": "#9B30FF",
-        "imageURL": "door.png",
+        "imageUrl": "game_data/entities/door.png",
         "states": {
           "default": {
             "start": 0
@@ -102,12 +152,12 @@
         }
       },{
         "id": "dumpster",
-        "x": 620,
+        "x": 600,
         "y": 200,
         "width": 37,
         "height": 55,
         "interactive": true,
-        "imageURL": "dumpster.png",
+        "imageUrl": "game_data/entities/dumpster.png",
         "states": {
           "default": {
             "start": 0
@@ -122,7 +172,7 @@
     "items": [
       {
         "id": "vest",
-        "imageURL": "vest.png"
+        "imageUrl": "game_data/items/vest.png"
       }
     ]
 

@@ -12,8 +12,15 @@ export class Player extends Entity {
 
     // mouseout
     this.game.messenger.subscribe('scene/mouseup', position => {
-      if ( ! this.game.editMode )
-        this.moveTo( position );
+      this.moveTo( position );
+    });
+
+    // click entity
+    this.game.messenger.subscribe('entity/click', entity => {
+      this.moveTo( {
+        x: entity._sprite.position.x,
+        y: entity._sprite.position.y
+      });
     });
 
   }

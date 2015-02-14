@@ -78,7 +78,7 @@ export class Controls {
       var img = document.createElement('img');
 
       ul.appendChild( li.appendChild( a.appendChild( img ) ) );
-      img.src = item.get('imageURL');
+      img.src = item.get('imageUrl');
 
 
     }.bind( this ));
@@ -102,6 +102,10 @@ export class Controls {
 
   }
 
-}
+  destroy () {
 
-Controls;
+    this.$actionPanel.removeEventListener('click', this.onClickActionPanel.bind(this) );
+
+  }
+
+}

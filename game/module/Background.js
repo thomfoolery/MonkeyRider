@@ -2,19 +2,41 @@ export class Background {
 
   constructor ( cfg, viewConfig ) {
 
-    this.imageURL = cfg.imageURL;
+    if ( ! cfg.anchor ) {
+      cfg.anchor = {};
+      cfg.anchor.x = 0;
+      cfg.anchor.y = 1;
+    }
 
-    this._texture = new PIXI.Texture.fromImage( cfg.imageURL );
-    this._sprite  = new PIXI.Sprite( this._texture );
+    cfg.frameWidth  = cfg.frameWidth  || viewConfig.width;
+    cfg.frameHeight = cfg.frameHeight || viewConfig.height;
 
-    this._sprite.position.x = cfg.x || 0;
-    this._sprite.position.y = cfg.y || 200;
+    if ( ! cfg.position )
+      cfg.position = {};
 
-    this._sprite.scale.x = cfg.scale || 1;
-    this._sprite.scale.y = cfg.scale || 1;
+    cfg.position.y = cfg.position.y || viewConfig.height;
 
-    this._sprite.anchor.x = 0;
-    this._sprite.anchor.y = 1;
+    this.configure ( cfg );
+
+  }
+
+  configure ( cfg ) {
+
+    this.imageUrl   = cfg.imageUrl || this.imageUrl || 'bg.' +  Date.now();
+
+    this._texture   = new PIXI.Texture.fromImage( cfg.imageUrl );
+    this._sprite    = new PIXI.Sprite( this._texture );
+
+    // sprite axis properties
+    ['scale','anchor','position'].forEach( prop => {
+      if ( cfg.hasOwnProperty( prop ) ) {
+        // axis
+        ['x','y'].forEach( axis => {
+          if ( cfg[ prop ][ axis ] )
+            this._sprite[ prop ][ axis ] = cfg[ prop ][ axis ];
+        });
+      }
+    });
 
     this.parallax = cfg.parallax || 1;
 
@@ -24,22 +46,23 @@ export class Background {
     this._frame = {
       x: 0,
       y: 0,
-      width:  viewConfig.width,
-      height: viewConfig.height
+      width:  cfg.frameWidth,
+      height: cfg.frameHeight
     };
 
     this._texture.setFrame( this._frame );
+
   }
 
   toJSON () {
 
     var obj = {
-      x:        this._sprite.position.x,
-      y:        this._sprite.position.y,
-      tint:     this._sprite.tint.toString(16).toUpperCase(),
-      scale:    this._sprite.scale.x,
-      imageURL: this.imageURL,
-      parallax: this.parallax
+      x:          this._sprite.position.x,
+      y:          this._sprite.position.y,
+      tint:       this._sprite.tint.toString(16).toUpperCase(),
+      scale:      this._sprite.scale.x,
+      imageUrl:   this.imageUrl,
+      parallax:   this.parallax
     };
 
     return obj;
@@ -49,6 +72,12 @@ export class Background {
   toString() {
 
     return JSON.stringify( this.toString() );
+
+  }
+
+  destroy () {
+
+     this._sprite.removeStageReference();
 
   }
 

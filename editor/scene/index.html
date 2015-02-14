@@ -1,9 +1,49 @@
 <template>
+  <import from="./game-canvas"></import>
   <section>
-    <div class="container">
-      <div class="jumbotron text-center">
-        <h2>${heading}</h2>
-        <a href="#/scene/0">Intro Scene</a>
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-xs-8">
+          <div class="well text-center">
+            <game-canvas
+              scene-config.bind="sceneConfig"
+              model.two-way="M">
+            </game-canvas>
+          </div>
+
+          <form class="well">
+            <fieldset>
+              <legend>
+                Backgrounds
+              </legend>
+            </fieldset>
+          </form>
+
+        </div>
+
+        <div class="col-xs-4">
+          <form class="well" submit.delegate="submitEntity( $event )">
+            <fieldset if.bind="M.entity">
+              <legend if.bind="!M.entity">
+                Choose an item
+              </legend>
+              <legend if.bind="M.entity.id">
+                ${M.entity.id | capitalize}
+              </legend>
+              <div class="row" if.bind="M.entity">
+                <div class="form-group col-xs-6" repeat.for="key of M.entity.editablePropertyKeys()">
+                  <label for="item-field-${key}">${key}:</label>
+                  <input  id="item-field-${key}" value.bind="$parent.M.entity[key]" class="form-control">
+                </div>
+              </div>
+              <div class="text-right">
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+
       </div>
     </div>
   </section>

@@ -48,4 +48,10 @@ export class Speaker {
 
   }
 
+  destroy () {
+
+    this._textContainer.removeStageReference();
+
+  }
+
 }

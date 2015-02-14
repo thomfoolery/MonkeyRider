@@ -169,4 +169,8 @@ export class Director {
 
   }
 
+  destroy () {
+
+  }
+
 }
