@@ -6,64 +6,45 @@ export class Mover {
 
   }
 
-  moveTo ( entity, destination ) {
+  moveTo ( sprite, destination ) {
 
     if ( this.game.director._state.get('act')
       || ( isNaN( destination.x ) && destination.x != null )
       || ( isNaN( destination.y ) && destination.y != null ) ) return;
 
-    var dir = ( entity.x > destination.x ) ? -1 : 1 ;
+    var dir = ( sprite.x > destination.x ) ? -1 : 1 ;
 
-    if ( entity.dir != dir )
-      entity.scaleX = Math.abs( entity.scaleX ) * dir;
+    if ( sprite.dir != dir )
+      sprite.scaleX = Math.abs( sprite.scaleX ) * dir;
 
-    entity.destination = destination;
+    sprite.destination = destination;
 
   }
 
-  update ( entity, timelapse ) {
+  update ( sprite, timelapse ) {
 
-    if ( entity.destination.x ) {
+    if ( sprite.destination.x ) {
 
       let distance;
 
-      if ( entity._anim.get('state') != 'walking' ) {
-        entity._frameIndex = entity.states['walking'].start;
-        entity._anim.set('state','walking');
-        entity.phase = 0;
-      }
+      if ( sprite.state != 'walking' )
+        return sprite.state = 'walking';
 
-      entity.phase += timelapse;
-
-      if ( entity.phase > entity.states['walking'].phaseLength ) {
-        entity._frameIndex++;
-        entity.phase = 0;
-      }
-
-      if ( entity._frameIndex > entity.states['walking'].frameCount ) {
-        entity._frameIndex = entity.states['walking'].start;
-      }
-
-      distance = entity.scaleX * ( timelapse / 1000 ) * entity.states[ entity._anim.get('state') ].speed;
-      entity.x += distance;
+      distance = sprite.scaleX * ( timelapse / 1000 ) * sprite.speed;
+      sprite.x += distance;
 
       // destination reached
-      if ( Math.abs( entity.x - entity.destination.x ) <= distance
-        || ( entity.scaleX == 1 && entity.x > entity.destination.x )
-        || ( entity.scaleX == -1 && entity.x < entity.destination.x ) ) {
+      if ( Math.abs( sprite.x - sprite.destination.x ) <= distance / 2
+        || ( sprite.scaleX == 1 && sprite.x > sprite.destination.x )
+        || ( sprite.scaleX == -1 && sprite.x < sprite.destination.x ) ) {
 
-        entity.x = entity.destination.x;
-        entity._anim.set( entity._anim.defaults );
-        entity.destination.x = null;
-        entity.phase = 0;
+        sprite.x = sprite.destination.x;
+        sprite.destination.x = null;
+        sprite.state = 'default';
 
-        entity._frameIndex = entity.states[ entity._anim.get('state') ].start;
-        entity.game.director.startActing();
+        sprite.game.director.startActing();
 
       }
-
-      entity._frame.x = entity._frameIndex * Math.abs( entity.width );
-      entity._texture.setFrame( entity._frame );
 
     }
 

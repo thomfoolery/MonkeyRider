@@ -43,7 +43,7 @@ export class Game {
     this.assetLoaders = [];
     var sceneIndex    = this.sceneIndex;
 
-    var configLoader = new PIXI.JsonLoader('game_data/scene/' + sceneIndex + '/_config.json');
+    var configLoader = new PIXI.JsonLoader('/game_data/scene/' + sceneIndex + '/_config.json');
     this.assetLoaders.push( configLoader );
     configLoader.on('loaded', ( e ) => {
       this.sceneConfig = e.content.content.json;
@@ -51,7 +51,7 @@ export class Game {
     });
     configLoader.load();
 
-    var scriptLoader = new PIXI.JsonLoader('game_data/scene/' + sceneIndex + '/_script.json');
+    var scriptLoader = new PIXI.JsonLoader('/game_data/scene/' + sceneIndex + '/_script.json');
     this.assetLoaders.push( scriptLoader );
     scriptLoader.on('loaded', ( e ) => {
       this.sceneScript = e.content.content.json;
@@ -59,7 +59,7 @@ export class Game {
     });
     scriptLoader.load();
 
-    var playerLoader = new PIXI.JsonLoader('game_data/characters/guybrush.json');
+    var playerLoader = new PIXI.JsonLoader('/game_data/player.json');
     this.assetLoaders.push( playerLoader );
     playerLoader.on('loaded', ( e ) => {
       this.playerCFG = e.content.content.json;
@@ -84,11 +84,8 @@ export class Game {
 
   loadAssets () {
 
-    var assets = [];
+    var assets = ['/game_data/sprites.json'];
     var game = this;
-
-    if ( ! this.editMode )
-      assets.push( this.playerCFG.imageUrl );
 
     _.each( this.sceneConfig.gameObjects, ( categories, category ) => {
       _.each( categories, ( obj ) => {
@@ -149,7 +146,7 @@ export class Game {
     timelapse = this.animate.currDate - this.animate.prevDate;
     this.animate.prevDate = this.animate.currDate;
 
-    if ( timelapse > 800 ) return; // exit;
+    if ( timelapse > 300 ) return; // exit;
 
     this.scene.update( timelapse );
 

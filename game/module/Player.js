@@ -1,8 +1,8 @@
 'use strict';
 
-import {Entity} from 'game/module/Entity';
+import {Sprite} from 'game/module/Sprite';
 
-export class Player extends Entity {
+export class Player extends Sprite {
 
   constructor ( cfg, game ) {
 
@@ -15,11 +15,11 @@ export class Player extends Entity {
       this.moveTo( position );
     });
 
-    // click entity
-    this.game.messenger.subscribe('entity/click', entity => {
+    // click sprite
+    this.game.messenger.subscribe('sprite/click', sprite => {
       this.moveTo( {
-        x: entity.x,
-        y: entity.y
+        x: sprite.x,
+        y: sprite.y
       });
     });
 
@@ -34,6 +34,7 @@ export class Player extends Entity {
   update ( timelapse ) {
 
     super.update( timelapse );
+    // console.log( this.animState );
 
   }
 

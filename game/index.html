@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Monkey Rider</title>
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      font-family: Arial, 'sans-serif';
+      line-height: 1em;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      cursor: crosshair;
+    }
+
+    #container {
+      width: 1200px;
+      margin: 0 auto;
+      cursor: crosshair;
+    }
+
+    #control-panel {
+      background-color: #222;
+      text-align: center;
+    }
+
+    #action-panel {
+      float: left;
+      width: 500px;
+      padding-left: 0;
+      margin: 5px 0;
+      overflow: hidden;
+    }
+    #action-panel li {
+      list-style: none;
+      float: left;
+      width: 125px;
+      line-height: 25px;
+      text-align: left;
+    }
+    #action-panel li a {
+      color: lightgreen;
+      padding: 0 20px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    #action-panel li a:hover {
+      color: white;
+    }
+
+    #action-descriptor {
+      display: inline-block;
+      line-height: 60px;
+      color: #999;
+      font-size: 20px;
+    }
+    #action-descriptor.active {
+      color: white;
+    }
+
+    #inventory-panel {
+      float: right;
+      width: 500px;
+      padding-left: 0;
+      margin: 5px 10px;
+      text-align: right;
+    }
+    #inventory-panel li {
+      list-style: none;
+      float: left;
+      margin: 0 5px;
+    }
+    #inventory-panel li a {
+      display: block;
+      width: 50px;
+      height: 45px;
+      line-height: 45px;
+      border: 2px solid purple;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: purple;
+    }
+    #inventory-panel li a:hover {
+      border: 2px solid white;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+
+    <div id="game-container"></div>
+
+    <div id="control-panel">
+
+      <ul id="action-panel">
+        <li><a href="#">walk to</a></li>
+        <li><a href="#">look at</a></li>
+        <li><a href="#">open</a></li>
+        <li><a href="#">use</a></li>
+
+        <li><a href="#">talk to</a></li>
+        <li><a href="#">pick up</a></li>
+        <li><a href="#">close</a></li>
+        <li><a href="#">give</a></li>
+      </ul>
+
+      <div id="action-descriptor">
+        Loading...
+      </div>
+
+      <ul id="inventory-panel"></ul>
+
+    </div>
+  </div>
+  <script src="/game/pixi.2.2.5.js"></script>
+  <script src="/jspm_packages/system.js"></script>
+  <script src="/config.js"></script>
+  <script>
+    // System.baseURL = '';
+    System.import('game/app');
+  </script>
+</body>
+</html>

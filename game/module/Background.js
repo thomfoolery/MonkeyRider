@@ -1,24 +1,10 @@
 'use strict';
 
 var PUBLIC_PROPS = {
-
-  "id": {
-    type: 'text'
-  },
-
-  "tint": {
-    type: 'text'
-  },
-
-  "parallax": {
-    type: 'number',
-    step: 0.01
-  },
-
-  "imageUrl": {
-    type: 'url'
-  }
-
+  "id":       { type: 'text' },
+  "tint":     { type: 'text' },
+  "parallax": { type: 'number', step: 0.01 },
+  "imageUrl": { type: 'text' }
 };
 
 export class Background {
@@ -64,11 +50,14 @@ export class Background {
   get x () { return this._frame.x; }
   set x ( value ) { this._frame.x = value * this.parallax; this._texture.setFrame( this._frame ); }
 
+  get tint () { return this._sprite.tint.toString(16).toUpperCase(); }
+  set tint ( value ) { this._sprite.tint = parseInt( value, 16 ); }
+
   get visible () { return this._sprite.visible; }
   set visible ( value ) { this._sprite.visible = !! value }
 
-  get tint () { return this._sprite.tint.toString(16).toUpperCase(); }
-  set tint ( value ) { this._sprite.tint = parseInt( value, 16 ); }
+  get imageUrl () { return this._texture.baseTexture.imageUrl; }
+  set imageUrl ( value ) { this._texture = new PIXI.Texture.fromImage( value ); }
 
   editablePropertyKeys () {
 

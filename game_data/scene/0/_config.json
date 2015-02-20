@@ -10,153 +10,212 @@
     "backgrounds": [
       {
         "id": "bg.1",
-        "parallax": -0.05,
-        "imageUrl": "game_data/backgrounds/night.stars.2.png"
+        "parallax": -0.025,
+        "imageUrl": "/game_data/backgrounds/night.stars.1.png"
       },{
         "id": "bg.2",
         "parallax": -0.1,
-        "imageUrl": "game_data/backgrounds/arizona.1.png"
+        "imageUrl": "/game_data/backgrounds/arizona.1.png"
       },{
         "id": "bg.3",
         "parallax": -0.2,
-        "imageUrl": "game_data/backgrounds/arizona.2.png"
+        "imageUrl": "/game_data/backgrounds/arizona.2.png"
       }
     ],
 
-    "entities": [
+    "sprites": [
       {
         "id": "bar",
         "x": 380,
         "y": 200,
         "interactive": false,
-        "imageUrl": "game_data/entities/bar.2.png"
+        "states": {
+          "default": {
+            "frames": ["bar.png"]
+          }
+        }
       },{
         "id": "bar.sign",
         "x": 290,
         "y": 80,
         "interactive": true,
-        "imageUrl": "game_data/entities/bar.sign.png"
+        "states": {
+          "default": {
+            "frames": ["bar.sign.png"]
+          }
+        }
       },{
         "id": "poster.1",
         "x": 320,
         "y": 190,
         "interactive": true,
-        "imageUrl": "game_data/entities/poster.1.png"
+        "states": {
+          "default": {
+            "frames": ["poster.1.png"]
+          }
+        }
       },{
         "id": "poster.2",
         "x": 365,
         "y": 190,
         "interactive": true,
-        "imageUrl": "game_data/entities/poster.2.png"
+        "states": {
+          "default": {
+            "frames": ["poster.2.png"]
+          }
+        }
       },{
         "id": "poster.3",
         "x": 410,
         "y": 190,
         "interactive": true,
-        "imageUrl": "game_data/entities/poster.3.png"
+        "states": {
+          "default": {
+            "frames": ["poster.3.png"]
+          }
+        }
       },{
         "id": "poster.4",
         "x": 455,
         "y": 190,
         "interactive": true,
-        "imageUrl": "game_data/entities/poster.4.png"
+        "states": {
+          "default": {
+            "frames": ["poster.4.png"]
+          }
+        }
       },{
         "id": "poster.5",
         "x": 500,
         "y": 190,
         "interactive": true,
-        "imageUrl": "game_data/entities/poster.5.png"
+        "states": {
+          "default": {
+            "frames": ["poster.5.png"]
+          }
+        }
       },{
         "id": "wall.light.on",
         "x": 365,
         "y": 200,
         "interactive": false,
-        "imageUrl": "game_data/entities/wall.light.on.png"
+        "states": {
+          "default": {
+            "frames": ["wall.light.on.png"]
+          }
+        }
       },{
         "id": "wall.light.off",
         "x": 500,
         "y": 200,
         "interactive": false,
-        "imageUrl": "game_data/entities/wall.light.off.png"
+        "states": {
+          "default": {
+            "frames": ["wall.light.off.png"]
+          }
+        }
       },{
         "id": "lamp.post.1",
         "x": 90,
         "y": 200,
         "interactive": false,
-        "imageUrl": "game_data/entities/lamp.post.png"
+        "states": {
+          "default": {
+            "frames": ["lamp.post.png"]
+          }
+        }
       },{
         "id": "lamp.post.2",
         "x": 675,
         "y": 200,
         "interactive": false,
-        "imageUrl": "game_data/entities/lamp.post.png"
+        "states": {
+          "default": {
+            "frames": ["lamp.post.png"]
+          }
+        }
       },{
         "id": "bike.3",
         "x": 42,
         "y": 203,
         "tint": "444444",
         "interactive": false,
-        "imageUrl": "game_data/entities/bike.c.png"
+        "states": {
+          "default": {
+            "frames": ["bike.c.png"]
+          }
+        }
       },{
         "id": "bike.2",
         "x": 62,
         "y": 202,
         "tint": "666666",
         "interactive": false,
-        "imageUrl": "game_data/entities/bike.b.png"
+        "states": {
+          "default": {
+            "frames": ["bike.b.png"]
+          }
+        }
       },{
-        "id": "bike",
+        "id": "bike.1",
         "x": 90,
         "y": 200,
         "z": 1,
         "interactive": true,
-        "imageUrl": "game_data/entities/bike.a.png"
+        "states": {
+          "default": {
+            "frames": ["bike.a.png"]
+          }
+        }
       },{
         "id": "bike.4",
         "x": 650,
-        "y": 202,
+        "y": 204,
         "dir": -1,
         "tint": "999999",
         "interactive": false,
-        "imageUrl": "game_data/entities/bike.b.png"
+        "states": {
+          "default": {
+            "frames": ["bike.b.png"]
+          }
+        }
       },{
         "id": "bike.5",
         "x": 670,
-        "y": 204,
+        "y": 202,
         "dir": -1,
         "interactive": false,
-        "imageUrl": "game_data/entities/bike.c.png"
-      },{
-        "id": "door",
-        "x": 230,
-        "y": 200,
-        "width": 42,
-        "height": 77,
-        "interactive": true,
-        "speechColor": "#9B30FF",
-        "imageUrl": "game_data/entities/door.png",
         "states": {
           "default": {
-            "start": 0
+            "frames": ["bike.c.png"]
+          }
+        }
+      },{
+        "id": "bar.door",
+        "x": 230,
+        "y": 200,
+        "anchorX": 0.3,
+        "interactive": true,
+        "speechColor": "9B30FF",
+        "states": {
+          "default": {
+            "frames": ["bar.door.closed.png"]
           },
           "open": {
-            "start": 1
+            "frames": ["bar.door.open.png"]
           }
         }
       },{
         "id": "dumpster",
         "x": 600,
         "y": 200,
-        "width": 37,
-        "height": 55,
         "interactive": true,
-        "imageUrl": "game_data/entities/dumpster.png",
         "states": {
           "default": {
-            "start": 0
+            "frames": ["dumpster.closed.png"]
           },
           "open": {
-            "start": 1
+            "frames": ["dumpster.open.png"]
           }
         }
       }
@@ -165,7 +224,7 @@
     "items": [
       {
         "id": "vest",
-        "imageUrl": "game_data/items/vest.png"
+        "imageUrl": "/game_data/items/vest.png"
       }
     ]
 

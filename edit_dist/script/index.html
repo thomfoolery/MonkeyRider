@@ -1,0 +1,164 @@
+<template>
+  <section class="script-editor">
+    <div class="container-fluid">
+
+      <h1>
+        <span class="label label-info">${spriteID}</span>
+      </h1>
+
+      <hr>
+
+      <nav class="navbar">
+        <ul class="nav nav-tabs nav-justified">
+          <li repeat.for="action of M.actions" class="${action==$parent.M.selectedAction?'active':''}">
+            <a click.delegate="$parent.selectAction( action )">
+              ${action}
+              &nbsp;
+              <span if.bind="$parent.M.script[ action ].length" class="badge badge-primary">
+                ${$parent.M.script[ action ].length} Acts
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="row">
+
+        <div class="col-xs-2">
+          <div class="well">
+
+            <p if.bind="M.script[ M.selectedAction ].length==0" class="text-center">
+              There are<br>
+              currently no Acts.
+            </p>
+
+            <ul class="list-unstyled" if.bind="M.script[ M.selectedAction ].length">
+              <li repeat.for="act of M.script[ M.selectedAction ]" class="panel panel-default clearfix">
+                <a click.delegate="$parent.editAct( act )" class="btn">
+                  Act ${$index+1}
+                </a>
+                <button type="button" click.delegate="$parent.removeAct( $parent.M.script[ $parent.M.selectedAction ], $index )" class="btn btn-danger pull-right">
+                  <span class="fa fa-close"></span>
+                </button>
+              </li>
+            </ul>
+
+            <button type="button" click.delegate="addAct( M.script[ M.selectedAction ] )" class="btn btn-block btn-success">
+              <span class="fa fa-plus"></span>
+              Add Act
+            </button>
+
+          </div>
+        </div>
+
+        <div class="col-xs-10">
+          <div class="act panel panel-default" if.bind="M.act">
+
+            <div class="panel-heading">
+              <div class="clearfix">
+                <strong class="panel-title">
+                  Act ${M.script[ M.selectedAction ].indexOf(M.act)+1} &mdash; Lines
+                </strong>
+                <button type="button" class="btn btn-primary pull-right">
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div class="panel-body">
+
+              <template repeat.for="line of M.act">
+
+                <!-- not editing -->
+                <div class="row" if.bind="$parent.M.editedLine!==line">
+                  <div class="col-xs-2">
+                    <strong>${line.actor}</strong>
+                  </div>
+
+                  <div class="col-xs-2">
+                    <span class="label label-${line.action=='speak'?'success':line.action=='moveTo'?'primary':'info'}">${line.action}</span>
+                  </div>
+
+                  <div class="col-xs-5">
+                    ${line.value}
+                  </div>
+
+                  <div class="col-xs-1">
+                    ${line.duration}
+                  </div>
+
+                  <div class="col-xs-2 text-right">
+                    <button type="button" click.delegate="$parent.editLine( $index )" class="btn btn-info">
+                      <span class="fa fa-pencil"></span>
+                    </button>
+                    <button type="button" click.delegate="$parent.addLine( $index )" class="btn btn-success">
+                      <span class="fa fa-plus"></span>
+                    </button>
+                    <button type="button" click.delegate="$parent.removeLine( $index )" class="btn btn-danger">
+                      <span class="fa fa-close"></span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- editing -->
+                <div class="row editing" if.bind="$parent.M.editedLine===line">
+                  <div class="col-xs-2">
+                    <label>Actor:</label>
+                    <select class="form-control" value.bind="line.actor">
+                      <option value="entity">Entity</option>
+                      <option value="player">Player</option>
+                    </select>
+                  </div>
+
+                  <div class="col-xs-2">
+                    <label>Action:</label>
+                    <select class="form-control" value.bind="line.action">
+                      <option value="speak">speak</option>
+                      <option value="moveTo">moveTo</option>
+                      <option value="set:state">set:state</option>
+                    </select>
+                  </div>
+
+                  <div class="col-xs-6">
+                    <label>Value:</label>
+                    <template if.bind="line.action=='speak'||line.action=='moveTo'">
+                      <input type="text" value="${line.value}" class="form-control">
+                    </template>
+                    <template if.bind="line.action=='set:state'">
+                      <select class="form-control" value.bind="line.value">
+                        <option repeat.for="state of $parent.M.states" value.bind="state" >${state}</option>
+                      </select>
+                    </template>
+                  </div>
+
+                  <div class="col-xs-1">
+                    <label>duration:</label>
+                    <input type="number" step="10" value="${line.duration}" class="form-control">
+                  </div>
+
+                  <div class="col-xs-1 text-right">
+                    <label class="center-block">&nbsp;</label>
+                    <button type="button" click.delegate="$parent.saveLine( line )" class="btn btn-success">
+                      <span class="fa fa-check"></span>
+                    </button>
+                  </div>
+                </div>
+
+              </template>
+
+              <button type="button" click.delegate="addLine( M.act.length )" class="btn btn-block btn-success">
+                <span class="fa fa-plus"></span>
+                Add Line
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </section>
+</template>

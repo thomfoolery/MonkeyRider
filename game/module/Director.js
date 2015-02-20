@@ -5,7 +5,7 @@ import Backbone from 'backbone';
 var StateModel = Backbone.Model.extend({
   defaults: {
     actIndex: 0,
-    entity:   null,
+    sprite:   null,
     actor:    null,
     act:      null
   }
@@ -20,26 +20,24 @@ export class Director {
     this._state = new StateModel();
 
     // mouseover
-    this.game.messenger.subscribe('entity/mouseover', entity => {
+    this.game.messenger.subscribe('sprite/mouseover', sprite => {
       if ( this.game.controls._state.get('isActive') ) return;
-      this._state.set('entity', entity );
+      this._state.set('sprite', sprite );
     });
     // mouseout
-    this.game.messenger.subscribe('entity/mouseout', entity => {
+    this.game.messenger.subscribe('sprite/mouseout', sprite => {
       if ( this.game.controls._state.get('isActive') ) return;
-      this._state.set('entity', entity );
+      this._state.set('sprite', sprite );
     });
     // click
-    this.game.messenger.subscribe('entity/click', entity => {
+    this.game.messenger.subscribe('sprite/click', sprite => {
       if ( this._state.get('act') ) return;
-      this._state.set('entity', entity );
+      this._state.set('sprite', sprite );
     });
 
   }
 
   startActing () {
-
-    // console.log('start acting');
 
     var active = this.game.controls._state.get('isActive');
 
@@ -47,34 +45,31 @@ export class Director {
 
     var act;
     var action = this.game.controls._state.get('action');
-    var entity = this._state.get('entity');
+    var sprite = this._state.get('sprite');
 
-    if ( ! action || ! entity )
+    if ( ! action || ! sprite )
       return this.game.controls._state.set('isActive', false );
 
-    if ( ! this.game.sceneScript[ entity.id ]
-      || ! this.game.sceneScript[ entity.id ][ action ] ) {
+    if ( ! this.game.sceneScript[ sprite.id ]
+      || ! this.game.sceneScript[ sprite.id ][ action ] ) {
 
       act = [{
         "actor": "player",
         "action": "speak",
-        "value": [
-          "I could but",
-          "I won't"
-        ]
+        "value": "I could but I won't"
       }];
     }
     else {
 
-      let script = this.game.sceneScript[ entity.id ][ action ];
+      let script = this.game.sceneScript[ sprite.id ][ action ];
 
       if ( script.length < 2 )
-        act = script[0].act;
+        act = script[0];
       else
-        act = script.shift().act;
+        act = script.shift();
     }
 
-    var actor = ( act[0].actor === 'entity' ) ? entity : this.game.player;
+    var actor = ( act[0].actor === 'sprite' ) ? sprite : this.game.player;
     var actPhase = act[0];
 
     this.timelapsed = 0;
@@ -144,8 +139,8 @@ export class Director {
 
   next ( act, actor, actPhase, actIndex ) {
 
-    actor = ( actPhase.actor === 'entity' ) ?
-      this._state.get('entity') :
+    actor = ( actPhase.actor === 'sprite' ) ?
+      this._state.get('sprite') :
       this.game.player
     ;
 
@@ -158,7 +153,7 @@ export class Director {
   act ( actor, actPhase ) {
 
     if ( ! actPhase.duration && actPhase.action == 'speak' )
-      actPhase.duration = Math.min( 1500, actPhase.value.join(' ').length * 120 );
+      actPhase.duration = Math.min( 1500, actPhase.value.length * 120 );
 
     var [ action, prop ] = actPhase.action.split(':');
 

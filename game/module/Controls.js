@@ -8,7 +8,7 @@ var DEFAULT_ACTION =  'look at';
 var StateModel = Backbone.Model.extend({
   defaults: {
     action:   DEFAULT_ACTION,
-    entity:   null,
+    sprite:   null,
     isActive: false
   }
 });
@@ -29,22 +29,22 @@ export class Controls {
 
     this._state = new StateModel();
     this._state.on('change:isActive',             this.onIsActiveChange, this );
-    this._state.on('change:action change:entity', this.updateDescriptor, this );
+    this._state.on('change:action change:sprite', this.updateDescriptor, this );
 
     // mouseover
-    this.game.messenger.subscribe('entity/mouseover', entity => {
+    this.game.messenger.subscribe('sprite/mouseover', sprite => {
       if ( this._state.get('isActive') ) return;
-      this._state.set('entity', entity );
+      this._state.set('sprite', sprite );
     });
     // mouseout
-    this.game.messenger.subscribe('entity/mouseout', entity => {
+    this.game.messenger.subscribe('sprite/mouseout', sprite => {
       if ( this._state.get('isActive') ) return;
-      this._state.set('entity', entity );
+      this._state.set('sprite', null );
     });
     // click
-    this.game.messenger.subscribe('entity/click', entity => {
+    this.game.messenger.subscribe('sprite/click', sprite => {
       if ( this._state.get('act') ) return;
-      this._state.set('entity', entity );
+      this._state.set('sprite', sprite );
       this._state.set('isActive', true );
     });
 
@@ -91,12 +91,12 @@ export class Controls {
   updateDescriptor ( stateModel ) {
 
     var action = stateModel.get('action');
-    var entity = stateModel.get('entity');
+    var sprite = stateModel.get('sprite');
 
     var text = Utils.capitalize( action );
 
-    if ( entity )
-      text += ' ' + Utils.capitalize( entity.id );
+    if ( sprite )
+      text += ' ' + Utils.capitalize( sprite.id );
 
     this.$actionDescriptor.innerHTML = text;
 

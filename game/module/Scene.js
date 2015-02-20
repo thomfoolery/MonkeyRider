@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import Backbone from 'backbone';
-import {Entity} from 'game/module/Entity';
+import {Sprite} from 'game/module/Sprite';
 import {Background} from 'game/module/Background';
 
 export class Scene {
@@ -25,13 +25,13 @@ export class Scene {
     this.game.stage.addChild( this.layers[0] );
     this.game.stage.addChild( this.layers[1] );
 
-    this.entities = [];
-    this.game.sceneConfig.gameObjects.entities.forEach( function ( cfg ) {
-      this.addEntity( cfg );
+    this.sprites = [];
+    this.game.sceneConfig.gameObjects.sprites.forEach( function ( cfg ) {
+      this.addSprite( cfg );
     }.bind( this ));
 
     if ( this.game.player )
-      this.layers[0].addChild( this.game.player._sprite );
+      this.layers[ 0 ].addChild( this.game.player._sprite );
 
     this.mousePosition = {};
     this.game.stage.mousemove = this.onMouseMove.bind( this );
@@ -49,13 +49,13 @@ export class Scene {
 
   }
 
-  addEntity ( cfg ) {
+  addSprite ( cfg ) {
 
-    var entity = new Entity( cfg, this.game );
-    this.layers[ cfg.z || 0 ].addChild( entity._sprite );
-    this.entities.push( entity );
+    var sprite = new Sprite( cfg, this.game );
+    this.layers[ cfg.z || 0 ].addChild( sprite._sprite );
+    this.sprites.push( sprite );
 
-    return entity;
+    return sprite;
 
   }
 
@@ -102,8 +102,8 @@ export class Scene {
       layer.x = this.game.viewport.x * -1;
     }.bind( this ));
 
-    this.entities.forEach( function ( entity ) {
-      entity.update();
+    this.sprites.forEach( function ( sprite ) {
+      sprite.update( timelapse );
     }.bind( this ));
 
   }
@@ -120,7 +120,7 @@ export class Scene {
       meta: this.game.sceneConfig.meta,
       gameObjects: {
         backgrounds: [],
-        entities: [],
+        sprites: [],
         items: this.items.toArray()
       }
     };
@@ -129,8 +129,8 @@ export class Scene {
       obj.gameObjects.backgrounds.push( bg.toJSON() );
     });
 
-    this.entities.forEach( entities => {
-      obj.gameObjects.entities.push( entities.toJSON() );
+    this.sprites.forEach( sprites => {
+      obj.gameObjects.sprites.push( sprites.toJSON() );
     });
 
     return obj;
@@ -150,8 +150,8 @@ export class Scene {
        background.destroy();
      }.bind( this ));
 
-     this.entities.forEach( function ( entity ) {
-       entity.destroy();
+     this.sprites.forEach( function ( sprite ) {
+       sprite.destroy();
      }.bind( this ));
 
      this.layers.forEach( function ( layer ) {
@@ -159,7 +159,7 @@ export class Scene {
      }.bind( this ));
 
      delete this.backgrounds;
-     delete this.entities;
+     delete this.sprites;
      delete this.layers;
      delete this.items;
 

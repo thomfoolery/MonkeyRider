@@ -1,3 +1,6 @@
+var FONT_SIZE = 6;
+var MAX_LINE_LENGTH = 15;
+
 export class Speaker {
 
   constructor ( game ) {
@@ -14,10 +17,21 @@ export class Speaker {
 
     if ( actor.speech = speech ) {
 
+      let tmp = actor.speech.split(' ');
+      actor.speech = [''];
+      tmp.forEach( word => {
+        var len  = actor.speech.length;
+        var line = actor.speech[ len -1 ];
+        if ( line.length + word.length < MAX_LINE_LENGTH )
+          actor.speech[ len -1 ] = actor.speech[ len -1 ] + word + ' ';
+        else
+          actor.speech.push( word + ' ' );
+      });
+
       let offset = 0;
       let cfg = {
-        font: "5px monospace",
-        fill: actor.speechColor,
+        font: FONT_SIZE + "px monospace",
+        fill: '#' + actor.speechColor,
         stroke: 'black',
         strokeThickness: 2
       };
@@ -29,7 +43,7 @@ export class Speaker {
         textSprite.resolution = 3;
         textSprite.anchor.x = 0;
         textSprite.anchor.y = 0;
-        textSprite.y = index * 6;
+        textSprite.y = index * ( FONT_SIZE + 1 );
 
         offset += 6;
 

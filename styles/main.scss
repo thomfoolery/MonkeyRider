@@ -1,0 +1,60 @@
+section.script-editor {
+  h1 {
+    margin-top: 0;
+  }
+
+  .nav-tabs {
+    > li {
+      border-bottom: 1px solid #eee;
+
+      > a {
+        background-color: #f6f6f6;
+        margin: 0 5px;
+        border-bottom: none;
+      }
+    }
+
+    .active {
+      border-bottom: none;
+
+      a {
+        background-color: white;
+      }
+    }
+  }
+
+  .act {
+    .panel-title {
+      display: inline-block;
+      line-height: 34px;
+    }
+
+    .panel-body {
+      padding: 0 15px;
+
+      .btn-block.btn-success {
+        margin: 10px 0;
+      }
+
+      .row {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .row:nth-child(even) {
+        background-color: #f6f6f6;
+      }
+
+      .row.editing {
+        background-color: lighten( #5bc0de, 30% );
+      }
+
+      .label {
+        display: block;
+        text-align: center;
+        font-size: 1.2em;
+        padding: 5px;
+      }
+    }
+  }
+}
