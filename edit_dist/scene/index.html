@@ -14,40 +14,35 @@
             </scene-viewer>
           </div>
 
-          <form class="well" submit.delegate="submitBackground( $event )">
-            <fieldset if.bind="M.game.scene">
-
-              <legend data-toggle="collapse" data-target="#bg-panel">
+          <form class="panel panel-default" if.bind="M.game.scene" submit.delegate="submitBackground( $event )">
+            <div class="panel-heading">
+              <div class="panel-title">
                 Backgrounds
-                <span class="caret"></span>
-              </legend>
-
-              <div id="bg-panel" class="collapse">
-                <div class="row" repeat.for="bg of M.game.scene.backgrounds">
-                  <div class="col-xs-2 form-group">
-                    <label for="bg-${$index}-field-id">ID</label>
-                    <input type="text" id="bg-${$index}-field-id" value.bind="bg.id" class="form-control">
-                  </div>
-                  <div class="col-xs-2 form-group">
-                    <label for="bg-${$index}-field-tint">Tint</label>
-                    <input type="text" id="bg-${$index}-field-tint" value.bind="bg.tint" class="form-control">
-                  </div>
-                  <div class="col-xs-2 form-group">
-                    <label for="bg-${$index}-field-parallax">Parallax</label>
-                    <input type="text" id="bg-${$index}-field-parallax" value.bind="bg.parallax" class="form-control">
-                  </div>
-                  <div class="col-xs-6 form-group">
-                    <label for="bg-${$index}-field-image-url">Image URL</label>
-                    <input type="text" id="bg-${$index}-field-imageUrl" value="${bg.imageUrl}" class="form-control">
-                  </div>
-                </div>
-                <div class="text-right">
-                  <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-
               </div>
-
-            </fieldset>
+            </div>
+            <div class="panel-body">
+              <div class="row" repeat.for="bg of M.game.scene.backgrounds">
+                <div class="col-xs-2 form-group">
+                  <label for="bg-${$index}-field-id">ID</label>
+                  <input type="text" id="bg-${$index}-field-id" value.bind="bg.id" class="form-control">
+                </div>
+                <div class="col-xs-2 form-group">
+                  <label for="bg-${$index}-field-tint">Tint</label>
+                  <input type="text" id="bg-${$index}-field-tint" value.bind="bg.tint" class="form-control">
+                </div>
+                <div class="col-xs-2 form-group">
+                  <label for="bg-${$index}-field-parallax">Parallax</label>
+                  <input type="text" id="bg-${$index}-field-parallax" value.bind="bg.parallax" class="form-control">
+                </div>
+                <div class="col-xs-6 form-group">
+                  <label for="bg-${$index}-field-image-url">Image URL</label>
+                  <input type="text" id="bg-${$index}-field-imageUrl" value="${bg.imageUrl}" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer text-right">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
           </form>
 
         </div>
@@ -55,32 +50,32 @@
         <div class="col-xs-4">
 
           <!-- sprite list -->
-          <div class="well" if.bind="!M.sprite&&M.game.scene">
-            <strong>Sprites</strong>
-            <ul class="list-unstyled">
-              <li repeat.for="sprite of M.game.scene.sprites">
-                <a click.delegate="$parent.selectSprite( sprite )">
-                  ${sprite.id}
-                </a>
-              </li>
-            </ul>
-          <div>
+          <div class="panel panel-default" if.bind="!M.sprite.id&&M.game.scene">
+            <div class="panel-heading">
+              <div class="panel-title">
+                Sprites
+              </div>
+            </div>
+            <div class="panel-body">
+              <ul class="list-unstyled">
+                <li repeat.for="sprite of M.game.scene.sprites">
+                  <a click.delegate="$parent.selectSprite( sprite )">
+                    ${sprite.id}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <!-- sprite details -->
-          <form class="well" if.bind="M.sprite.id" submit.delegate="submitSprite( $event )">
-            <fieldset>
-
-              <div class="row">
-                <div class="col-xs-8">
-                  <legend>
-                    ${M.sprite.id | capitalize}
-                  </legend>
-                </div>
-                <div class="col-xs-4">
-                  <a href="#/script/0/${M.sprite.id}" class="btn btn-block btn-default pull-right">Script</a>
-                </div>
+          <form class="panel panel-default" if.bind="M.sprite.id" submit.delegate="submitSprite( $event )">
+            <div class="panel-heading">
+              <div class="panel-title clearfix">
+                ${M.sprite.id | capitalize}
+                <a href="#/script/0/${M.sprite.id}" class="btn btn-primary pull-right">Edit Script</a>
               </div>
-
+            </div>
+            <div class="panel-body">
               <div class="row">
                 <div class="col-xs-6 form-group">
                   <label>ID</label>
@@ -95,7 +90,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-3 form-group">
                   <label>X</label>
@@ -114,7 +108,6 @@
                   <input type="number" step.bind="1" min="-1" max="1" id="item-field-dir" value.bind="M.sprite.dir" class="form-control">
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-6 form-group">
                   <label>Width</label>
@@ -125,7 +118,6 @@
                   <input type="number" step.bind="10" id="item-field-height" value.bind="M.sprite.height" class="form-control">
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-6 form-group">
                   <label>Scale X</label>
@@ -136,7 +128,6 @@
                   <input type="number" step.bind="0.1" id="item-field-scale-y" value.bind="M.sprite.scaleY" class="form-control">
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-6 form-group">
                   <label>Anchor X</label>
@@ -147,7 +138,6 @@
                   <input type="number" step.bind="0.1" id="item-field-anchor-y" value.bind="M.sprite.anchorY" class="form-control">
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-6 form-group">
                   <label>Tint</label>
@@ -158,21 +148,19 @@
                   <input type="text" id="item-field-speechColor" value.bind="M.sprite.speechColor" class="form-control">
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-12 form-group">
                   <label>Image URL</label>
                   <input type="text" id="item-field-imageUrl" value="${M.sprite.imageUrl}" class="form-control">
                 </div>
               </div>
-
-              <div class="text-right">
-                <button type="button" class="btn btn-default" click.delegate="cancelSprite( $event )">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save</button>
-              </div>
-
-            </fieldset>
+            </div>
+            <div class="panel-footer text-right">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="button" class="btn btn-default" click.delegate="cancelSprite( $event )">Cancel</button>
+            </div>
           </form>
+
         </div>
 
       </div>

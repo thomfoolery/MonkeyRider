@@ -24,16 +24,15 @@ section.script-editor {
   }
 
   .act {
-    .panel-title {
-      display: inline-block;
-      line-height: 34px;
-    }
-
     .panel-body {
       padding: 0 15px;
 
       .btn-block.btn-success {
         margin: 10px 0;
+      }
+
+      .table-head {
+        background-color: #ddd;
       }
 
       .row {
@@ -56,5 +55,14 @@ section.script-editor {
         padding: 5px;
       }
     }
+  }
+}
+
+.panel-title {
+  display: block;
+  line-height: 34px;
+
+  .btn-primary {
+    color: white;
   }
 }
