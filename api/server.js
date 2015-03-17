@@ -15,6 +15,16 @@ server.route({
 
 server.route({
   method: 'GET',
+  path: '/edit/jspm_packages/{file*}',
+  handler: {
+    directory: {
+      path: './jspm_packages/'
+    }
+  }
+});
+
+server.route({
+  method: 'GET',
   path: '/',
   handler: {
     file: function (request) {

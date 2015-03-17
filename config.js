@@ -1,9 +1,8 @@
 System.config({
   "paths": {
-    "*": "*.js",
     "game/*": "/game/*.js",
-    "github:*": "/jspm_packages/github/*.js",
-    "npm:*": "/jspm_packages/npm/*.js"
+    "npm:*": "/jspm_packages/npm/*.js",
+    "github:*": "/jspm_packages/github/*.js"
   }
 });
 
@@ -18,7 +17,7 @@ System.config({
     "backbone": "npm:backbone@1.1.2",
     "bootstrap": "github:twbs/bootstrap@3.3.2",
     "font-awesome": "npm:font-awesome@4.3.0",
-    "lodash": "npm:lodash@3.0.1",
+    "lodash": "npm:lodash@3.5.0",
     "github:aurelia/binding@0.3.3": {
       "aurelia-dependency-injection": "github:aurelia/dependency-injection@0.4.2",
       "aurelia-metadata": "github:aurelia/metadata@0.3.1",
@@ -103,22 +102,22 @@ System.config({
       "aurelia-task-queue": "github:aurelia/task-queue@0.2.3",
       "core-js": "npm:core-js@0.4.10"
     },
-    "github:jspm/nodelibs-process@0.1.0": {
-      "process": "npm:process@0.10.0"
+    "github:jspm/nodelibs-process@0.1.1": {
+      "process": "npm:process@0.10.1"
     },
     "github:twbs/bootstrap@3.3.2": {
       "css": "github:systemjs/plugin-css@0.1.0",
       "jquery": "github:components/jquery@2.1.3"
     },
     "npm:backbone@1.1.2": {
-      "process": "github:jspm/nodelibs-process@0.1.0",
-      "underscore": "npm:underscore@1.7.0"
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "underscore": "npm:underscore@1.8.2"
     },
     "npm:core-js@0.4.10": {
-      "process": "github:jspm/nodelibs-process@0.1.0"
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:lodash@3.0.1": {
-      "process": "github:jspm/nodelibs-process@0.1.0"
+    "npm:lodash@3.5.0": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     }
   }
 });

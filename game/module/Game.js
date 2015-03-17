@@ -1,6 +1,6 @@
 'use strict';
 
-import _        from 'lodash';
+import _          from 'lodash';
 import {Mover}    from 'game/module/Mover';
 import {Scene}    from 'game/module/Scene';
 import {Player}   from 'game/module/Player';

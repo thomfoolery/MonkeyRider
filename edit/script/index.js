@@ -1,7 +1,7 @@
 import {Fetch} from '../Service/Fetch';
 
 
-class SriptLine {
+class ScriptLine {
 
   constructor ( line ) {
 
