@@ -1,0 +1,225 @@
+{
+
+  "meta": {
+    "sceneIndex": 0,
+    "width": 1200
+  },
+
+  "gameObjects": {
+
+    "backgrounds": [
+      {
+        "id": "bg.1",
+        "parallax": -0.025,
+        "imageUrl": "night.stars.1.png"
+      },{
+        "id": "bg.2",
+        "parallax": -0.1,
+        "imageUrl": "arizona.1.png"
+      },{
+        "id": "bg.3",
+        "parallax": -0.2,
+        "imageUrl": "arizona.2.png"
+      }
+    ],
+
+    "sprites": [
+      {
+        "id": "bar",
+        "x": 680,
+        "y": 0,
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["bar.png"]
+          }
+        }
+      },{
+        "id": "bar.sign",
+        "x": 590,
+        "y": 120,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["bar.sign.png"]
+          }
+        }
+      },{
+        "id": "poster.1",
+        "x": 620,
+        "y": 10,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["poster.1.png"]
+          }
+        }
+      },{
+        "id": "poster.2",
+        "x": 665,
+        "y": 10,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["poster.2.png"]
+          }
+        }
+      },{
+        "id": "poster.3",
+        "x": 710,
+        "y": 10,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["poster.3.png"]
+          }
+        }
+      },{
+        "id": "poster.4",
+        "x": 755,
+        "y": 10,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["poster.4.png"]
+          }
+        }
+      },{
+        "id": "poster.5",
+        "x": 800,
+        "y": 10,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["poster.5.png"]
+          }
+        }
+      },{
+        "id": "wall.light.on",
+        "x": 665,
+        "y": 0,
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["wall.light.on.png"]
+          }
+        }
+      },{
+        "id": "wall.light.off",
+        "x": 800,
+        "y": 0,
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["wall.light.off.png"]
+          }
+        }
+      },{
+        "id": "lamp.post.1",
+        "x": 390,
+        "y": 0,
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["lamp.post.png"]
+          }
+        }
+      },{
+        "id": "lamp.post.2",
+        "x": 975,
+        "y": 0,
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["lamp.post.png"]
+          }
+        }
+      },{
+        "id": "bike.1",
+        "x": 390,
+        "y": 0,
+        "z": 1,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["bike.a.png"]
+          }
+        }
+      },{
+        "id": "bike.2",
+        "x": 362,
+        "y": -2,
+        "tint": "666666",
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["bike.b.png"]
+          }
+        }
+      },{
+        "id": "bike.3",
+        "x": 342,
+        "y": -3,
+        "tint": "444444",
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["bike.c.png"]
+          }
+        }
+      },{
+        "id": "bike.4",
+        "x": 950,
+        "y": -4,
+        "dir": -1,
+        "tint": "999999",
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["bike.b.png"]
+          }
+        }
+      },{
+        "id": "bike.5",
+        "x": 970,
+        "y": -2,
+        "dir": -1,
+        "actionable": false,
+        "states": {
+          "default": {
+            "frames": ["bike.c.png"]
+          }
+        }
+      },{
+        "id": "bar.door",
+        "x": 530,
+        "y": 0,
+        "anchorX": 0.3,
+        "actionable": true,
+        "speechColor": "9B30FF",
+        "states": {
+          "default": {
+            "frames": ["bar.door.closed.png"]
+          },
+          "open": {
+            "frames": ["bar.door.open.png"]
+          }
+        }
+      },{
+        "id": "dumpster",
+        "x": 900,
+        "y": 0,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["dumpster.closed.png"]
+          },
+          "open": {
+            "frames": ["dumpster.open.png"]
+          }
+        }
+      }
+    ]
+
+  }
+}
