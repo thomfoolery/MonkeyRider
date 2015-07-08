@@ -17,14 +17,13 @@ var DEFAULT_ACTION = ACTIONS[0];
 
 export class Player extends Sprite {
 
-  constructor ( cfg, game ) {
+  constructor ( game, cfg ) {
 
     G = game;
 
     super( cfg, game );
 
     this.id = 'player';
-    this.action = null;
 
   }
 
@@ -49,42 +48,82 @@ export class Player extends Sprite {
     return sprite;
   }
 
+  select () {
+
+    this._target = this.getClosestActionable();
+
+    var options = G.script.getActions( this._target )
+      .map( function ( action ) {
+        return {
+          text: action + ' ' + this._target.name,
+          action: action
+        }
+      }, this )
+    ;
+
+    G.menu.setOptions( options );
+
+  }
+
+  perform( action, id = 'default' ) {
+
+    if ( ! action ) return; // exit
+
+    var script = G.script.getScript( this._target, action, id );
+
+    G.director.start( script );
+
+  }
+
   update ( timelapse ) {
 
-    if ( G.input.keys[ G.input.KEY.LEFT ]
-      && G.input.keys[ G.input.KEY.RIGHT ] ) {
-      this.dir = 0;
-    }
+    var k = G.input.keys;
+    var _ = G.input.KEY;
 
-    else if ( G.input.keys[ G.input.KEY.LEFT ] ) {
-      if ( this.dir > -1 ) this.dir = -1;
-      this.destination.x = this.position.x - 5
-    }
+    if ( G.input.mode === 'player' && ! G.director.isActing() ) {
 
-    else if ( G.input.keys[ G.input.KEY.RIGHT ] ) {
-      if ( this.dir < 1 ) this.dir = 1;
-      this.destination.x = this.position.x + 5
-    }
+      if ( k[ _.LEFT ]
+        && k[ _.RIGHT ] ) {
+        this.dir = 0;
+      }
 
-    else if ( G.input.keys[ G.input.KEY.DOWN ] ) {
-      this.state = 'stand.face';
-    }
+      if ( k[ _.LEFT ] ) {
+        if ( this.dir > -1 ) this.dir = -1;
+        this.destination.x = this.position.x - 5
+      }
 
-    else if ( G.input.keys[ G.input.KEY.UP ] ) {
-      this.state = 'stand.back';
-    }
+      if ( k[ _.RIGHT ] ) {
+        if ( this.dir < 1 ) this.dir = 1;
+        this.destination.x = this.position.x + 5
+      }
 
-    else if ( G.input.keys[ G.input.KEY.SELECT ] ) {
+      if ( k[ _.DOWN ] ) {
+        this.state = 'stand.face';
+      }
 
-      var sprite = this.getClosestActionable();
+      if ( k[ _.UP ] ) {
+        this.state = 'stand.back';
+      }
 
-      delete G.input.keys[ G.input.KEY.SELECT ];
+      if ( k[ _.SELECT ] ) {
 
-      if ( sprite )
-        return G.menu.setActionText( sprite.id );
+        delete k[ _.SELECT ];
+
+        if ( G.editor.isEditing )
+          G.editor.close();
+
+        this.select();
+
+      }
     }
 
     super.update( timelapse );
+
+  }
+
+  reset () {
+
+    this._target = null;
 
   }
 

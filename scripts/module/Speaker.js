@@ -1,71 +1,68 @@
+'use strict';
+
+import _ from 'lodash';
+
+var G;
+
 var FONT_SIZE = 6;
-var MAX_LINE_LENGTH = 15;
+var FONT_COLOR = 'ffffff';
+var WORD_WRAP_WIDTH = 50;
 
-export class Speaker {
+var Speaker = {
 
-  constructor ( game ) {
+  init: function ( game ) {
 
-    this._textContainer = new PIXI.Container();
+    G = game;
 
-    this.game = game;
+    this._textContainer             = new PIXI.Container();
+    this._textContainer.position    = new PIXI.Point( 0, - this._sprite.height );
 
-  }
+    this._container.addChild( this._textContainer );
 
-  speak ( actor, speech ) {
+  },
 
+  speak: function ( speech ) {
+
+    if ( ! speech || speech.length === 0) return; // exit
+
+    if ( _.isArray( speech ) ) {
+      this.chooseSpeech ( speech );
+      return; // exit
+    }
+
+    this.speech = speech;
     this._textContainer.removeChildren();
 
-    if ( actor.speech = speech ) {
+    var sprite = new PIXI.Text( this.speech, {
+      font: FONT_SIZE + "px monospace",
+      fill: '#' + ( this.speechColor || FONT_COLOR ),
+      stroke: 'black',
+      strokeThickness: 2,
+      lineHeight: FONT_SIZE * 1.2,
+      wordWrap: true,
+      wordWrapWidth: WORD_WRAP_WIDTH
+    });
 
-      let tmp = actor.speech.split(' ');
-      actor.speech = [''];
-      tmp.forEach( word => {
-        var len  = actor.speech.length;
-        var line = actor.speech[ len -1 ];
-        if ( line.length + word.length < MAX_LINE_LENGTH )
-          actor.speech[ len -1 ] = actor.speech[ len -1 ] + word + ' ';
-        else
-          actor.speech.push( word + ' ' );
-      });
+    sprite.anchor.y   = 1;
+    sprite.resolution = GAME.viewport.resolution;
 
-      let offset = 0;
-      let cfg = {
-        font: FONT_SIZE + "px monospace",
-        fill: '#' + actor.speechColor,
-        stroke: 'black',
-        strokeThickness: 2
-      };
+    this._textContainer.addChild( sprite );
 
-      actor.speech.forEach( function ( line, index ) {
+  },
 
-        var textSprite = new PIXI.Text( line, cfg );
+  chooseSpeech: function ( speechOptions ) {
 
-        textSprite.resolution = 3;
-        textSprite.anchor.x = 0;
-        textSprite.anchor.y = 0;
-        textSprite.y = index * ( FONT_SIZE + 1 );
+    G.menu.setOptions( speechOptions );
 
-        offset += 6;
+  },
 
-        this._textContainer.addChild( textSprite );
+  clearSpeech: function () {
 
-      }.bind( this ));
-
-      this._textContainer.position.x = actor.x;
-      this._textContainer.position.y = actor.y - actor.height - offset - 2;
-
-      actor._sprite.parent.addChild( this._textContainer );
-    }
-    else {
-      actor._sprite.parent.removeChild( this._textContainer );
-    }
-
-  }
-
-  destroy () {
-
-    this._textContainer.removeStageReference();
+    this.speech = null;
+    this._textContainer.removeChildren();
 
   }
 
 }
+
+export default Speaker;

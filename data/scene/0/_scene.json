@@ -10,14 +10,17 @@
     "backgrounds": [
       {
         "id": "bg.1",
+        "name": "bg",
         "parallax": -0.025,
         "imageUrl": "night.stars.1.png"
       },{
         "id": "bg.2",
+        "name": "bg",
         "parallax": -0.1,
         "imageUrl": "arizona.1.png"
       },{
         "id": "bg.3",
+        "name": "bg",
         "parallax": -0.2,
         "imageUrl": "arizona.2.png"
       }
@@ -26,6 +29,7 @@
     "sprites": [
       {
         "id": "bar",
+        "name": "bar",
         "x": 680,
         "y": 0,
         "actionable": false,
@@ -36,6 +40,7 @@
         }
       },{
         "id": "bar.sign",
+        "name": "bar",
         "x": 590,
         "y": 120,
         "actionable": true,
@@ -46,6 +51,7 @@
         }
       },{
         "id": "poster.1",
+        "name": "poster",
         "x": 620,
         "y": 10,
         "actionable": true,
@@ -56,6 +62,7 @@
         }
       },{
         "id": "poster.2",
+        "name": "poster",
         "x": 665,
         "y": 10,
         "actionable": true,
@@ -66,6 +73,7 @@
         }
       },{
         "id": "poster.3",
+        "name": "poster",
         "x": 710,
         "y": 10,
         "actionable": true,
@@ -76,6 +84,7 @@
         }
       },{
         "id": "poster.4",
+        "name": "poster",
         "x": 755,
         "y": 10,
         "actionable": true,
@@ -86,6 +95,7 @@
         }
       },{
         "id": "poster.5",
+        "name": "poster",
         "x": 800,
         "y": 10,
         "actionable": true,
@@ -96,6 +106,7 @@
         }
       },{
         "id": "wall.light.on",
+        "name": "wall",
         "x": 665,
         "y": 0,
         "actionable": false,
@@ -106,6 +117,7 @@
         }
       },{
         "id": "wall.light.off",
+        "name": "wall",
         "x": 800,
         "y": 0,
         "actionable": false,
@@ -116,6 +128,7 @@
         }
       },{
         "id": "lamp.post.1",
+        "name": "lamp",
         "x": 390,
         "y": 0,
         "actionable": false,
@@ -126,6 +139,7 @@
         }
       },{
         "id": "lamp.post.2",
+        "name": "lamp",
         "x": 975,
         "y": 0,
         "actionable": false,
@@ -136,6 +150,7 @@
         }
       },{
         "id": "bike.1",
+        "name": "bike",
         "x": 390,
         "y": 0,
         "z": 1,
@@ -147,6 +162,7 @@
         }
       },{
         "id": "bike.2",
+        "name": "bike",
         "x": 362,
         "y": -2,
         "tint": "666666",
@@ -158,6 +174,7 @@
         }
       },{
         "id": "bike.3",
+        "name": "bike",
         "x": 342,
         "y": -3,
         "tint": "444444",
@@ -169,6 +186,7 @@
         }
       },{
         "id": "bike.4",
+        "name": "bike",
         "x": 950,
         "y": -4,
         "dir": -1,
@@ -181,6 +199,7 @@
         }
       },{
         "id": "bike.5",
+        "name": "bike",
         "x": 970,
         "y": -2,
         "dir": -1,
@@ -192,6 +211,7 @@
         }
       },{
         "id": "bar.door",
+        "name": "bar door",
         "x": 530,
         "y": 0,
         "anchorX": 0.3,
@@ -206,7 +226,51 @@
           }
         }
       },{
+        "id": "bobby",
+        "name": "bobby",
+        "x": 550,
+        "y": 0,
+        "speaker": true,
+        "actionable": true,
+        "states": {
+          "default": {
+            "speed": 1,
+            "frames": [
+              "bobby.stand.face.1.png",
+              "bobby.stand.face.2.png",
+              "bobby.stand.face.2.png",
+              "bobby.stand.face.2.png",
+              "bobby.stand.face.3.png",
+              "bobby.stand.face.4.png",
+              "bobby.stand.face.4.png",
+              "bobby.stand.face.4.png",
+              "bobby.stand.face.3.png",
+              "bobby.stand.face.1.png",
+              "bobby.stand.face.1.png"
+            ]
+          },
+          "stand": {
+            "frames": [
+              "bobby.stand.face.1.png"
+            ]
+          }
+        }
+      },{
+        "id": "2bit",
+        "name": "2bit",
+        "x": 600,
+        "y": 0,
+        "dir": -1,
+        "speaker": true,
+        "actionable": true,
+        "states": {
+          "default": {
+            "frames": ["2bit.stand.face.2.png"]
+          }
+        }
+      },{
         "id": "dumpster",
+        "name": "dumpster",
         "x": 900,
         "y": 0,
         "actionable": true,

@@ -40,6 +40,8 @@ export class Scene {
       this.addSprite( sprite );
     }.bind( this ));
 
+    this.sprites['player'] = G.player;
+
   }
 
   addBackground ( cfg ) {
@@ -53,7 +55,8 @@ export class Scene {
 
   addSprite ( sprite ) {
 
-    this.layers[ sprite.z || 0 ].addChild( sprite._sprite );
+    this.layers[ sprite.z || 0 ].addChild( sprite._container );
+    this.sprites[ sprite.id ] = sprite;
     this.sprites.push( sprite );
 
     if ( sprite.actionable )
@@ -69,6 +72,16 @@ export class Scene {
       this.actionables.splice( this.actionables.indexOf( sprite ), 1 );
 
     this.sprites.splice( this.sprites.indexOf( sprite ), 1 );
+  }
+
+  findSpriteByPoint ( x, y ) {
+
+    var match;
+    this.sprites.forEach( function ( sprite ) {
+      if ( sprite._sprite.containsPoint( new PIXI.Point( x / G.viewport.resolution, y / G.viewport.resolution ) ) )
+        match = sprite;
+    }, this );
+    return match;
   }
 
   update ( timelapse ) {
@@ -97,7 +110,7 @@ export class Scene {
 
   }
 
-  toString () {
+  save () {
 
     return JSON.stringify( this.toJSON() );
 

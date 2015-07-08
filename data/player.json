@@ -6,6 +6,8 @@
 
   "speed": 100,
 
+  "speaker": true,
+
   "states": {
     "default": {
       "frames": [

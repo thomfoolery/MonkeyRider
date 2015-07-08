@@ -1,11 +1,16 @@
 'use strict';
 
+import _         from 'lodash';
+import Backbone  from 'backbone';
+import Speaker   from 'scripts/module/Speaker';
+
 var G;
 
 var PUBLIC_PROPS = {
+  "name":        { type: 'text' },
   "id":          { type: 'text' },
-  "x":           { type: 'number', step: 10 },
-  "y":           { type: 'number', step: 10 },
+  "x":           { type: 'number' },
+  "y":           { type: 'number' },
   "z":           { type: 'number' },
   "dir":         { type: 'number' },
   "tint":        { type: 'number' },
@@ -21,7 +26,7 @@ var PUBLIC_PROPS = {
 
 export class Sprite {
 
-  constructor( cfg, game ) {
+  constructor ( cfg, game ) {
 
     G = game;
 
@@ -45,14 +50,18 @@ export class Sprite {
 
   configure ( cfg ) {
 
-    this.actionable       = !! cfg.actionable;
+    this.actionable          = !! cfg.actionable;
 
-    this._sprite          = new PIXI.Sprite();
+    this._container          = new PIXI.Container();
+    this._sprite             = new PIXI.Sprite();
 
-    this._sprite.position = this.position;
-    this._sprite.anchor   = this.anchor;
-    this._sprite.scale    = this.scale;
-    this._sprite.z        = cfg.z;
+    this._container.addChild( this._sprite );
+
+    this._container.position = this.position;
+    this._sprite.anchor      = this.anchor;
+    this._sprite.scale       = this.scale;
+
+    this.z                   = cfg.z;
 
     var states = {};
     Object.keys( cfg.states ).forEach( state => {
@@ -71,12 +80,19 @@ export class Sprite {
     this.animIndex   = 0;
 
     this.editablePropertyKeys().forEach( prop => {
-      if ( cfg.hasOwnProperty( prop ) )
-        if ( prop === 'y' )
-          this[ prop ] = G.viewport.height - cfg[ prop ];
-        else
-          this[ prop ] = cfg[ prop ];
+      if ( ! cfg.hasOwnProperty( prop ) ) return;
+
+      if ( prop === 'y' )
+        this[ prop ] = G.viewport.height - cfg[ prop ];
+      else
+        this[ prop ] = cfg[ prop ];
     });
+
+    if ( cfg.speaker ) {
+      _.extend( this, Speaker );
+      Speaker.init.call( this, G );
+    }
+
   }
 
   get x () { return this.position.x; }
@@ -112,14 +128,14 @@ export class Sprite {
   get visible () { return this._sprite.visible; }
   set visible ( value ) { this._sprite.visible = !! value }
 
-  get state () { return this._state; }
-  set state ( state ) { this._state = state; this.animIndex = 0; this._animPhase = 0; this.isAnimating = ( this._animStates[ state ].frames.length > 1 ) ? true : false ; }
+  get state () { return this._animState; }
+  set state ( state ) { this._animState = state; this.animIndex = 0; this._animPhase = 0; this.isAnimating = ( this._animStates[ state ].frames.length > 1 ) ? true : false ; }
 
   get animPhase () { return this._animPhase; }
   set animPhase ( phase ) {
     if ( ! this.isAnimating ) return;
     this._animPhase = phase;
-    if ( this._animPhase > this._animStates[ this._state ].speed * 1000 ) {
+    if ( this._animPhase > this._animStates[ this._animState ].speed * 1000 ) {
       this._animPhase = 0;
       this.animIndex++;
     }
@@ -127,11 +143,11 @@ export class Sprite {
 
   get animIndex () { return this._animIndex; }
   set animIndex ( value ) {
-    if ( value > this._animStates[ this._state ].frames.length -1 )
+    if ( value > this._animStates[ this._animState ].frames.length -1 )
       this._animIndex = 0;
     else
       this._animIndex = value;
-    this._sprite.texture = this._animStates[ this._state ].frames[ this._animIndex ];
+    this._sprite.texture = this._animStates[ this._animState ].frames[ this._animIndex ];
   }
 
   get interactive () { this._sprite.interactive; }

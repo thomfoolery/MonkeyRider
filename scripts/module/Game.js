@@ -3,18 +3,22 @@
 import _          from 'lodash';
 import {Menu}     from 'game/module/Menu';
 import {Input}    from 'game/module/Input';
-import {Mover}    from 'game/module/Mover';
 import {Scene}    from 'game/module/Scene';
+import {Mover}    from 'game/module/Mover';
+import {Script}   from 'game/module/Script';
 import {Player}   from 'game/module/Player';
-import {Speaker}  from 'game/module/Speaker';
+import {Editor}   from 'game/module/Editor';
 import {Director} from 'game/module/Director';
 import Messenger  from 'event-aggregator';
 
-var playerCFG;
-var sceneCFG;
-var menuCfg;
-var script;
 var Opts;
+var configs = {
+  sprites: null,
+  player: null,
+  script: null,
+  scene: null,
+  menu: null
+};
 
 export class Game {
 
@@ -22,7 +26,9 @@ export class Game {
 
     Opts = options;
 
-    this.DOMcontainer = document.querySelector('#game-container');
+    this.DOMcontainer = document.createElement('div');
+    document.body.appendChild( this.DOMcontainer );
+    this.DOMcontainer.id = 'game-container';
 
     this.viewport = {
       x: 0,
@@ -34,112 +40,105 @@ export class Game {
 
     this.messenger = new Messenger.EventAggregator();
 
+    history.replaceState('player', 'player');
+    window.addEventListener('popstate', this.onPopState.bind( this ));
+
+    window.onbeforeunload = function() {
+      return "Are you sure you want to leave?";
+    }
+
     this.load();
+
+  }
+
+  onPopState ( e ) {
+
+    this.input.mode = e.state;
+
+    if ( this.input.mode != 'player' )
+      return; // exit
+
+    this.menu.reset();
 
   }
 
   load () {
 
     var self = this;
+    var promises = [];
     var sceneIndex = this.sceneIndex || 0;
+
+    Opts.sceneCfgUrl  = Opts.sceneCfgUrl.replace('${sceneIndex}', sceneIndex );
+    Opts.scriptCfgUrl = Opts.scriptCfgUrl.replace('${sceneIndex}', sceneIndex );
 
     this.assetLoaders = [];
 
-    var playerCfgLoader = new PIXI.loaders.Loader();
-    playerCfgLoader.add('player.json', Opts.playerCfgUrl );
-    playerCfgLoader.on('complete', ( loader, resource ) => {
-      playerCFG = resource['player.json'].data;
-      onComplete();
-    });
-    this.assetLoaders.push( playerCfgLoader );
-    playerCfgLoader.load();
+    promises.push( loadAsset('sprites.json', Opts.spritesCfgUrl, configs.sprites ) );
+    promises.push( loadAsset('player.json',  Opts.playerCfgUrl, configs.player ) );
+    promises.push( loadAsset('script.json',  Opts.scriptCfgUrl, configs.script ) );
+    promises.push( loadAsset('scene.json',   Opts.sceneCfgUrl,  configs.scene ) );
+    promises.push( loadAsset('menu.json',    Opts.menuCfgUrl,   configs.menu ) );
 
-    var sceneCfgLoader = new PIXI.loaders.Loader();
-    sceneCfgLoader.add('config.json', Opts.sceneCfgUrl.replace('${sceneIndex}', sceneIndex ) );
-    sceneCfgLoader.on('complete', ( loader, resource ) => {
-      sceneCFG = resource['config.json'].data;
-      onComplete();
-    });
-    this.assetLoaders.push( sceneCfgLoader );
-    sceneCfgLoader.load();
+    Promise
+      .all( promises )
+      .then( this.start.bind( this ) )
+    ;
 
-    var menuCfgLoader = new PIXI.loaders.Loader();
-    menuCfgLoader.add('menu.json', Opts.menuCfgUrl );
-    menuCfgLoader.on('complete', ( loader, resource ) => {
-      menuCfg = resource['menu.json'].data;
-      onComplete();
-    });
-    this.assetLoaders.push( menuCfgLoader );
-    menuCfgLoader.load();
-
-    var scriptLoader = new PIXI.loaders.Loader();
-    scriptLoader.add('script.json', Opts.scriptUrl.replace('${sceneIndex}', sceneIndex ) );
-    scriptLoader.on('complete', ( loader, resource ) => {
-      script = resource['script.json'].data;
-      onComplete();
-    });
-    this.assetLoaders.push( scriptLoader );
-    scriptLoader.load();
-
-    var spriteLoader = new PIXI.loaders.Loader();
-    spriteLoader.add('sprite.json', Opts.spriteJsonUrl );
-    spriteLoader.on('complete', ( loader, resource ) => {
-      onComplete();
-    })
-    this.assetLoaders.push( spriteLoader );
-    spriteLoader.load();
-
-    var onComplete = e => {
-
-      var complete = true;
-      self.assetLoaders.forEach( loader => {
-        if ( loader.progress != 100 ) complete = false;
+    function loadAsset( id, url, store ) {
+      return new Promise( function ( resolve, reject ) {
+        var loader = new PIXI.loaders.Loader();
+        loader.add( id, url );
+        loader.on('complete', ( loader, resource ) => {
+          configs[ id.split('.').shift() ] = resource[ id ].data;
+          resolve();
+        })
+        loader.load();
       });
-      if ( ! complete ) return;
-      self.onAssetsLoadComplete();
-
-    };
-
+    }
   }
 
-  onAssetsLoadComplete () {
+  start () {
 
-    sceneCFG.height = this.viewport.height - menuCfg.height;
+    configs.scene.height = this.viewport.height - configs.menu.height;
 
     this.stage    = new PIXI.Container();
     this.renderer = new PIXI.autoDetectRenderer( this.viewport.width, this.viewport.height, { resolution: this.viewport.resolution });
 
+    this.player   = new Player( this, configs.player );
+    this.script   = new Script( this, configs.script );
+    this.scene    = new Scene( this, configs.scene );
+    this.menu     = new Menu( this, configs.menu );
+
+    this.director = new Director( this );
+    this.editor   = new Editor( this );
     this.input    = new Input( this );
     this.mover    = new Mover( this );
-    this.speaker  = new Speaker( this );
-    this.director = new Director( this );
 
-    this.player   = new Player( playerCFG, this );
-    this.scene    = new Scene( this, sceneCFG );
-    this.menu     = new Menu ( this, menuCfg );
+    this.mode     = 'player';
 
     this.scene.addSprite( this.player );
 
-    this.animate.prevDate = Date.now();
-    requestAnimationFrame( this.animate.bind( this ) );
+    this.update.prevDate = Date.now();
+    requestAnimationFrame( this.update.bind( this ) );
     this.DOMcontainer.appendChild( this.renderer.view );
 
   }
 
-  animate () {
+  update () {
 
     var timelapse;
 
-    requestAnimationFrame( this.animate.bind( this ) );
+    requestAnimationFrame( this.update.bind( this ) );
 
-    this.animate.currDate = Date.now();
-    timelapse = this.animate.currDate - this.animate.prevDate;
-    this.animate.prevDate = this.animate.currDate;
+    this.update.currDate = Date.now();
+    timelapse = this.update.currDate - this.update.prevDate;
+    this.update.prevDate = this.update.currDate;
 
     if ( timelapse > 250 ) return; // exit;
 
-    this.player.update( timelapse );
+    this.director.update( timelapse );
     this.scene.update( timelapse );
+    this.menu.update( timelapse );
 
     this.renderer.render( this.stage );
 
@@ -151,7 +150,6 @@ export class Game {
 
     this.renderer.destroy();
     this.director.destroy();
-    this.speaker.destroy();
     this.player.destroy();
     this.mover.destroy();
     this.scene.destroy();

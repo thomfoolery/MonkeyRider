@@ -11,6 +11,8 @@ export class Input {
 
     G = game;
 
+    this.mode = 'player';
+
     this.keys = [];
 
     this.KEY = {
@@ -34,19 +36,19 @@ export class Input {
 
   }
 
-  onMouseMove ( interactionData ) {
+  // onMouseMove ( interactionData ) {
 
-    var position = interactionData.data.global;
-    this.mouse.position.x = Math.round( position.x );
+  //   var position = interactionData.data.global;
+  //   this.mouse.position.x = Math.round( position.x );
 
-  }
+  // }
 
 
-  onMouseOut ( interactionData ) {
+  // onMouseOut ( interactionData ) {
 
-    this.mouse.position.x = G.viewport.x + (G.viewport.width / 2);
+  //   this.mouse.position.x = G.viewport.x + (G.viewport.width / 2);
 
-  }
+  // }
 
   onKeyDown ( e ) {
     this.keys[ e.keyCode ] = true;
@@ -54,6 +56,10 @@ export class Input {
 
   onKeyUp ( e ) {
     delete this.keys[ e.keyCode ];
+  }
+
+  clear ( keyCode ) {
+    delete this.keys[ keyCode ];
   }
 
   destroy () {

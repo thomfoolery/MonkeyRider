@@ -1,5 +1,7 @@
 'use strict';
 
+var G;
+
 import Backbone from 'backbone';
 
 var StateModel = Backbone.Model.extend({
@@ -15,53 +17,32 @@ export class Director {
 
   constructor ( game ) {
 
-    this.game = game;
+    G = game;
 
     this._state = new StateModel();
 
   }
 
-  startActing () {
+  isActing () {
 
-    var action = this.game.player.action;
+    return !! this._state.get('act');
 
-    if ( ! action ) return;
+  }
 
-    var act;
-    var sprite = this._state.get('sprite');
+  start ( script ) {
 
-    if ( ! action || ! sprite )
-      return this.game.player.action = null;
+    if ( ! script ) return;
 
-    if ( ! this.game.sceneScript[ sprite.id ]
-      || ! this.game.sceneScript[ sprite.id ][ action ] ) {
-
-      act = [{
-        "actor": "player",
-        "action": "speak",
-        "value": "I'm not sure I can do that'"
-      }];
-    }
-    else {
-
-      let script = this.game.sceneScript[ sprite.id ][ action ];
-
-      if ( script.length < 2 )
-        act = script[0];
-      else
-        act = script.shift();
-    }
-
-    var actor = ( act[0].actor === 'sprite' ) ? sprite : this.game.player;
-    var actPhase = act[0];
+    var actPhase = script[0];
+    var actor = G.scene.sprites[ actPhase.actor ];
 
     this.timelapsed = 0;
 
-    act.forEach( function ( actPhase ) {
+    script.forEach( function ( actPhase ) {
       actPhase.complete = false;
     });
 
-    this._state.set('act', act );
+    this._state.set('act', script );
     this._state.set('actor', actor );
     this._state.set('actIndex', 0 );
 
@@ -69,30 +50,35 @@ export class Director {
 
   }
 
-  complete () {
+  act ( actor, actPhase ) {
 
-    this._state.set('act', null );
-    this._state.set('actor', null );
-    this._state.set('actIndex', null );
-    this._state.set( this._state.defaults );
-    this.game.player.action = null;
+    if ( ! actPhase.duration && actPhase.action == 'speak' )
+      actPhase.duration = Math.max( 1000, Math.min( 3000, actPhase.value.length * 120 ) );
+
+    var [ action, prop ] = actPhase.action.split(':');
+
+    this._state.set('actPhase', actPhase )
+
+    if ( prop )
+      actor[ action ]( prop, actPhase.value );
+    else
+      actor[ action ]( actPhase.value );
 
   }
 
   update ( timelapse ) {
 
-    if ( this.game.player )
-      this.game.player.update( timelapse );
+    if ( G.player )
+      G.player.update( timelapse );
 
     var act = this._state.get('act');
 
-    if ( ! act ) return;
+    if ( ! act ) return; // exit
 
     var actIndex = this._state.get('actIndex');
     var actPhase = act[ actIndex ];
 
-    if ( actPhase.complete == true )
-      return;
+    if ( actPhase.complete ) return; // exit
 
     var actor = this._state.get('actor');
 
@@ -103,29 +89,29 @@ export class Director {
       actPhase.complete = true;
 
       if ( actPhase.action == 'speak')
-        actor[ actPhase.action ]( null );
+        actor.clearSpeech();
 
       actPhase = act[ ++actIndex ];
 
       // act complete
       if ( ! actPhase )
-        return this.complete();
+        this.complete();
+      // next act
+      else
+        this.next( act, actPhase, actIndex );
 
-      this.next( act, actor, actPhase, actIndex );
-
-      return;
     }
+    else {
 
-    this.timelapsed += timelapse;
+      this.timelapsed += timelapse;
+
+    }
 
   }
 
-  next ( act, actor, actPhase, actIndex ) {
+  next ( act, actPhase, actIndex ) {
 
-    actor = ( actPhase.actor === 'sprite' ) ?
-      this._state.get('sprite') :
-      this.game.player
-    ;
+    var actor = G.scene.sprites[ actPhase.actor ];
 
     this._state.set('actIndex', actIndex );
     this._state.set('actor', actor );
@@ -133,17 +119,19 @@ export class Director {
 
   }
 
-  act ( actor, actPhase ) {
+  complete () {
 
-    if ( ! actPhase.duration && actPhase.action == 'speak' )
-      actPhase.duration = Math.min( 1500, actPhase.value.length * 120 );
+    if ( this._state.get('actPhase').action === 'speak' )
+      G.player.clearSpeech();
 
-    var [ action, prop ] = actPhase.action.split(':');
+    this._state.set('act', null );
+    this._state.set('actor', null );
+    this._state.set('actIndex', null );
+    this._state.set( this._state.defaults );
 
-    if ( prop )
-      actor[ action ]( prop, actPhase.value );
-    else
-      actor[ action ]( actPhase.value );
+    var target = G.player._target;
+
+    target.animState = 'default';
 
   }
 

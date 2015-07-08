@@ -5,36 +5,39 @@ var gulp = require('gulp');
 
 gulp.task('default', function () {
 
-  return builder.loadConfig('config.js').then( function () {
+  return builder
+    .loadConfig('config.js')
+    .then( function () {
 
-    builder.config({
-      baseURL: '.',
-      transpiler: 'babel',
-      meta: {
-        code: {
-          format: 'es6'
+      builder.config({
+        baseURL: '.',
+        transpiler: 'babel',
+        meta: {
+          code: {
+            format: 'es6'
+          }
         }
-      }
-    });
+      });
 
-    return builder.buildSFX('scripts/app', 'scripts/bundle.js')
-      .then( function ( trees ) {
-        console.log("Ok");
-      })
-      .catch( function (err) {
-        console.log( err );
-      })
-    ;
+      return builder.buildSFX('scripts/app', 'scripts/bundle.js')
+        .then( function ( trees ) {
+          console.log("Ok");
+        })
+        .catch( function (err) {
+          console.log( err );
+        })
+      ;
 
-    // return builder.trace('scripts/app')
-    //   .then( function ( trees ) {
-    //     console.log("Ok");
-    //   })
-    //   .catch( function (err) {
-    //     console.log( err );
-    //   })
-    // ;
+      // return builder.trace('scripts/app')
+      //   .then( function ( trees ) {
+      //     console.log("Ok");
+      //   })
+      //   .catch( function (err) {
+      //     console.log( err );
+      //   })
+      // ;
 
-  });
+    })
+  ;
 
 });

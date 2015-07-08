@@ -1,5 +1,21 @@
 {"frames": {
 
+"2bit.stand.face.1.png":
+{
+	"frame": {"x":1028,"y":184,"w":26,"h":53},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":26,"h":53},
+	"sourceSize": {"w":32,"h":55}
+},
+"2bit.stand.face.2.png":
+{
+	"frame": {"x":1056,"y":184,"w":26,"h":53},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":26,"h":53},
+	"sourceSize": {"w":32,"h":55}
+},
 "arizona.1.png":
 {
 	"frame": {"x":104,"y":339,"w":800,"h":59},
@@ -42,7 +58,7 @@
 },
 "bar.sign.png":
 {
-	"frame": {"x":1007,"y":134,"w":180,"h":48},
+	"frame": {"x":1013,"y":134,"w":180,"h":48},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":48},
@@ -66,11 +82,51 @@
 },
 "bike.c.png":
 {
-	"frame": {"x":911,"y":134,"w":72,"h":40},
+	"frame": {"x":939,"y":134,"w":72,"h":40},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":8,"w":72,"h":40},
 	"sourceSize": {"w":72,"h":48}
+},
+"bobby.stand.face.1.png":
+{
+	"frame": {"x":985,"y":334,"w":26,"h":55},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":26,"h":55},
+	"sourceSize": {"w":32,"h":55}
+},
+"bobby.stand.face.2.png":
+{
+	"frame": {"x":911,"y":134,"w":26,"h":55},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":26,"h":55},
+	"sourceSize": {"w":32,"h":55}
+},
+"bobby.stand.face.3.png":
+{
+	"frame": {"x":972,"y":224,"w":26,"h":55},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":26,"h":55},
+	"sourceSize": {"w":32,"h":55}
+},
+"bobby.stand.face.4.png":
+{
+	"frame": {"x":1000,"y":224,"w":26,"h":55},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":26,"h":55},
+	"sourceSize": {"w":32,"h":55}
+},
+"bobby.stand.side.png":
+{
+	"frame": {"x":1013,"y":331,"w":26,"h":55},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":26,"h":55},
+	"sourceSize": {"w":32,"h":55}
 },
 "dumpster.closed.png":
 {
@@ -90,7 +146,7 @@
 },
 "guybrush.crouch.side.png":
 {
-	"frame": {"x":911,"y":176,"w":32,"h":33},
+	"frame": {"x":939,"y":176,"w":32,"h":33},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":15,"w":32,"h":33},
@@ -98,7 +154,7 @@
 },
 "guybrush.knock.back.png":
 {
-	"frame": {"x":985,"y":334,"w":28,"h":48},
+	"frame": {"x":1007,"y":281,"w":28,"h":48},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":0,"w":28,"h":48},
@@ -106,7 +162,7 @@
 },
 "guybrush.stand.back.png":
 {
-	"frame": {"x":981,"y":225,"w":22,"h":47},
+	"frame": {"x":1037,"y":281,"w":22,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":1,"w":22,"h":47},
@@ -114,7 +170,7 @@
 },
 "guybrush.stand.face.png":
 {
-	"frame": {"x":1005,"y":225,"w":22,"h":47},
+	"frame": {"x":1041,"y":330,"w":22,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":1,"w":22,"h":47},
@@ -122,7 +178,7 @@
 },
 "guybrush.stand.side.png":
 {
-	"frame": {"x":985,"y":134,"w":20,"h":47},
+	"frame": {"x":1061,"y":281,"w":20,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":6,"y":1,"w":20,"h":47},
@@ -130,7 +186,7 @@
 },
 "guybrush.walk.1.png":
 {
-	"frame": {"x":1028,"y":274,"w":17,"h":47},
+	"frame": {"x":1084,"y":184,"w":17,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":1,"w":17,"h":47},
@@ -138,7 +194,7 @@
 },
 "guybrush.walk.2.png":
 {
-	"frame": {"x":1007,"y":274,"w":19,"h":47},
+	"frame": {"x":1065,"y":330,"w":19,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":1,"w":19,"h":47},
@@ -146,7 +202,7 @@
 },
 "guybrush.walk.3.png":
 {
-	"frame": {"x":947,"y":176,"w":32,"h":46},
+	"frame": {"x":973,"y":176,"w":32,"h":46},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":32,"h":46},
@@ -154,7 +210,7 @@
 },
 "guybrush.walk.4.png":
 {
-	"frame": {"x":1036,"y":323,"w":17,"h":47},
+	"frame": {"x":1103,"y":184,"w":17,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":5,"y":1,"w":17,"h":47},
@@ -162,7 +218,7 @@
 },
 "guybrush.walk.5.png":
 {
-	"frame": {"x":1015,"y":323,"w":19,"h":47},
+	"frame": {"x":1083,"y":239,"w":19,"h":47},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":5,"y":1,"w":19,"h":47},
@@ -170,7 +226,7 @@
 },
 "guybrush.walk.6.png":
 {
-	"frame": {"x":947,"y":224,"w":32,"h":46},
+	"frame": {"x":1122,"y":184,"w":32,"h":46},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":32,"h":46},
@@ -194,7 +250,7 @@
 },
 "poster.1.png":
 {
-	"frame": {"x":981,"y":183,"w":23,"h":40},
+	"frame": {"x":947,"y":211,"w":23,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":40},
@@ -210,7 +266,7 @@
 },
 "poster.3.png":
 {
-	"frame": {"x":1029,"y":226,"w":23,"h":40},
+	"frame": {"x":1055,"y":239,"w":23,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":40},
@@ -226,7 +282,7 @@
 },
 "poster.5.png":
 {
-	"frame": {"x":1029,"y":184,"w":25,"h":40},
+	"frame": {"x":1028,"y":239,"w":25,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":40},
@@ -255,6 +311,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1200,"h":400},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:132836626c5fdfdc9334604186491b3d:14009b7bb73e3d95d5a29bca7fd840dd:8f90a40215e76b7d1e55396bb87b74be$"
+	"smartupdate": "$TexturePacker:SmartUpdate:f706104858f20df9f15becd3667e3036:e962f040506cce93ee9f4ba73f9be7b0:8f90a40215e76b7d1e55396bb87b74be$"
 }
 }

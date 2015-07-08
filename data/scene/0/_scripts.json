@@ -1,0 +1,308 @@
+{
+
+  "bike.1": {
+
+    "look at": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "Get to tha Choppa!"
+          }
+        ]
+      }
+    },
+
+    "use": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "Never touch another man's Chopper"
+          }
+        ]
+      }
+    },
+
+    "push": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "Never touch another man's Chopper"
+          }
+        ]
+      }
+    },
+
+    "lick": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "Mmmm... Tastes like motor oil"
+          }
+        ]
+      }
+    }
+
+  },
+
+  "bar.door": {
+    "look at": {
+      "default": {
+        "repeat": true,
+        "script": [{
+          "actor": "player",
+          "action": "speak",
+          "value": "Looks like a sturdy door"
+        }]
+      }
+    }
+  },
+
+  "bobby": {
+
+    "look at": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": "Looks like a sturdy dude"
+          }
+        ]
+      }
+    },
+
+    "talk to": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.back",
+            "duration": 200
+          },{
+            "actor": "bobby",
+            "action": "set:state",
+            "value": "stand",
+            "duration": 200
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "What do you want?"
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": [
+              {
+                "text": "Can I come in?",
+                "action": "talk to",
+                "id": "1"
+              },
+              {
+                "text": "Are you my daddy?",
+                "action": "talk to",
+                "id": "2"
+              },
+              {
+                "text": "I'm selling these fine leather jackets",
+                "action": "talk to",
+                "id": "3"
+              }
+            ]
+          }
+        ]
+      },
+
+      "1": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": "Can I come in?"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Why?"
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "Because I'm a mighty Pirate..."
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "er ..."
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "I mean ... Biker!"
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "I'm a mighty Biker"
+          },{
+            "actor": "bobby",
+            "action": "set:state",
+            "value": "stand",
+            "duration": 1000
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Where is your cut?"
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "I left it in my other pants"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Ha!"
+          },{
+            "actor": "bobby",
+            "action": "set:state",
+            "value": "stand",
+            "duration": 1000
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Nope"
+          },{
+            "actor": "bobby",
+            "action": "set:state",
+            "value": "default",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "~Jerk~"
+          }
+        ]
+      },
+
+      "2": {
+        "repeat": false,
+        "script": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": "Are you my daddy?"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Fuck off"
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 500
+          }
+        ]
+      },
+
+      "3": {
+        "repeat": false,
+        "script": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": "I'm selling these fine leather jackets"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Thanks but I've already got a fine leather jacket"
+          }
+        ]
+      }
+
+    }
+  },
+
+  "dumpster": {
+
+    "look at": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": "Looks like a dumpster"
+          }
+        ]
+      }
+    },
+
+    "open": {
+      "default": {
+        "repeat": true,
+        "script": [
+          {
+            "actor": "player",
+            "action": "set:state",
+            "value": "knock.back",
+            "duration": 1
+          },{
+            "actor": "dumpster",
+            "action": "set:state",
+            "value": "open",
+            "duration": 1000
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 1
+          },{
+            "actor": "dumpster",
+            "action": "set:state",
+            "value": "default",
+            "duration": 200
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "I found a leather vest"
+          }
+        ]
+      }
+
+    }
+  }
+
+}
