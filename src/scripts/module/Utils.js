@@ -1,6 +1,6 @@
 'use strict';
 
-export default {
+var Utils = {
 
   titleCase: function ( text ) {
     return text.charAt( 0 ).toUpperCase() + text.substr( 1 );
@@ -43,3 +43,5 @@ export default {
   }
 
 };
+
+export default Utils;

@@ -1,25 +1,22 @@
 'use strict';
 
-import _            from 'lodash';
-import Backbone     from 'backbone';
-import {Sprite}     from 'game/module/Sprite';
-import {Background} from 'game/module/Background';
+import _ from 'lodash';
+import Backbone from 'backbone';
+import Game from 'game/module/Game';
+import Sprite from 'game/module/Sprite';
+import Background from 'game/module/Background';
 
-var G;
+export default class Scene {
 
-export class Scene {
-
-  constructor ( game, cfg ) {
-
-    G = game;
+  constructor ( cfg ) {
 
     this.view        = new PIXI.Container();
     this.width       = cfg.meta.width;
     this.view.height = this.height = cfg.height;
 
-    this.view.y = (G.viewport.height - this.height) * -1;
+    this.view.y = (Game.viewport.height - this.height) * -1;
 
-    G.stage.addChild( this.view );
+    Game.stage.addChild( this.view );
 
     this.backgrounds = [];
     cfg.gameObjects.backgrounds.forEach( function ( cfg ) {
@@ -36,17 +33,15 @@ export class Scene {
     this.sprites     = [];
     this.actionables = [];
     cfg.gameObjects.sprites.forEach( function ( cfg ) {
-      var sprite = new Sprite( cfg, G );
+      var sprite = new Sprite( cfg );
       this.addSprite( sprite );
     }.bind( this ));
-
-    this.sprites['player'] = G.player;
 
   }
 
   addBackground ( cfg ) {
 
-    var bg = new Background( cfg, this, G );
+    var bg = new Background( cfg, this );
 
     this.backgrounds.push( bg );
     this.view.addChild( bg._sprite );
@@ -78,7 +73,7 @@ export class Scene {
 
     var match;
     this.sprites.forEach( function ( sprite ) {
-      if ( sprite._sprite.containsPoint( new PIXI.Point( x / G.viewport.resolution, y / G.viewport.resolution ) ) )
+      if ( sprite._sprite.containsPoint( new PIXI.Point( x / Game.viewport.resolution, y / Game.viewport.resolution ) ) )
         match = sprite;
     }, this );
     return match;
@@ -86,22 +81,22 @@ export class Scene {
 
   update ( timelapse ) {
 
-    var vW = G.viewport.width;
-    var vX = G.viewport.x;
+    var vW = Game.viewport.width;
+    var vX = Game.viewport.x;
 
-    if ( G.player.position.x > G.viewport.x + vW/4*3 )
-      vX += timelapse / 1000 * (G.player.speed*2);
-    else if ( G.player.position.x < G.viewport.x + vW/4 )
-      vX -= timelapse / 1000 * (G.player.speed*2);
+    if ( Game.player.position.x > Game.viewport.x + vW/4*3 )
+      vX += timelapse / 1000 * (Game.player.speed*2);
+    else if ( Game.player.position.x < Game.viewport.x + vW/4 )
+      vX -= timelapse / 1000 * (Game.player.speed*2);
 
-    G.viewport.x = Math.max( Math.min( vX, this.width - vW ), 0 );
+    Game.viewport.x = Math.max( Math.min( vX, this.width - vW ), 0 );
 
     this.backgrounds.forEach( function ( bg ) {
-      bg.x = G.viewport.x * -1;
+      bg.x = Game.viewport.x * -1;
     }.bind( this ));
 
     this.layers.forEach( function ( layer ) {
-      layer.x = G.viewport.x * -1;
+      layer.x = Game.viewport.x * -1;
     }.bind( this ));
 
     this.sprites.forEach( function ( sprite ) {
@@ -129,6 +124,8 @@ export class Scene {
      this.layers.forEach( function ( layer ) {
        layer.removeStageReference();
      }.bind( this ));
+
+     Game.playerdestroy();
 
      delete this.backgrounds;
      delete this.sprites;

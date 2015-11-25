@@ -1,12 +1,15 @@
 'use strict';
 
 import Backbone from 'backbone';
+import Game from 'game/module/Game';
+import Input from 'game/module/Input';
+import Director from 'game/module/Director';
 
-var G;
+import CFG from 'scripts/config/menu.json!';
 
-var FONT_SIZE = 10;
+var FONT_SIZE = 6;
 var LINE_HEIGHT = FONT_SIZE * 1.1;
-var IGNORE_DURATION = 150;
+var IGNORE_DURATION = 200;
 
 var StateModel = Backbone.Model.extend({
   defaults: {
@@ -17,53 +20,61 @@ var StateModel = Backbone.Model.extend({
 
 var ignoreKeys = {};
 
-export class Menu {
+var Menu = {
 
-  constructor ( game, cfg ) {
+  height: CFG.height || 50,
 
-    G = game;
+  init () {
 
     this._state = new StateModel();
 
-    this.width   = G.viewport.width;
-    this.height  = cfg.height || 50;
+    this.view = new PIXI.Container();
 
-    this.bgColor = cfg.bgColor || 0x111111;
+    this.width = Game.viewport.width;
 
-    this.view            = new PIXI.Container();
-    this.view.position.y = G.viewport.height - this.height;
+    // set initial position
+    this.view.position.y = Game.viewport.height - this.height;
 
+    // create background
     this.bg = new PIXI.Graphics();
-    this.bg.beginFill( this.bgColor );
+    this.bg.beginFill( 0x111111 );
     this.bg.drawRect( 0, 0, this.width, this.height );
     this.bg.endFill();
 
+    // the mask
+    this.mask = this.bg.clone()
+
+    // create text
     this.optionText          = new PIXI.Container();
     this.optionText.position = new PIXI.Point( this.width /2, 0 );
-    this.optionText.mask     = this.bg;
+    this.optionText.mask     = this.mask;
 
+    // append elements
     this.view.addChild( this.bg );
+    this.view.addChild( this.mask );
     this.view.addChild( this.optionText );
 
-    G.stage.addChild( this.view );
+    // add Menu to Stage
+    Game.stage.addChild( this.view );
 
-    this._state.on('change:index',   this.onChangeIndex, this );
+    // on state change update view
+    this._state.on('change:index', this.onChangeIndex, this );
 
-  }
+  },
 
   open () {
 
-    G.input.mode = 'menu';
+    Input.mode = 'menu';
     history.pushState('menu', 'menu' );
 
-  }
+  },
 
   close () {
 
     this.reset();
     history.back();
 
-  }
+  },
 
   setOptions ( options ) {
 
@@ -77,7 +88,7 @@ export class Menu {
     this.open();
     this.draw();
 
-  }
+  },
 
   onChangeIndex () {
 
@@ -95,7 +106,7 @@ export class Menu {
 
     this.draw();
 
-  }
+  },
 
   draw ( options ) {
 
@@ -117,7 +128,7 @@ export class Menu {
 
         var textSprite        = new PIXI.Text( option.text, textStyle );
 
-        textSprite.resolution = GAME.viewport.resolution;
+        textSprite.resolution = Game.viewport.resolution;
         textSprite.position   = new PIXI.Point( 0.5, index * LINE_HEIGHT );
         textSprite.anchor     = new PIXI.Point( 0.5, 0 );
 
@@ -125,14 +136,14 @@ export class Menu {
     });
 
     this.optionText.position.y = ( FONT_SIZE * 1.5 ) - ( this._state.get('index') * LINE_HEIGHT );
-  }
+  },
 
   update () {
 
-    var k = G.input.keys;
-    var _ = G.input.KEY;
+    var k = Input.keysPressed;
+    var _ = Input.keyMappings;
 
-    if ( G.input.mode === 'menu' ) {
+    if ( Input.mode === 'menu' ) {
 
       var index   = this._state.get('index');
       var options = this._state.get('options');
@@ -156,10 +167,11 @@ export class Menu {
 
         var option = options[ index ];
 
-        G.player.perform( option.action, option.id );
+        Director.unpause();
+        Game.player.perform( option.action, option.id );
 
         this.close();
-        G.input.clear( _.SELECT );
+        Input.clear( _.SELECT );
         ignoreKey( _.SELECT, IGNORE_DURATION );
       }
     }
@@ -171,23 +183,25 @@ export class Menu {
         return true;
       return false;
     }
-  }
+  },
 
   clear () {
 
     this.optionText.removeChildren();
 
-  }
+  },
 
   reset () {
 
     this.clear();
     this._state.set( this._state.defaults );
 
-  }
+  },
 
   destroy () {
 
-  }
+  },
 
-}
+};
+
+export default Menu;

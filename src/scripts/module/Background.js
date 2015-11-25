@@ -1,7 +1,8 @@
 'use strict';
 
+import Game from 'game/module/Game';
+
 var S; // scene
-var G; // game
 
 var PUBLIC_PROPS = {
   "id":       { type: 'text' },
@@ -10,12 +11,11 @@ var PUBLIC_PROPS = {
   "imageUrl": { type: 'text' }
 };
 
-export class Background {
+export default class Background {
 
-  constructor ( cfg, scene, game ) {
+  constructor ( cfg, scene ) {
 
     S = scene;
-    G = game;
 
     if ( ! cfg.id )          cfg.id          = 'background.' + Date.now();
     if ( ! cfg.tint )        cfg.tint        = 'FFFFFF';
@@ -32,9 +32,9 @@ export class Background {
     this._sprite  = new PIXI.Sprite( this._texture );
 
     this._sprite.anchor.y   = 1;
-    this._sprite.position.y = G.viewport.height;
+    this._sprite.position.y = Game.viewport.height;
 
-    if ( this._sprite.height < G.viewport.height ) {
+    if ( this._sprite.height < Game.viewport.height ) {
       let scale = S.height / this._sprite.height;
       this._sprite.width *= scale;
       this._sprite.height *= scale;

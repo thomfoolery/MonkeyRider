@@ -1,11 +1,8 @@
-var G;
+'use strict'
 
-export class Mover {
+import Game from 'game/module/Game';
 
-  constructor ( game ) {
-
-    G = game;
-  }
+var Mover = {
 
   moveTo ( sprite, destination ) {
 
@@ -19,7 +16,7 @@ export class Mover {
 
     sprite.destination = destination;
 
-  }
+  },
 
   update ( sprite, timelapse ) {
 
@@ -28,12 +25,12 @@ export class Mover {
       var distance = sprite.scaleX * ( timelapse / 1000 ) * sprite.speed;
 
       if ( sprite.position.x + distance < Math.abs( sprite.width/2 )
-        || sprite.position.x + distance > G.scene.width - Math.abs( sprite.width/2 ) ) {
+        || sprite.position.x + distance > Game.scene.width - Math.abs( sprite.width/2 ) ) {
 
         if ( sprite.position.x + distance < Math.abs( sprite.width/2 ) )
           sprite.position.x = Math.abs( sprite.width/2 );
-        else if ( sprite.position.x + distance > G.scene.width - Math.abs( sprite.width/2 ) )
-          sprite.position.x = G.scene.width - Math.abs( sprite.width/2 );
+        else if ( sprite.position.x + distance > Game.scene.width - Math.abs( sprite.width/2 ) )
+          sprite.position.x = Game.scene.width - Math.abs( sprite.width/2 );
 
         sprite.destination.x = null;
         sprite.state = 'default';
@@ -60,8 +57,6 @@ export class Mover {
 
   }
 
-  destroy () {
-
-  }
-
 }
+
+export default Mover;

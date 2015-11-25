@@ -1,10 +1,10 @@
 'use strict';
 
-import _         from 'lodash';
-import Backbone  from 'backbone';
-import Speaker   from 'scripts/module/Speaker';
-
-var G;
+import _ from 'lodash';
+import Backbone from 'backbone';
+import Game from 'game/module/Game';
+import Mover from 'game/module/Mover';
+import Speaker from 'scripts/module/Speaker';
 
 var PUBLIC_PROPS = {
   "name":        { type: 'text' },
@@ -24,11 +24,9 @@ var PUBLIC_PROPS = {
   "speechColor": { type: 'text' }
 };
 
-export class Sprite {
+export default class Sprite {
 
-  constructor ( cfg, game ) {
-
-    G = game;
+  constructor ( cfg ) {
 
     this.scale       = new PIXI.Point( 1,    1 );
     this.anchor      = new PIXI.Point( 0.5,  1 );
@@ -83,14 +81,14 @@ export class Sprite {
       if ( ! cfg.hasOwnProperty( prop ) ) return;
 
       if ( prop === 'y' )
-        this[ prop ] = G.viewport.height - cfg[ prop ];
+        this[ prop ] = Game.viewport.height - cfg[ prop ];
       else
         this[ prop ] = cfg[ prop ];
     });
 
     if ( cfg.speaker ) {
       _.extend( this, Speaker );
-      Speaker.init.call( this, G );
+      Speaker.init.call( this );
     }
 
   }
@@ -129,7 +127,12 @@ export class Sprite {
   set visible ( value ) { this._sprite.visible = !! value }
 
   get state () { return this._animState; }
-  set state ( state ) { this._animState = state; this.animIndex = 0; this._animPhase = 0; this.isAnimating = ( this._animStates[ state ].frames.length > 1 ) ? true : false ; }
+  set state ( state ) {
+    this._animState = state;
+    this.animIndex = 0;
+    this._animPhase = 0;
+    this.isAnimating = ( this._animStates[ state ].frames.length > 1 ) ? true : false ;
+  }
 
   get animPhase () { return this._animPhase; }
   set animPhase ( phase ) {
@@ -155,19 +158,19 @@ export class Sprite {
 
   onMouseOver ( e ) {
 
-    G.messenger.emit('sprite/mouseover', this );
+    Game.messenger.emit('sprite/mouseover', this );
 
   }
 
   onMouseOut ( e ) {
 
-    G.messenger.emit('sprite/mouseout', this );
+    Game.messenger.emit('sprite/mouseout', this );
 
   }
 
   onClick ( e ) {
 
-    G.messenger.emit('sprite/click', this );
+    Game.messenger.emit('sprite/click', this );
 
   }
 
@@ -186,17 +189,17 @@ export class Sprite {
 
     this.animPhase += timelapse;
 
-    G.mover.update( this, timelapse );
+    Mover.update( this, timelapse );
 
     if ( ! this.visible ) {
-      if ( this.x + ( this.width * this.anchorX ) * this.scaleX > G.viewport.x
-        && this.x - ( this.width * this.anchorX ) * this.scaleX < G.viewport.x + G.viewport.width ) {
+      if ( this.x + ( this.width * this.anchorX ) > Game.viewport.x
+        && this.x - ( this.width * this.anchorX ) < Game.viewport.x + Game.viewport.width ) {
           this.visible = true;
       }
     }
     else {
-      if ( this.x + ( this.width * this.anchorX ) * this.scaleX < G.viewport.x
-        || this.x - ( this.width * this.anchorX ) * this.scaleX > G.viewport.x + G.viewport.width ) {
+      if ( this.x + ( this.width * this.anchorX ) < Game.viewport.x
+        || this.x - ( this.width * this.anchorX ) > Game.viewport.x + Game.viewport.width ) {
           this.visible = false;
       }
     }
@@ -236,7 +239,7 @@ export class Sprite {
   destroy () {
 
     this._sprite.parent.removeChild( this._sprite );
-    G.scene.removeSprite( this );
+    Game.scene.removeSprite( this );
 
     delete this.state;
     delete this.scale;

@@ -4,8 +4,13 @@
 
     "look at": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "set:state",
@@ -22,8 +27,13 @@
 
     "use": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "set:state",
@@ -40,8 +50,13 @@
 
     "push": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "set:state",
@@ -58,8 +73,13 @@
 
     "lick": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "set:state",
@@ -79,8 +99,13 @@
   "bar.door": {
     "look at": {
       "default": {
-        "repeat": true,
-        "script": [{
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player"
+          ]
+        },
+        "actions": [{
           "actor": "player",
           "action": "speak",
           "value": "Looks like a sturdy door"
@@ -93,8 +118,13 @@
 
     "look at": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "speak",
@@ -106,8 +136,14 @@
 
     "talk to": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player",
+            "bobby"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "set:state",
@@ -127,16 +163,24 @@
             "action": "speak",
             "value": [
               {
+                "conditions": [
+                  "has:!leather.vest"
+                ],
                 "text": "Can I come in?",
                 "action": "talk to",
                 "id": "1"
-              },
-              {
+              },{
+                "conditions": [
+                  "has:leather.vest"
+                ],
+                "text": "Can I come in?",
+                "action": "talk to",
+                "id": "4"
+              },{
                 "text": "Are you my daddy?",
                 "action": "talk to",
                 "id": "2"
-              },
-              {
+              },{
                 "text": "I'm selling these fine leather jackets",
                 "action": "talk to",
                 "id": "3"
@@ -147,8 +191,14 @@
       },
 
       "1": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player",
+            "bobby"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "speak",
@@ -218,8 +268,14 @@
       },
 
       "2": {
-        "repeat": false,
-        "script": [
+        "meta": {
+          "repeat": false,
+          "actors": [
+            "player",
+            "bobby"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "speak",
@@ -238,8 +294,14 @@
       },
 
       "3": {
-        "repeat": false,
-        "script": [
+        "meta": {
+          "repeat": false,
+          "actors": [
+            "player",
+            "bobby"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "speak",
@@ -248,6 +310,53 @@
             "actor": "bobby",
             "action": "speak",
             "value": "Thanks but I've already got a fine leather jacket"
+          }
+        ]
+      },
+
+      "4": {
+        "meta": {
+          "repeat": false,
+          "actors": [
+            "player",
+            "bobby"
+          ]
+        },
+        "actions": [
+          {
+            "actor": "player",
+            "action": "speak",
+            "value": "Can I come in?"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Where is your cut?"
+          },{
+            "actor": "player",
+            "action": "speak",
+            "value": "Right here"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Well put it on"
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.face",
+            "duration": 500
+          },{
+            "actor": "player",
+            "action": "set:state",
+            "value": "stand.back",
+            "duration": 500
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Looking good"
+          },{
+            "actor": "bobby",
+            "action": "speak",
+            "value": "Come on in"
           }
         ]
       }
@@ -259,12 +368,18 @@
 
     "look at": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player",
+            "dumpster"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "speak",
-            "value": "Looks like a dumpster"
+            "value": "Looks like a dump-ster"
           }
         ]
       }
@@ -272,8 +387,14 @@
 
     "open": {
       "default": {
-        "repeat": true,
-        "script": [
+        "meta": {
+          "repeat": true,
+          "actors": [
+            "player",
+            "dumpster"
+          ]
+        },
+        "actions": [
           {
             "actor": "player",
             "action": "set:state",
@@ -298,6 +419,13 @@
             "actor": "player",
             "action": "speak",
             "value": "I found a leather vest"
+          },{
+            "actor": "player",
+            "action": "receive",
+            "value": {
+              "id": "leather.vest",
+              "name": "leather vest"
+            }
           }
         ]
       }

@@ -1,8 +1,9 @@
 'use strict';
 
 import _ from 'lodash';
-
-var G;
+import Game from 'game/module/Game';
+import Menu from 'game/module/Menu';
+import Director from 'game/module/Director';
 
 var FONT_SIZE = 6;
 var FONT_COLOR = 'ffffff';
@@ -10,9 +11,7 @@ var WORD_WRAP_WIDTH = 50;
 
 var Speaker = {
 
-  init: function ( game ) {
-
-    G = game;
+  init: function () {
 
     this._textContainer             = new PIXI.Container();
     this._textContainer.position    = new PIXI.Point( 0, - this._sprite.height );
@@ -44,7 +43,7 @@ var Speaker = {
     });
 
     sprite.anchor.y   = 1;
-    sprite.resolution = GAME.viewport.resolution;
+    sprite.resolution = Game.viewport.resolution;
 
     this._textContainer.addChild( sprite );
 
@@ -52,7 +51,13 @@ var Speaker = {
 
   chooseSpeech: function ( speechOptions ) {
 
-    G.menu.setOptions( speechOptions );
+    Director.pause();
+
+    speechOptions = speechOptions.filter( ( option ) => {
+      return testConditions.call( this, option.conditions );
+    });
+
+    Menu.setOptions( speechOptions );
 
   },
 
@@ -63,6 +68,27 @@ var Speaker = {
 
   }
 
+}
+
+/**
+ * @param  Array condition [a collection of conditions that must be satisfied to return true]
+ * @return Boolean
+ */
+function testConditions ( conditions ) {
+  if ( ! conditions ) return true;
+
+  var isSatisfied = true;
+
+  conditions.forEach( condition => {
+
+    var [ test, value ] = condition.split(':');
+
+    if ( ! this[ test ]( value ) )
+      isSatisfied = false;
+
+  });
+
+  return isSatisfied;
 }
 
 export default Speaker;

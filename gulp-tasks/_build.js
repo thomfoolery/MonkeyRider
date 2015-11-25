@@ -3,11 +3,11 @@ var Builder = require('systemjs-builder');
 var builder = new Builder()
 var gulp = require('gulp');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 
   return builder
     .loadConfig('config.js')
-    .then( function () {
+    .then( () => {
 
       builder.config({
         baseURL: '.',
@@ -20,19 +20,19 @@ gulp.task('default', function () {
       });
 
       return builder.buildSFX('scripts/app', 'scripts/bundle.js')
-        .then( function ( trees ) {
+        .then( trees => {
           console.log("Ok");
         })
-        .catch( function (err) {
+        .catch( err => {
           console.log( err );
         })
       ;
 
       // return builder.trace('scripts/app')
-      //   .then( function ( trees ) {
+      //   .then( trees => {
       //     console.log("Ok");
       //   })
-      //   .catch( function (err) {
+      //   .catch( err => {
       //     console.log( err );
       //   })
       // ;
