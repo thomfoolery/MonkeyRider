@@ -5,7 +5,7 @@ import Game from 'game/module/Game';
 import Input from 'game/module/Input';
 import Director from 'game/module/Director';
 
-import CFG from 'scripts/config/menu.json!';
+import CFG from 'game/config/menu.json!';
 
 var FONT_SIZE = 6;
 var LINE_HEIGHT = FONT_SIZE * 1.1;

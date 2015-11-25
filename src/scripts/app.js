@@ -7,6 +7,6 @@ PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 Game.init({
   spritesCfgUrl: './data/sprites.json',
-  scriptCfgUrl:  './data/scene/${sceneIndex}/_scripts.json',
-  sceneCfgUrl:   './data/scene/${sceneIndex}/_scene.json'
+  scriptCfgUrl:  './data/scripts_${sceneIndex}.json',
+  sceneCfgUrl:   './data/scene_${sceneIndex}.json'
 });

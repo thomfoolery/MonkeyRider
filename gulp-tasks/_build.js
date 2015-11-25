@@ -1,43 +1,35 @@
-var path = require("path");
-var Builder = require('systemjs-builder');
-var builder = new Builder()
 var gulp = require('gulp');
+var $ = require('gulp-load-plugins')();
+var runSequence = require('run-sequence');
+var del = require('del');
 
-gulp.task('default', () => {
+gulp.task('build', ['bundle'], () => {
 
-  return builder
-    .loadConfig('config.js')
-    .then( () => {
+  return runSequence(
+    ['copy-to-dist'],
+    ['modify-html']
+  );
 
-      builder.config({
-        baseURL: '.',
-        transpiler: 'babel',
-        meta: {
-          code: {
-            format: 'es6'
-          }
-        }
-      });
+});
 
-      return builder.buildSFX('scripts/app', 'scripts/bundle.js')
-        .then( trees => {
-          console.log("Ok");
-        })
-        .catch( err => {
-          console.log( err );
-        })
-      ;
+gulp.task('copy-to-dist', () => {
 
-      // return builder.trace('scripts/app')
-      //   .then( trees => {
-      //     console.log("Ok");
-      //   })
-      //   .catch( err => {
-      //     console.log( err );
-      //   })
-      // ;
+  del('dist/**/*');
 
-    })
+  return gulp.src('src/**/*')
+    .pipe( gulp.dest('dist') )
+  ;
+
+});
+
+gulp.task('modify-html', () => {
+
+  return gulp.src('dist/index.html')
+    .pipe( $.cheerio( ( $, doc ) => {
+      $('script').remove();
+      $('body').append('<script src="scripts/bundle.js" />')
+    }) )
+    .pipe( gulp.dest('dist') )
   ;
 
 });

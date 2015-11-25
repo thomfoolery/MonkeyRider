@@ -9,7 +9,7 @@ import Player from 'game/module/Player';
 import Director from 'game/module/Director';
 import Messenger from 'event-aggregator';
 
-import playerConfig from 'scripts/config/player.json!';
+import playerConfig from 'game/config/player.json!';
 
 const RESOLUTION = {
   width: 420, // pixels

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Game from 'game/module/Game';
 import Mover from 'game/module/Mover';
-import Speaker from 'scripts/module/Speaker';
+import Speaker from 'game/module/Speaker';
 
 var PUBLIC_PROPS = {
   "name":        { type: 'text' },
